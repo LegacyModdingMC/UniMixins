@@ -1,0 +1,10 @@
+{
+    "required": true,
+    "minVersion": "0.6",
+    "package": "${package}.mixin",
+    "refmap": "${modid}.mixin.refmap.json",
+    "compatibilityLevel": "JAVA_8",
+    "mixins": [
+        "ExampleMixin"
+    ]
+}
