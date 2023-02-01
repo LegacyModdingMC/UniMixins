@@ -1,0 +1,18 @@
+[
+  {
+    "modid": "spongemixins",
+    "name": "SpongeMixins Loader",
+    "description": "Library Mod that provides Mixins to 1.7.10",
+    "version": "${version}",
+    "mcversion": "${mcversion}",
+    "url": "",
+    "updateUrl": "",
+    "authorList": [
+      "Time_Conqueror"
+    ],
+    "credits": "SpongePowered Team",
+    "logoFile": "",
+    "screenshots": [],
+    "dependencies": []
+  }
+]
