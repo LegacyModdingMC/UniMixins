@@ -1,8 +1,8 @@
 [
   {
     "modid": "spongemixins",
-    "name": "SpongeMixins Loader",
-    "description": "Library Mod that provides Mixins to 1.7.10",
+    "name": "UniMixins - SpongeMixins",
+    "description": "UniMixins module that provides an emulation of SpongeMixins.",
     "version": "${version}",
     "mcversion": "${mcversion}",
     "url": "",

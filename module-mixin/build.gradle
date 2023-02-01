@@ -20,7 +20,7 @@ configurations {
 	shadowBridge
 }
 
-def mixinSource = project.findProperty("mixinSource") ?: "fabric"
+ext.mixinSource = project.findProperty("mixinSource") ?: "fabric"
 
 dependencies {
 	if(mixinSource == "fabric"){
@@ -54,6 +54,17 @@ shadowJar {
 	
 	exclude 'org/spongepowered/asm/bridge/RemapperAdapter.class'
 	exclude 'org/spongepowered/asm/bridge/RemapperAdapterFML.class'
+	
+	// Exclude stuff that's compiled for Java 16 
+	
+	exclude 'org/spongepowered/asm/service/modlauncher/*'
+	exclude 'org/spongepowered/asm/launch/MixinTransformationServiceLegacy*'
+	exclude 'org/spongepowered/asm/launch/MixinLaunchPlugin*'
+	exclude 'org/spongepowered/asm/launch/MixinTransformationService*'
+	exclude 'org/spongepowered/asm/launch/platform/container/ContainerHandleModLauncherEx*'
+	
+	exclude 'META-INF/services/cpw.mods.modlauncher.api.ITransformationService'
+	exclude 'META-INF/services/cpw.mods.modlauncher.serviceapi.ILaunchPluginService'
 }
 
 // 2. Create shadow jar without relocation, with *only* the bridge classes

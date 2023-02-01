@@ -1,2 +1,3 @@
 include 'module-mixin'
 include 'module-spongemixins'
+include 'module-all'
