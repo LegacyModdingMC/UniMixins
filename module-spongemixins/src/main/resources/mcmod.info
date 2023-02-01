@@ -4,15 +4,14 @@
     "name": "UniMixins - SpongeMixins",
     "description": "UniMixins module that provides an emulation of SpongeMixins.",
     "version": "${version}",
-    "mcversion": "${mcversion}",
+    "mcversion": "${minecraft_version}",
     "url": "",
     "updateUrl": "",
     "authorList": [
-      "Time_Conqueror"
+      "Time_Conqueror", "mitchej123"
     ],
     "credits": "SpongePowered Team",
     "logoFile": "",
-    "screenshots": [],
-    "dependencies": []
+    "screenshots": []
   }
 ]
