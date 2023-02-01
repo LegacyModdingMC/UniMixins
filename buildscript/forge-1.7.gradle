@@ -2,11 +2,11 @@
 
 apply plugin: 'forge'
 
-ext.publishDir = project.multiproject_structure.toBoolean() ? "${projectDir}/../publish" : "${projectDir}/publish"
+ext.publishDir = project.multiproject_structure.toBoolean() ? "${projectDir}/../publish" : "${rootDir}/publish"
 
 def getCommitVersion(){
 	try {
-		def commitHashProc = "python3 ${ext.publishDir}/get_version.py".execute()
+		def commitHashProc = "python3 ${ext.publishDir}/get_version.py".execute(null, file("${projectDir}"))
 		commitHashProc.waitFor()
 		if(commitHashProc.exitValue() == 0){
 			def commitHash = commitHashProc.text.trim()
@@ -57,7 +57,9 @@ if(project.enable_mixin.toBoolean()) {
 
 project.ext.override_dependencies = false
 
-apply from: "project.gradle"
+if(file("project.gradle").exists()){
+	apply from: "project.gradle"
+}
 
 if(!project.ext.override_dependencies) {
 	dependencies {

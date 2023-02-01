@@ -18,15 +18,18 @@ buildscript {
 }
 
 plugins {
-	id 'com.github.johnrengelman.shadow' version '6.1.0'
+	id 'com.github.johnrengelman.shadow' version '6.1.0' apply false
 }
 
-// For some reason this is needed when using Gradle 6.9 (but not if using 4.4.1)
-repositories {
-	maven {
-		name 'Overmind forge repo mirror'
-		url 'https://gregtech.overminddl1.com/'
+allprojects {
+	apply plugin: 'com.github.johnrengelman.shadow'
+	// For some reason this is needed when using Gradle 6.9 (but not if using 4.4.1)
+	repositories {
+		maven {
+			name 'Overmind forge repo mirror'
+			url 'https://gregtech.overminddl1.com/'
+		}
 	}
+	
+	apply from: "${project.rootDir}/buildscript/forge-1.7.gradle"
 }
-
-apply from: "buildscript/forge-1.7.gradle"
