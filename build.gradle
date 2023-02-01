@@ -1,5 +1,5 @@
 /** The root of the build. Exposed for flexibility, but you shouldn't edit it
-    unless you have to. Edit project.gradle instead. */
+	unless you have to. Edit project.gradle instead. */
 
 buildscript {
 	repositories {
@@ -14,6 +14,18 @@ buildscript {
 	}
 	dependencies {
 		classpath 'com.github.GTNewHorizons:ForgeGradle:1.2.11'
+	}
+}
+
+plugins {
+	id 'com.github.johnrengelman.shadow' version '6.1.0'
+}
+
+// For some reason this is needed when using Gradle 6.9 (but not if using 4.4.1)
+repositories {
+	maven {
+		name 'Overmind forge repo mirror'
+		url 'https://gregtech.overminddl1.com/'
 	}
 }
 

@@ -1,1 +1,92 @@
-// Put your project-specific buildscript code in this file
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+
+buildscript {
+	repositories {
+		gradlePluginPortal()
+	}
+	dependencies {
+		classpath 'com.github.jengelman.gradle.plugins:shadow:6.1.0'
+	}
+}
+
+repositories {
+	maven {
+		name = 'sponge'
+		url = 'https://repo.spongepowered.org/maven/'
+	}
+}
+
+configurations {
+	shadowBridge
+}
+
+def mixinSource = project.findProperty("mixinSource") ?: "fabric"
+
+dependencies {
+	if(mixinSource == "fabric"){
+		shadow 'net.fabricmc:sponge-mixin:0.11.4+mixin.0.8.5'
+		shadowBridge 'net.fabricmc:sponge-mixin:0.11.4+mixin.0.8.5'
+	} else if(mixinSource == "spongepowered"){
+		shadow('org.spongepowered:mixin:0.8.5')
+		shadowBridge('org.spongepowered:mixin:0.8.5')
+		shadow('com.google.guava:guava:21.0')
+		shadow('com.google.code.gson:gson:2.2.4')
+		shadow('org.ow2.asm:asm-tree:9.2')
+		shadow('org.ow2.asm:asm-commons:9.2')
+		shadow('org.ow2.asm:asm-util:9.2')
+	}
+	
+}
+
+
+apply plugin: "com.github.johnrengelman.shadow"
+
+// We want to *not* relocate ASM in the bridge classes. So we use a multi-step
+// build procedure:
+
+// 1. Create shadow jar with relocation, without the bridge classes
+shadowJar {
+	classifier = 'tmpShadow'
+	configurations = [project.configurations.shadow]
+	
+	relocate 'com.google', 'org.spongepowered.libraries.com.google'
+	relocate 'org.objectweb', 'org.spongepowered.libraries.org.objectweb'
+	
+	exclude 'org/spongepowered/asm/bridge/RemapperAdapter.class'
+	exclude 'org/spongepowered/asm/bridge/RemapperAdapterFML.class'
+}
+
+// 2. Create shadow jar without relocation, with *only* the bridge classes
+task bridgeJar(type: ShadowJar) {
+	classifier = 'tmpBridge'
+	configurations = [project.configurations.shadowBridge]
+}
+
+// 3. Combine the two jars
+task finalJar(type: Zip) {
+	dependsOn tasks.shadowJar
+	dependsOn tasks.bridgeJar
+
+	from zipTree(tasks.shadowJar.archiveFile).matching { exclude 'module-info.class' }
+	from zipTree(tasks.bridgeJar.archiveFile).matching { include 'org/spongepowered/asm/bridge/*' }
+	
+	archiveFileName = tasks.shadowJar.archiveFileName.get().replace("-tmpShadow", "+${mixinSource}")
+	destinationDirectory = tasks.shadowJar.destinationDirectory
+	
+	doLast {
+		delete shadowJar.archiveFile
+		delete bridgeJar.archiveFile
+		delete jar.archiveFile
+	}
+}
+
+build.dependsOn tasks.finalJar
+
+jar {
+	classifier = 'tmpBuild'
+	manifest {
+		attributes (
+			'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
+		)
+	}
+}
