@@ -1,9 +1,0 @@
-.git
-build
-src
-init_project.py
-updater
-README.md
-.gradle
-.github.disabled
-publish/.gradle

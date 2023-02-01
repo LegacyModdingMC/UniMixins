@@ -1,14 +1,14 @@
-package ${package};
+package io.github.legacymoddingmc.unimixins;
 
 import net.minecraft.init.Blocks;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 
-@Mod(modid = ${mainclass}.MODID, version = ${mainclass}.VERSION)
-public class ${mainclass}
+@Mod(modid = Unimixins.MODID, version = Unimixins.VERSION)
+public class Unimixins
 {
-    public static final String MODID = "${modid}";
+    public static final String MODID = "unimixins";
     public static final String VERSION = "@VERSION@";
 
     @EventHandler
