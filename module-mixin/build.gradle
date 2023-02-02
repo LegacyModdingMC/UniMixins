@@ -22,8 +22,9 @@ configurations {
 
 ext.mixinSource = project.findProperty("mixinSource") ?: "fabric"
 
-dependencies {
-	if(mixinSource == "fabric"){
+if(mixinSource == "fabric"){
+	ext.mixinClassifier = "fabric-0.11.4+mixin.0.8.5"
+	dependencies {
 		shadow('net.fabricmc:sponge-mixin:0.11.4+mixin.0.8.5') {
 			exclude group: "org.ow2.asm"
 		}
@@ -34,7 +35,10 @@ dependencies {
 		shadowBridge('net.fabricmc:sponge-mixin:0.11.4+mixin.0.8.5') {
 			transitive = false
 		}
-	} else if(mixinSource == "spongepowered"){
+	}
+} else if(mixinSource == "spongepowered"){
+	ext.mixinClassifier = "spongepowered-0.8.5"
+	dependencies {
 		shadow('org.spongepowered:mixin:0.8.5')
 		shadowBridge('org.spongepowered:mixin:0.8.5') {
 			transitive = false
@@ -45,9 +49,9 @@ dependencies {
 		shadow('org.ow2.asm:asm-commons:9.2')
 		shadow('org.ow2.asm:asm-util:9.2')
 	}
-	
 }
 
+archivesBaseName = archivesBaseName.replace("-1.7.10", "-mixin-1.7.10")
 
 apply plugin: "com.github.johnrengelman.shadow"
 
@@ -91,7 +95,7 @@ task finalJar(type: Zip) {
 	from zipTree(tasks.shadowJar.archiveFile).matching { exclude 'module-info.class' }
 	from zipTree(tasks.bridgeJar.archiveFile).matching { include 'org/spongepowered/asm/bridge/*' }
 	
-	archiveFileName = tasks.shadowJar.archiveFileName.get().replace("-tmpShadow", "+${mixinSource}")
+	archiveFileName = tasks.shadowJar.archiveFileName.get().replace("-tmpShadow", "+${mixinClassifier}")
 	destinationDirectory = tasks.shadowJar.destinationDirectory
 	
 	doLast {
