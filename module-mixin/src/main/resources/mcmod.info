@@ -1,7 +1,7 @@
 [
 {
   "modid": "${modid}",
-  "name": "UniMixins - Mixin (${mixinSource.capitalize()})",
+  "name": "UniMixins: Mixin (${mixinSource.capitalize()})",
   "description": "UniMixins module that provides the ${mixinSource.capitalize()} fork of Mixin.",
   "version": "${version}",
   "mcversion": "${minecraft_version}",
