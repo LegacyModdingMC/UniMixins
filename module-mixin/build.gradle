@@ -24,11 +24,21 @@ ext.mixinSource = project.findProperty("mixinSource") ?: "fabric"
 
 dependencies {
 	if(mixinSource == "fabric"){
-		shadow 'net.fabricmc:sponge-mixin:0.11.4+mixin.0.8.5'
-		shadowBridge 'net.fabricmc:sponge-mixin:0.11.4+mixin.0.8.5'
+		shadow('net.fabricmc:sponge-mixin:0.11.4+mixin.0.8.5') {
+			exclude group: "org.ow2.asm"
+		}
+		shadow('org.ow2.asm:asm-tree:9.4')
+		shadow('org.ow2.asm:asm-commons:9.4')
+		shadow('org.ow2.asm:asm-util:9.4')
+		
+		shadowBridge('net.fabricmc:sponge-mixin:0.11.4+mixin.0.8.5') {
+			transitive = false
+		}
 	} else if(mixinSource == "spongepowered"){
 		shadow('org.spongepowered:mixin:0.8.5')
-		shadowBridge('org.spongepowered:mixin:0.8.5')
+		shadowBridge('org.spongepowered:mixin:0.8.5') {
+			transitive = false
+		}
 		shadow('com.google.guava:guava:21.0')
 		shadow('com.google.code.gson:gson:2.2.4')
 		shadow('org.ow2.asm:asm-tree:9.2')
