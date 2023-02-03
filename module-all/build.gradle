@@ -1,10 +1,9 @@
 archivesBaseName = archivesBaseName.replace("-1.7.10", "-all-1.7.10")
 
+ext.moduleNames = ["module-core", "module-mixin", "module-spongemixins"]
+
 def getModuleJars() {
-	return [
-		tasks.getByPath(':module-mixin:jar').getOutputs().getFiles().getSingleFile(),
-		tasks.getByPath(':module-spongemixins:jar').getOutputs().getFiles().getSingleFile(),
-	]
+	return moduleNames.collect { it -> tasks.getByPath(":$it:jar").getOutputs().getFiles().getSingleFile() }
 }
 
 task createMergedMcmodInfo() {
@@ -25,30 +24,36 @@ task createMergedMcmodInfo() {
 		return file("build/tmp/mcmod.info")
 	}
 	
-	dependsOn tasks.getByPath(':module-mixin:build')
-	dependsOn tasks.getByPath(':module-spongemixins:build')
-}
-
-task mergedJar(type: Zip) {
-	
-	getModuleJars().each { j -> from zipTree(j).matching { exclude 'mcmod.info' } }
-	
-	from tasks.createMergedMcmodInfo.getOutputs().getFiles().getSingleFile()
-	
-	archiveFileName = tasks.jar.archiveFileName
-	destinationDirectory = tasks.jar.destinationDirectory
-	
-	dependsOn tasks.createMergedMcmodInfo
+	moduleNames.each { dependsOn tasks.getByPath(":$it:build") }
 }
 
 jar {
-	enabled = false
-	dependsOn mergedJar
+	dependsOn tasks.createMergedMcmodInfo
+	
+	getModuleJars().each {
+		j -> from zipTree(j).matching {
+			exclude 'mcmod.info'
+			exclude 'META-INF/MANIFEST.MF'
+		}
+	}
+	
+	from tasks.createMergedMcmodInfo.getOutputs().getFiles().getSingleFile()
+	
+	//archiveFileName = tasks.jar.archiveFileName
+	//destinationDirectory = tasks.jar.destinationDirectory
+	
+	manifest {
+		attributes (
+			'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
+			'FMLCorePluginContainsFMLMod': true,
+			'ForceLoadAsMod': true,
+			'FMLCorePlugin': 'io.github.legacymoddingmc.unimixins.core.UniMixinsCore'
+		)
+	}
 }
 
 clean {
-	dependsOn tasks.getByPath(':module-mixin:clean')
-	dependsOn tasks.getByPath(':module-spongemixins:clean')
+	moduleNames.each { dependsOn tasks.getByPath(":$it:clean") }
 }
 
 reobf.enabled = false

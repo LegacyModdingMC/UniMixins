@@ -21,3 +21,5 @@ jar {
 		)
 	}
 }
+
+reobf.enabled = false

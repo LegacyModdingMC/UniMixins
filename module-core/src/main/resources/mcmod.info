@@ -2,7 +2,7 @@
   {
     "modid": "unimixins-core",
     "name": "UniMixins: Core",
-    "description": "UniMixins module containing code needed by every other module.",
+    "description": "UniMixins module containing common utilities.",
     "version": "${version}",
     "mcversion": "${minecraft_version}",
     "url": "",
