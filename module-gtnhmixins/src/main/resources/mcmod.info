@@ -1,0 +1,18 @@
+[
+  {
+    "modid": "${extraModid}",
+    "name": "UniMixins: GTNHMixins",
+    "description": "UniMixins module that provides GTNHMixins extras and MixinExtras with the GTNH package name.",
+    "version": "${extraVersion}",
+    "mcversion": "${mcversion}",
+    "url": "",
+    "updateUrl": "",
+    "authorList": [
+      "mitchej123"
+    ],
+    "credits": "",
+    "logoFile": "",
+    "screenshots": [],
+    "dependencies": []
+  }
+]
