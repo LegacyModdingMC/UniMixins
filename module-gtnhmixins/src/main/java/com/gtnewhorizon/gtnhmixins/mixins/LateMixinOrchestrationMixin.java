@@ -18,7 +18,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.transformer.Config;
 import org.spongepowered.asm.mixin.transformer.Proxy;
-import org.spongepowered.asm.mixin.transformer.ext.Extensions;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -81,11 +80,9 @@ public class LateMixinOrchestrationMixin {
         
         @SuppressWarnings("OptionalGetWithoutIsPresent")
         Object transformer = transformerField.get(Launch.classLoader.getTransformers().stream().filter(Proxy.class::isInstance).findFirst().get());
-        Object processor = Reflection.processorField.get(transformer);
 
         final MixinEnvironment env = MixinEnvironment.getCurrentEnvironment();
-        final Extensions extensions = (Extensions)Reflection.extensionsField.get(processor);
-        Reflection.selectConfigsMethod.invoke(processor, env);
-        Reflection.prepareConfigsMethod.invoke(processor, env, extensions);
+        Reflection.invokeSelectConfigs(transformer, env);
+        Reflection.invokePrepareConfigs(transformer, env);
     }
 }

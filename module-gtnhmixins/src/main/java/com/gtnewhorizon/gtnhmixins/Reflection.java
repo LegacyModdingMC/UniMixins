@@ -30,19 +30,38 @@ public class Reflection {
 
             /* MixinTransformer */
             mixinTransformerClass = Class.forName("org.spongepowered.asm.mixin.transformer.MixinTransformer");
-            processorField = mixinTransformerClass.getDeclaredField("processor");
-            processorField.setAccessible(true);
+            Field processor = null;
+            try {
+                processor = mixinTransformerClass.getDeclaredField("processor");
+                processor.setAccessible(true);
+            } catch(NoSuchFieldException e){}
+            processorField = processor;
 
             /* MixinProcessor */
-            mixinProcessorClass = Class.forName("org.spongepowered.asm.mixin.transformer.MixinProcessor");
-            selectConfigsMethod = mixinProcessorClass.getDeclaredMethod("selectConfigs", MixinEnvironment.class);
-            selectConfigsMethod.setAccessible(true);
+            if(processorField != null) {
+                // 0.8.5
+                mixinProcessorClass = Class.forName("org.spongepowered.asm.mixin.transformer.MixinProcessor");
+                selectConfigsMethod = mixinProcessorClass.getDeclaredMethod("selectConfigs", MixinEnvironment.class);
+                selectConfigsMethod.setAccessible(true);
 
-            prepareConfigsMethod = mixinProcessorClass.getDeclaredMethod("prepareConfigs", MixinEnvironment.class, Extensions.class);
-            prepareConfigsMethod.setAccessible(true);
+                prepareConfigsMethod = mixinProcessorClass.getDeclaredMethod("prepareConfigs", MixinEnvironment.class, Extensions.class);
+                prepareConfigsMethod.setAccessible(true);
 
-            extensionsField = mixinProcessorClass.getDeclaredField("extensions");
-            extensionsField.setAccessible(true);
+                extensionsField = mixinProcessorClass.getDeclaredField("extensions");
+                extensionsField.setAccessible(true);
+            } else {
+                // 0.7.11
+                mixinProcessorClass = null;
+
+                selectConfigsMethod = mixinTransformerClass.getDeclaredMethod("selectConfigs", MixinEnvironment.class);
+                selectConfigsMethod.setAccessible(true);
+
+                prepareConfigsMethod = mixinTransformerClass.getDeclaredMethod("prepareConfigs", MixinEnvironment.class);
+                prepareConfigsMethod.setAccessible(true);
+
+                extensionsField = mixinTransformerClass.getDeclaredField("extensions");
+                extensionsField.setAccessible(true);
+            }
 
             /* Config */
             configClass = Class.forName("org.spongepowered.asm.mixin.transformer.Config");
@@ -59,4 +78,37 @@ public class Reflection {
         }
     }
 
+    public static void invokeSelectConfigs(Object transformer, MixinEnvironment env) {
+        try {
+            if(processorField != null) {
+                // 0.8.5
+                Object processor = Reflection.processorField.get(transformer);
+
+                final Extensions extensions = (Extensions) Reflection.extensionsField.get(processor);
+                selectConfigsMethod.invoke(processor, env);
+            } else {
+                // 0.7.11
+                selectConfigsMethod.invoke(transformer, env);
+            }
+        } catch(Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void invokePrepareConfigs(Object transformer, MixinEnvironment env) {
+        try {
+            if(processorField != null) {
+                // 0.8.5
+                Object processor = Reflection.processorField.get(transformer);
+
+                final Extensions extensions = (Extensions) Reflection.extensionsField.get(processor);
+                prepareConfigsMethod.invoke(processor, env, extensions);
+            } else {
+                // 0.7.11
+                prepareConfigsMethod.invoke(transformer, env);
+            }
+        } catch(Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

@@ -3,14 +3,15 @@ package com.gtnewhorizon.gtnhmixins.core;
 import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.gtnhmixins.IEarlyMixinLoader;
 import com.gtnewhorizon.gtnhmixins.Reflection;
-import com.gtnewhorizon.gtnhmixinslite.core.GTNHMixinsLite;
-import com.gtnewhorizon.mixinextras.MixinExtrasBootstrap;
+import com.llamalad7.mixinextras.MixinExtrasBootstrap;
 
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 import net.minecraft.launchwrapper.Launch;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.spongepowered.asm.mixin.transformer.Config;
+
+import io.github.legacymoddingmc.unimixins.gtnhmixins.GTNHMixinsModule;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -39,8 +40,10 @@ public class GTNHMixinsCore implements IFMLLoadingPlugin {
     static {
         LOGGER.info("Initializing GTNHMixins Core");
         
-        GTNHMixinsLite.init();
-        MixinExtrasBootstrap.init();
+        GTNHMixinsModule.init();
+        if(GTNHMixinsModule.isMixinExtrasEnabled()) {
+            MixinExtrasBootstrap.init();
+        }
     }
     
     @Override
