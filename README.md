@@ -1,6 +1,6 @@
 # UniMixins
 
-UniMixins is a Mixin loader for Minecraft 1.7.10 designed for maximum compatibility. It plans to combine the features of as many mixin loaders as possible, and its modular nature makes it possible to use along other loaders if necessary.
+UniMixins is a Mixin loader for Minecraft 1.7.10 designed for maximum compatibility. It aims to combine the features of as many mixin loaders as possible, and its modular nature makes it possible to use along other loaders if necessary.
 
 ## Background
 
@@ -18,8 +18,8 @@ Note: A more detailed version of this table is available [here](https://legacymo
 | -- | -- | -- | -- | -- | -- | -- | -- |
 | Mixin 0.7 | ✅ (0.7.11/0.7.12) | ✅ (0.7.11) | | ✴️ (Partial compat) | | | ✴️ (Partial compat) |
 | Mixin 0.8 | | | ✅ (0.8.2) | ✅ (0.8.5-GasMix) | ✅ (0.8.5-GTNH) | | ✅ (0.8.5-UniMix)
-| ASM (legacy package) | ✅ (5.2) | ✅ (5.2) | | ✅ (5.2) | | | ✅ (9.4) |
-| ASM (relocated) | | | ✅ (5.2) | | ✅ (9.4) | | ✅ (9.2) | ✴️ (Emulated) |
+| ASM (legacy package) | ✅ (5.2) | ✅ (5.2) | | ✅ (5.2) | | | ✴️ (Emulated) |
+| ASM (relocated) | | | ✅ (5.2) | | ✅ (9.4) | | ✅ (9.2) |
 | SpongeMixins extras | ✅ | | | ✅ | ✅ | | ✅ |
 | Grimoire extras | | ✅ | | | | | |
 | MixinBooterLegacy extras <sup>[NOP]</sup> | | | ✅ | ✅ | | | |
@@ -41,6 +41,8 @@ Download the `-all` jar, and put it in your mods directory. Remove any other con
 
 The `-modular` zip contains a separate jar for each module. Some modules depend on other modules, see the below list.
 
+The game will crash if modules are missing dependencies. This can be suppressed by adding the `-Dunimixins.skipIntegrityChecks=true` JVM flag.
+
 ## List of modules
 
 All modules depend on the Mixin module. Note that the dependents don't necessarily have to come from UniMixins modules, other mods may also be used to provide them.
@@ -50,6 +52,7 @@ All modules depend on the Mixin module. Note that the dependents don't necessari
 * **Mixin (UniMix)**: Provides a Mixin fork maintained by the UniMixins developers, based on the Fabric fork.
 * **SpongeMixins**: Provides an emulation of SpongeMixins's extras.
 * **GTNHMixins**: Provides an emulation of GTNHMixins's extras.
+    * Depends on SpongeMixins.
 * **Compat**: Improves compatibility by fixing incorrect references to Mixin classes (specifically the shaded ASM) in mods.
 
 ### Optional
@@ -91,6 +94,10 @@ When editing the source code of modules, please document your changes in the [CR
 * `./gradlew module-XXX:build`: builds the module named XXX
 * `./gradlew module-all:build`: build an all-jar
 * `./gradlew module-all:clean`: clean all modules
+
+Build flags:
+* `-PmixinSource`: sets the mixin flavor that should be used to build the Mixin module. Can be set to `spongepowered`, `fabric`, `gasstation`, `gtnh` and `unimix`.
+* `-PmixinSourceIsLocal`: use the locally built version of `unimix` when building the Mixin module.
 
 ## License
 
