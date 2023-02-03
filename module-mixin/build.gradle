@@ -187,7 +187,8 @@ if(mixinSource == "fabric" || mixinSource == "spongepowered" || mixinSource == "
 		exclude 'META-INF/MANIFEST.MF', 'META-INF/maven/**', 'META-INF/*.RSA', 'META-INF/*.SF'
 		exclude '**/module-info.class'
 
-		relocate 'org.objectweb.asm', 'org.spongepowered.libraries.org.objectweb.asm'
+		// we use this instead of 'org.spongepowered.libraries.org.objectweb.asm'
+		relocate 'org.objectweb.asm', 'org.spongepowered.asm.lib'
 		relocate 'com.google.common', 'org.spongepowered.libraries.com.google.common'
 		relocate 'com.google.thirdparty.publicsuffix', 'org.spongepowered.libraries.com.google.thirdparty.publicsuffix'
 	}
