@@ -1,4 +1,4 @@
-|   | [SpongeMixins](https://github.com/GTNewHorizons/SpongeMixins) | [Grimoire](https://github.com/Aizistral-Studios/Grimoire) | [MBL](https://github.com/tox1cozZ/mixin-booter-legacy) | [GasStation](https://github.com/FalsePattern/GasStation) | [GTNHMixins](https://github.com/GTNewHorizons/GTNHMixins) | [GTNHMixinsLite](https://github.com/makamys/GTNHMixinsLite) | UniMixins |
+|   | SpongeMixins | Grimoire | MBL | GasStation | GTNHMixins | GTNHMixinsLite | UniMixins |
 | -- | -- | -- | -- | -- | -- | -- | -- |
 | Mixin 0.7 | ✅ (0.7.11/0.7.12) | ✅ (0.7.11) | | ✴️ (Partial compat) | | | ✴️ (Partial compat) |
 | Mixin 0.8 | | | ✅ (0.8.2) | ✅ (0.8.5-GasMix) | ✅ (0.8.5-GTNH) | | ✅ (0.8.5-UniMix)
