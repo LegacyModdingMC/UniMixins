@@ -1,6 +1,6 @@
 [
 {
-  "modid": "${modid}",
+  "modid": "unimixins-mixin",
   "name": "UniMixins: Mixin (${mixinSource.capitalize()})",
   "description": "UniMixins module that provides the ${mixinSource.capitalize()} fork of Mixin (version: ${mixinClassifier}).",
   "version": "${version}",
