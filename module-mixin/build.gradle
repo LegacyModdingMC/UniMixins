@@ -58,13 +58,13 @@ apply plugin: "com.github.johnrengelman.shadow"
 // We want to *not* relocate ASM in the bridge classes. So we use a multi-step
 // build procedure:
 
-// 1. Create shadow jar with relocation, without the bridge classes
-shadowJar {
-	classifier = 'tmpShadow'
+// 1. Create relocated Mixin jar with relocation, without the bridge classes
+task mixinJar(type: ShadowJar) {
+	classifier = 'tmpMixin'
 	configurations = [project.configurations.shadow]
 	
 	relocate 'com.google', 'org.spongepowered.libraries.com.google'
-	relocate 'org.objectweb', 'org.spongepowered.libraries.org.objectweb'
+	relocate 'org.objectweb.asm', 'org.spongepowered.asm.lib'
 	
 	exclude 'org/spongepowered/asm/bridge/RemapperAdapter.class'
 	exclude 'org/spongepowered/asm/bridge/RemapperAdapterFML.class'
@@ -81,37 +81,37 @@ shadowJar {
 	exclude 'META-INF/services/cpw.mods.modlauncher.serviceapi.ILaunchPluginService'
 }
 
-// 2. Create shadow jar without relocation, with *only* the bridge classes
+// 2. Create Mixin jar without relocation, with *only* the bridge classes
 task bridgeJar(type: ShadowJar) {
 	classifier = 'tmpBridge'
 	configurations = [project.configurations.shadowBridge]
+	
+	include 'org/spongepowered/asm/bridge/RemapperAdapter.class'
+	include 'org/spongepowered/asm/bridge/RemapperAdapterFML.class'
 }
 
 // 3. Combine the two jars
-task finalJar(type: Zip) {
-	dependsOn tasks.shadowJar
+jar {
+	version += "+${mixinClassifier}"
+	//enabled = false
+	dependsOn tasks.mixinJar
 	dependsOn tasks.bridgeJar
 
-	from zipTree(tasks.shadowJar.archiveFile).matching { exclude 'module-info.class' }
+	from zipTree(tasks.mixinJar.archiveFile).matching { exclude 'module-info.class' }
 	from zipTree(tasks.bridgeJar.archiveFile).matching { include 'org/spongepowered/asm/bridge/*' }
 	
-	archiveFileName = tasks.shadowJar.archiveFileName.get().replace("-tmpShadow", "+${mixinClassifier}")
-	destinationDirectory = tasks.shadowJar.destinationDirectory
-	
 	doLast {
-		delete shadowJar.archiveFile
+		delete mixinJar.archiveFile
 		delete bridgeJar.archiveFile
-		delete jar.archiveFile
 	}
-}
-
-build.dependsOn tasks.finalJar
-
-jar {
-	classifier = 'tmpBuild'
+	
 	manifest {
 		attributes (
 			'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
 		)
 	}
 }
+
+// Obfuscation is useless because we're not compiling code referencing Minecraft classes
+reobf.enabled = false
+

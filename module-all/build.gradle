@@ -1,6 +1,6 @@
 def getModuleJars() {
 	return [
-		tasks.getByPath(':module-mixin:finalJar').getOutputs().getFiles().getSingleFile(),
+		tasks.getByPath(':module-mixin:jar').getOutputs().getFiles().getSingleFile(),
 		tasks.getByPath(':module-spongemixins:jar').getOutputs().getFiles().getSingleFile(),
 	]
 }
@@ -23,7 +23,7 @@ task createMergedMcmodInfo() {
 		return file("build/tmp/mcmod.info")
 	}
 	
-	dependsOn tasks.getByPath(':module-mixin:finalJar')
+	dependsOn tasks.getByPath(':module-mixin:build')
 	dependsOn tasks.getByPath(':module-spongemixins:build')
 }
 
