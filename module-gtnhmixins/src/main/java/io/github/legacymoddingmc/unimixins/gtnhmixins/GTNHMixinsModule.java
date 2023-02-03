@@ -1,16 +1,12 @@
 package io.github.legacymoddingmc.unimixins.gtnhmixins;
 
-import static com.gtnewhorizon.gtnhmixins.core.GTNHMixinsCore.LOGGER;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import com.gtnewhorizon.gtnhmixins.GTNHMixins;
 import cpw.mods.fml.common.versioning.ComparableVersion;
 import net.minecraft.launchwrapper.Launch;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.spongepowered.asm.launch.MixinBootstrap;
 
 public class GTNHMixinsModule {
 
@@ -18,7 +14,7 @@ public class GTNHMixinsModule {
 
     public static void init() {
         if(!skipIntegrityChecks()) {
-            skipIntegrityChecks();
+            checkComponentIntegrity();
         }
         registerASMRemapPackage("com.gtnewhorizon.mixinextras");
     }

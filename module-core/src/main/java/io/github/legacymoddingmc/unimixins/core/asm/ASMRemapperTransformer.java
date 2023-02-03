@@ -24,6 +24,9 @@ public class ASMRemapperTransformer implements IClassTransformer {
     /** A class will be remapped if it implements one of these interfaces. */
     private static Set<String> interfaceWhitelist = new HashSet<>();
 
+    /** A class will be remapped if its name starts with one of these strings. */
+    private static Set<String> packageWhitelist = new HashSet<>();
+
     private static final List<String> ASM_PACKAGE_PREFIXES = Arrays.asList(
             "org/spongepowered/libraries/org/objectweb/asm/",
             "org/spongepowered/asm/lib/"
@@ -33,6 +36,10 @@ public class ASMRemapperTransformer implements IClassTransformer {
 
     public static void registerInterface(String itf) {
         interfaceWhitelist.add(itf.replace('.', '/'));
+    }
+
+    public static void registerPackage(String pkg) {
+        packageWhitelist.add(pkg + ".");
     }
 
     public ASMRemapperTransformer() {
@@ -53,10 +60,16 @@ public class ASMRemapperTransformer implements IClassTransformer {
         boolean doRemap = false;
 
         for(String itf : classNode.interfaces) {
-            LOGGER.trace("found interface: " + itf);
             if(interfaceWhitelist.contains(itf)) {
-                LOGGER.trace("matched by whitelist entry");
                 doRemap = true;
+            }
+        }
+
+        if(!doRemap) {
+            for (String pkg : packageWhitelist) {
+                if(transformedName.startsWith(pkg)) {
+                    doRemap = true;
+                }
             }
         }
 
