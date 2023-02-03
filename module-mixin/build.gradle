@@ -90,9 +90,10 @@ task bridgeJar(type: ShadowJar) {
 	include 'org/spongepowered/asm/bridge/RemapperAdapterFML.class'
 }
 
+version += "+${mixinClassifier}"
+
 // 3. Combine the two jars
 jar {
-	version += "+${mixinClassifier}"
 	//enabled = false
 	dependsOn tasks.mixinJar
 	dependsOn tasks.bridgeJar

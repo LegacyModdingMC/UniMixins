@@ -32,4 +32,14 @@ allprojects {
 	}
 	
 	apply from: "${project.rootDir}/buildscript/forge-1.7.gradle"
+	
+	task sourcesJar(type: Jar) {
+		from sourceSets.main.allSource
+		//from (file("$projectDir/LICENSE"))
+		classifier = 'sources'
+	}
+
+	artifacts {
+		archives sourcesJar
+	}
 }
