@@ -14,6 +14,9 @@ repositories {
 		name = 'sponge'
 		url = 'https://repo.spongepowered.org/maven/'
 	}
+	maven {
+		url = "https://mvn.falsepattern.com/releases"
+	}
 }
 
 configurations {
@@ -49,74 +52,98 @@ if(mixinSource == "fabric"){
 		shadow('org.ow2.asm:asm-commons:9.2')
 		shadow('org.ow2.asm:asm-util:9.2')
 	}
+} else if(mixinSource == "gasmix"){
+	ext.mixinClassifier = "gasmix-0.8.5-gasstation_7"
+	dependencies {
+		shadow('org.spongepowered:mixin:0.8.5-gasstation_7')
+	}
 }
 
 archivesBaseName = archivesBaseName.replace("-1.7.10", "-mixin-1.7.10")
+version += "+${mixinClassifier}"
 
 apply plugin: "com.github.johnrengelman.shadow"
 
-// We want to *not* relocate ASM in the bridge classes. So we use a multi-step
-// build procedure:
+if(mixinSource == "fabric" || mixinSource == "spongepowered") {
+	// We want to *not* relocate ASM in the bridge classes. So we use a multi-step
+	// build procedure:
 
-// 1. Create relocated Mixin jar with relocation, without the bridge classes
-task mixinJar(type: ShadowJar) {
-	classifier = 'tmpMixin'
-	configurations = [project.configurations.shadow]
-	
-	relocate 'com.google', 'org.spongepowered.libraries.com.google'
-	relocate 'org.objectweb.asm', 'org.spongepowered.asm.lib'
-	
-	exclude 'org/spongepowered/asm/bridge/RemapperAdapter.class'
-	exclude 'org/spongepowered/asm/bridge/RemapperAdapterFML.class'
-	
-	// Exclude stuff that's compiled for Java 16 
-	
-	exclude 'org/spongepowered/asm/service/modlauncher/*'
-	exclude 'org/spongepowered/asm/launch/MixinTransformationServiceLegacy*'
-	exclude 'org/spongepowered/asm/launch/MixinLaunchPlugin*'
-	exclude 'org/spongepowered/asm/launch/MixinTransformationService*'
-	exclude 'org/spongepowered/asm/launch/platform/container/ContainerHandleModLauncherEx*'
-	
-	exclude 'META-INF/services/cpw.mods.modlauncher.api.ITransformationService'
-	exclude 'META-INF/services/cpw.mods.modlauncher.serviceapi.ILaunchPluginService'
-	
-	// Exclude jar-specific stuff
-	
-	exclude 'LICENSE.txt'
-	exclude 'META-INF/MUMFREY*'
-}
+	// 1. Create relocated Mixin jar with relocation, without the bridge classes
+	task mixinJar(type: ShadowJar) {
+		classifier = 'tmpMixin'
+		configurations = [project.configurations.shadow]
+		
+		relocate 'com.google', 'org.spongepowered.libraries.com.google'
+		relocate 'org.objectweb.asm', 'org.spongepowered.asm.lib'
+		
+		exclude 'org/spongepowered/asm/bridge/RemapperAdapter.class'
+		exclude 'org/spongepowered/asm/bridge/RemapperAdapterFML.class'
+		
+		// Exclude stuff that's compiled for Java 16 
+		
+		exclude 'org/spongepowered/asm/service/modlauncher/*'
+		exclude 'org/spongepowered/asm/launch/MixinTransformationServiceLegacy*'
+		exclude 'org/spongepowered/asm/launch/MixinLaunchPlugin*'
+		exclude 'org/spongepowered/asm/launch/MixinTransformationService*'
+		exclude 'org/spongepowered/asm/launch/platform/container/ContainerHandleModLauncherEx*'
+		
+		exclude 'META-INF/services/cpw.mods.modlauncher.api.ITransformationService'
+		exclude 'META-INF/services/cpw.mods.modlauncher.serviceapi.ILaunchPluginService'
+		
+		// Exclude jar-specific stuff
+		
+		exclude 'LICENSE.txt'
+		exclude 'META-INF/MUMFREY*'
+	}
 
-// 2. Create Mixin jar without relocation, with *only* the bridge classes
-task bridgeJar(type: ShadowJar) {
-	classifier = 'tmpBridge'
-	configurations = [project.configurations.shadowBridge]
-	
-	include 'org/spongepowered/asm/bridge/RemapperAdapter.class'
-	include 'org/spongepowered/asm/bridge/RemapperAdapterFML.class'
-}
+	// 2. Create Mixin jar without relocation, with *only* the bridge classes
+	task bridgeJar(type: ShadowJar) {
+		classifier = 'tmpBridge'
+		configurations = [project.configurations.shadowBridge]
+		
+		include 'org/spongepowered/asm/bridge/RemapperAdapter.class'
+		include 'org/spongepowered/asm/bridge/RemapperAdapterFML.class'
+	}
 
-version += "+${mixinClassifier}"
+	// 3. Combine the two jars
+	jar {
+		//enabled = false
+		dependsOn tasks.mixinJar
+		dependsOn tasks.bridgeJar
 
-// 3. Combine the two jars
-jar {
-	//enabled = false
-	dependsOn tasks.mixinJar
-	dependsOn tasks.bridgeJar
-
-	from zipTree(tasks.mixinJar.archiveFile).matching { exclude 'module-info.class' }
-	from zipTree(tasks.bridgeJar.archiveFile).matching { include 'org/spongepowered/asm/bridge/*' }
-	
-	doLast {
-		delete mixinJar.archiveFile
-		delete bridgeJar.archiveFile
+		from zipTree(tasks.mixinJar.archiveFile).matching { exclude 'module-info.class' }
+		from zipTree(tasks.bridgeJar.archiveFile).matching { include 'org/spongepowered/asm/bridge/*' }
+		
+		doLast {
+			delete mixinJar.archiveFile
+			delete bridgeJar.archiveFile
+		}
+		
+		manifest {
+			attributes (
+				'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
+				'FMLCorePluginContainsFMLMod': 'true',
+				'ForceLoadAsMod': 'true',
+			)
+		}
+	}
+} else {
+	shadowJar {
+		classifier = ''
+		configurations = [project.configurations.shadow]
+		
+		manifest {
+			attributes (
+				'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
+				'FMLCorePluginContainsFMLMod': 'true',
+				'ForceLoadAsMod': 'true',
+			)
+		}
 	}
 	
-	manifest {
-		attributes (
-			'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
-            'FMLCorePluginContainsFMLMod': 'true',
-            'ForceLoadAsMod': 'true',
-		)
+	jar {
+		enabled = false
+		dependsOn shadowJar
 	}
 }
 
