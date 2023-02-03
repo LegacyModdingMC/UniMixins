@@ -6,6 +6,18 @@ def getModuleJars() {
 	return moduleNames.collect { it -> tasks.getByPath(":$it:jar").getOutputs().getFiles().getSingleFile() }
 }
 
+import java.util.jar.Manifest;
+
+def getCorePlugin(file) {
+	def plugin = null
+	zipTree(file).matching { include 'META-INF/MANIFEST.MF' }.getSingleFile().withInputStream {
+		is ->
+			def man = new Manifest(is)
+			plugin = man.mainAttributes.getValue("FMLCorePlugin")
+		}
+	return plugin
+}
+
 task createMergedMcmodInfo() {
 	outputs.file("build/tmp/mcmod.info")
 	doLast {
@@ -28,8 +40,20 @@ task createMergedMcmodInfo() {
 	moduleNames.each { dependsOn tasks.getByPath(":$it:build") }
 }
 
+task createEmbeddedCorePluginsFile() {
+	def path = "build/tmp/unimixins-all.EmbeddedFMLCorePlugins.txt"
+	outputs.file(path)
+	doLast {
+		file(path).text = getModuleJars().findResults { getCorePlugin(it) }.join(' ')
+		return file(path)
+	}
+	
+	moduleNames.each { dependsOn tasks.getByPath(":$it:build") }
+}
+
 jar {
 	dependsOn tasks.createMergedMcmodInfo
+	dependsOn tasks.createEmbeddedCorePluginsFile
 	
 	getModuleJars().each {
 		j -> from zipTree(j).matching {
@@ -39,17 +63,16 @@ jar {
 	}
 	
 	from tasks.createMergedMcmodInfo.getOutputs().getFiles().getSingleFile()
-	
-	//archiveFileName = tasks.jar.archiveFileName
-	//destinationDirectory = tasks.jar.destinationDirectory
+	from(tasks.createEmbeddedCorePluginsFile.getOutputs().getFiles().getSingleFile()) {
+		into 'META-INF'
+	}
 	
 	manifest {
 		attributes (
 			'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
 			'FMLCorePluginContainsFMLMod': true,
 			'ForceLoadAsMod': true,
-			'FMLCorePlugin': 'io.github.legacymoddingmc.unimixins.core.UniMixinsCore',
-			'Embedded-Jars': getModuleJars().collect { it.name }.join(' ')
+			'FMLCorePlugin': 'io.github.legacymoddingmc.unimixins.all.AllCore',
 		)
 	}
 }
