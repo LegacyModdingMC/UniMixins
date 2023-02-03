@@ -114,4 +114,3 @@ jar {
 
 // Obfuscation is useless because we're not compiling code referencing Minecraft classes
 reobf.enabled = false
-
