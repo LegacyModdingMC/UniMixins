@@ -57,6 +57,13 @@ if(mixinSource == "fabric"){
 	dependencies {
 		shadow('org.spongepowered:mixin:0.8.5-gasstation_7')
 	}
+} else if(mixinSource == "gtnh"){
+	ext.mixinClassifier = "gtnh-0.8.5-GTNH-2"
+	dependencies {
+		shadow('org.spongepowered:mixin:0.8.5-GTNH-2')
+	}
+	
+	// TODO
 }
 
 archivesBaseName = archivesBaseName.replace("-1.7.10", "-mixin-1.7.10")
