@@ -1,5 +1,5 @@
 The project as a whole is licensed under the GNU LGPL v3, as specified in
 LICENSE.LGPLv3.
 
-Individual modules (located in directories with names starting with "module-")
-may be dual-licensed under a different license. See CREDITS for details.
+See CREDITS for a full list of projects UniMixins borrows code from and
+their respective licenses.
