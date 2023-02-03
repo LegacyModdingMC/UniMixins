@@ -81,9 +81,13 @@ When editing the source code of modules, please document your changes in the [CR
 * `./gradlew module-all:build`: build an all-jar
 * `./gradlew module-all:clean`: clean all modules
 
-Build flags:
+### Build flags
 * `-PmixinSource`: sets the mixin flavor that should be used to build the Mixin module. Can be set to `spongepowered`, `fabric`, `gasstation`, `gtnh` and `unimix`.
 * `-PmixinSourceIsLocal`: use the locally built version of `unimix` when building the Mixin module.
+
+### Roadmap
+
+A rough roadmap of the project is available [here](https://gist.github.com/makamys/5eaf2ebb878b74213630eae122460f00).
 
 ## License
 
