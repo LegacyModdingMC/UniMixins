@@ -17,6 +17,11 @@ repositories {
 	maven {
 		url = "https://mvn.falsepattern.com/releases"
 	}
+	maven {
+		name = "GTNH Maven"
+		url = "http://jenkins.usrv.eu:8081/nexus/content/groups/public/"
+		allowInsecureProtocol = true
+	}
 	mavenLocal()
 }
 
@@ -65,12 +70,19 @@ if(mixinSource == "fabric" || mixinSource == "unimix"){
 		shadow('org.spongepowered:mixin:0.8.5-gasstation_7')
 	}
 } else if(mixinSource == "gtnh"){
-	ext.mixinClassifier = "gtnh-0.8.5-GTNH-2"
-	dependencies {
-		shadow('org.spongepowered:mixin:0.8.5-GTNH-2')
-	}
+	// Adapted from GTNHMixins's build script
 	
-	// TODO
+	ext.mixinVersion = "0.8.5-GTNH-2"
+	ext.mixinClassifier = "gtnh-$mixinVersion"
+	def asmVersion = "9.4"
+	dependencies {
+		shadow("org.spongepowered:mixin:$mixinVersion")
+		shadow("org.ow2.asm:asm-tree:$asmVersion")
+		shadow("org.ow2.asm:asm-commons:$asmVersion")
+		shadow("org.ow2.asm:asm-util:$asmVersion")
+		shadow("com.google.guava:guava:21.0")
+		shadowBridge('org.spongepowered:mixin:0.8.5')
+	}
 }
 
 archivesBaseName = archivesBaseName.replace("-1.7.10", "-mixin-1.7.10")
@@ -141,7 +153,7 @@ if(mixinSource == "fabric" || mixinSource == "spongepowered" || mixinSource == "
 			)
 		}
 	}
-} else {
+} else if(mixinSource == "gasmix") {
 	shadowJar {
 		classifier = ''
 		configurations = [project.configurations.shadow]
@@ -158,6 +170,62 @@ if(mixinSource == "fabric" || mixinSource == "spongepowered" || mixinSource == "
 	jar {
 		enabled = false
 		dependsOn shadowJar
+	}
+} else if(mixinSource == "gtnh") {
+	// Adapted from GTNHMixins's build script
+	
+	// We want to *not* relocate ASM in the bridge classes. So we use a multi-step
+	// build procedure:
+
+	// 1. Create relocated Mixin jar with relocation, without the bridge classes
+	task mixinJar(type: ShadowJar) {
+		archiveFileName.set("mixin-$mixinVersion-repack.jar")
+		configurations = [project.configurations.shadow]
+
+		mergeServiceFiles()
+
+		exclude 'META-INF/MANIFEST.MF', 'META-INF/maven/**', 'META-INF/*.RSA', 'META-INF/*.SF'
+		exclude '**/module-info.class'
+
+		relocate 'org.objectweb.asm', 'org.spongepowered.libraries.org.objectweb.asm'
+		relocate 'com.google.common', 'org.spongepowered.libraries.com.google.common'
+		relocate 'com.google.thirdparty.publicsuffix', 'org.spongepowered.libraries.com.google.thirdparty.publicsuffix'
+	}
+	
+	// 2. Create Mixin jar without relocation, with *only* the bridge classes
+	task bridgeJar(type: ShadowJar) {
+		classifier = 'tmpBridge'
+		configurations = [project.configurations.shadowBridge]
+		
+		include 'org/spongepowered/asm/bridge/RemapperAdapter.class'
+		include 'org/spongepowered/asm/bridge/RemapperAdapterFML.class'
+	}
+	
+	// 3. Combine the two jars
+	jar {
+		dependsOn tasks.mixinJar
+		dependsOn tasks.bridgeJar
+
+		from zipTree(tasks.mixinJar.archiveFile).matching {
+			exclude "META-INF/*.RSA", "META-INF/*.SF", "META-INF/*.MF"
+			exclude "META-INF/services/*.Processor"
+			// Replaced by local classes
+			exclude "org/spongepowered/asm/bridge/**"
+		}
+		from zipTree(tasks.bridgeJar.archiveFile).matching { include 'org/spongepowered/asm/bridge/*' }
+		
+		doLast {
+			delete mixinJar.archiveFile
+			delete bridgeJar.archiveFile
+		}
+		
+		manifest {
+			attributes (
+				'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
+				'FMLCorePluginContainsFMLMod': 'true',
+				'ForceLoadAsMod': 'true',
+			)
+		}
 	}
 }
 
