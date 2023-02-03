@@ -79,6 +79,10 @@ task mixinJar(type: ShadowJar) {
 	
 	exclude 'META-INF/services/cpw.mods.modlauncher.api.ITransformationService'
 	exclude 'META-INF/services/cpw.mods.modlauncher.serviceapi.ILaunchPluginService'
+	
+	// Exclude license
+	
+	exclude 'LICENSE.txt'
 }
 
 // 2. Create Mixin jar without relocation, with *only* the bridge classes
