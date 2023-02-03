@@ -2,8 +2,8 @@
   {
     "modid": "spongemixins",
     "name": "UniMixins: SpongeMixins",
-    "description": "UniMixins module that provides an emulation of SpongeMixins.",
-    "version": "${version}",
+    "description": "UniMixins module that provides an emulation of SpongeMixins (version: ${extraVersion} from GTNHMixins).",
+    "version": "${extraVersion}",
     "mcversion": "${minecraft_version}",
     "url": "",
     "updateUrl": "",
