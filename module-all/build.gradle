@@ -1,6 +1,6 @@
 archivesBaseName = archivesBaseName.replace("-1.7.10", "-all-1.7.10")
 
-ext.moduleNames = ["module-core", "module-mixin", "module-spongemixins"]
+ext.moduleNames = ["module-mixin", "module-spongemixins", "module-compat"]
 
 def getModuleJars() {
 	return moduleNames.collect { it -> tasks.getByPath(":$it:jar").getOutputs().getFiles().getSingleFile() }
@@ -19,6 +19,7 @@ task createMergedMcmodInfo() {
 		def desc = mergedJson.collect{ "* " + it.name + "\n" }.join("")
 		mergedJson[0].name = "UniMixins"
 		mergedJson[0].description = "UniMixins composite jar consisting of the following modules:\n" + desc
+		mergedJson[0].version = version
 		
 		file("build/tmp/mcmod.info").text = groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson(mergedJson))
 		return file("build/tmp/mcmod.info")

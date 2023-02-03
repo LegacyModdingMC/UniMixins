@@ -1,5 +1,5 @@
-include 'module-core'
 include 'module-mixin'
 include 'module-spongemixins'
 include 'module-gtnhmixins'
 include 'module-all'
+include 'module-compat'
