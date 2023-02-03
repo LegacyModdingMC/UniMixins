@@ -1,0 +1,23 @@
+repositories {
+	maven {
+		name = 'sponge'
+		url = 'https://repo.spongepowered.org/maven/'
+	}
+}
+
+dependencies {
+	compileOnly('org.spongepowered:mixin:0.8.5')
+}
+
+archivesBaseName = archivesBaseName.replace("-1.7.10", "-core-1.7.10")
+
+jar {
+	manifest {
+		attributes (
+			'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
+			'FMLCorePluginContainsFMLMod': true,
+			'ForceLoadAsMod': true,
+			'FMLCorePlugin': 'io.github.legacymoddingmc.unimixins.core.UniMixinsCore'
+		)
+	}
+}

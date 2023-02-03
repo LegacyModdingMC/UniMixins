@@ -1,3 +1,4 @@
+include 'module-core'
 include 'module-mixin'
 include 'module-spongemixins'
 include 'module-all'

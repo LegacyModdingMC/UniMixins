@@ -1,0 +1,17 @@
+[
+  {
+    "modid": "unimixins-core",
+    "name": "UniMixins: Core",
+    "description": "UniMixins module containing code needed by every other module.",
+    "version": "${version}",
+    "mcversion": "${minecraft_version}",
+    "url": "",
+    "updateUrl": "",
+    "authorList": [
+      "makamys"
+    ],
+    "credits": "",
+    "logoFile": "",
+    "screenshots": []
+  }
+]
