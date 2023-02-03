@@ -17,25 +17,32 @@ repositories {
 	maven {
 		url = "https://mvn.falsepattern.com/releases"
 	}
+	mavenLocal()
 }
 
 configurations {
 	shadowBridge
 }
 
-ext.mixinSource = project.findProperty("mixinSource") ?: "fabric"
+ext.mixinSource = project.findProperty("mixinSource") ?: "unimix"
 
-if(mixinSource == "fabric"){
-	ext.mixinClassifier = "fabric-0.11.4+mixin.0.8.5"
+if(mixinSource == "fabric" || mixinSource == "unimix"){
+	def mixinVersion = mixinSource == "fabric" ? "0.11.4+mixin.0.8.5" : "0.11.4+mixin.0.8.5"
+	if(project.hasProperty("mixinSourceIsLocal")) {
+		mixinVersion += "-local"
+	}
+	def mixinGroup = mixinSource == "fabric" ? "net.fabricmc" : "io.github.legacymoddingmc"
+	def mixinDep = mixinSource == "fabric" ? 'net.fabricmc:sponge-mixin:0.11.4+mixin.0.8.5' : 'io.github.legacymoddingmc:sponge-mixin:0.11.4+mixin.0.8.5-local'
+	ext.mixinClassifier = "$mixinSource-$mixinVersion"
 	dependencies {
-		shadow('net.fabricmc:sponge-mixin:0.11.4+mixin.0.8.5') {
+		shadow("$mixinGroup:sponge-mixin:$mixinVersion") {
 			exclude group: "org.ow2.asm"
 		}
 		shadow('org.ow2.asm:asm-tree:9.4')
 		shadow('org.ow2.asm:asm-commons:9.4')
 		shadow('org.ow2.asm:asm-util:9.4')
 		
-		shadowBridge('net.fabricmc:sponge-mixin:0.11.4+mixin.0.8.5') {
+		shadowBridge("$mixinGroup:sponge-mixin:$mixinVersion") {
 			transitive = false
 		}
 	}
@@ -71,7 +78,7 @@ version += "+${mixinClassifier}"
 
 apply plugin: "com.github.johnrengelman.shadow"
 
-if(mixinSource == "fabric" || mixinSource == "spongepowered") {
+if(mixinSource == "fabric" || mixinSource == "spongepowered" || mixinSource == "unimix") {
 	// We want to *not* relocate ASM in the bridge classes. So we use a multi-step
 	// build procedure:
 
