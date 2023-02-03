@@ -48,7 +48,8 @@ jar {
 			'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
 			'FMLCorePluginContainsFMLMod': true,
 			'ForceLoadAsMod': true,
-			'FMLCorePlugin': 'io.github.legacymoddingmc.unimixins.core.UniMixinsCore'
+			'FMLCorePlugin': 'io.github.legacymoddingmc.unimixins.core.UniMixinsCore',
+			'Embedded-Jars': getModuleJars().collect { it.name }.join(' ')
 		)
 	}
 }
