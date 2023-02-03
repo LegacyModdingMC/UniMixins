@@ -1,6 +1,6 @@
-package io.github.legacymoddingmc.unimixins.core.asm;
+package io.github.legacymoddingmc.unimixins.compat.asm;
 
-import static io.github.legacymoddingmc.unimixins.core.Constants.LOGGER;
+import static io.github.legacymoddingmc.unimixins.compat.CompatCore.LOGGER;
 
 import net.minecraft.launchwrapper.IClassTransformer;
 import net.minecraft.launchwrapper.Launch;
