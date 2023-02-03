@@ -1,6 +1,7 @@
 archivesBaseName = archivesBaseName.replace("-1.7.10", "-all-1.7.10")
 
-ext.moduleNames = ["module-mixin", "module-spongemixins", "module-compat"]
+// The order of these determines the order embedded core plugins get initialized in
+ext.moduleNames = ["module-mixin", "module-compat", "module-spongemixins", "module-gtnhmixins"]
 
 def getModuleJars() {
 	return moduleNames.collect { it -> tasks.getByPath(":$it:jar").getOutputs().getFiles().getSingleFile() }

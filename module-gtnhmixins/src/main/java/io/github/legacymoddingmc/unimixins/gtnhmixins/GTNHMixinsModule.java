@@ -35,7 +35,7 @@ public class GTNHMixinsModule {
 
     private static void registerASMRemapPackage(String pkg) {
         try {
-            Class.forName("io.github.legacymoddingmc.unimixins.core.asm.ASMRemapperTransformer").getMethod("registerPackage", String.class).invoke(null, pkg);
+            Class.forName("io.github.legacymoddingmc.unimixins.compat.asm.ASMRemapperTransformer").getMethod("registerPackage", String.class).invoke(null, pkg);
         } catch(Exception e) {
             LOGGER.warn("Failed to register package " + pkg + " for ASM remapping, probably because the compat module is missing. " + e);
         }
