@@ -1,3 +1,5 @@
+archivesBaseName = archivesBaseName.replace("-1.7.10", "-all-1.7.10")
+
 def getModuleJars() {
 	return [
 		tasks.getByPath(':module-mixin:jar').getOutputs().getFiles().getSingleFile(),
@@ -27,23 +29,26 @@ task createMergedMcmodInfo() {
 	dependsOn tasks.getByPath(':module-spongemixins:build')
 }
 
-task finalJar(type: Zip) {
+task mergedJar(type: Zip) {
 	
 	getModuleJars().each { j -> from zipTree(j).matching { exclude 'mcmod.info' } }
 	
 	from tasks.createMergedMcmodInfo.getOutputs().getFiles().getSingleFile()
 	
-	archiveFileName = tasks.jar.archiveFileName.get().replace("-1.7.10", "-all-1.7.10")
+	archiveFileName = tasks.jar.archiveFileName
 	destinationDirectory = tasks.jar.destinationDirectory
-	
-	doLast {
-		delete jar.archiveFile
-	}
 	
 	dependsOn tasks.createMergedMcmodInfo
 }
 
-build.dependsOn tasks.finalJar
+jar {
+	enabled = false
+	dependsOn mergedJar
+}
 
-clean.dependsOn tasks.getByPath(':module-mixin:clean')
-clean.dependsOn tasks.getByPath(':module-spongemixins:clean')
+clean {
+	dependsOn tasks.getByPath(':module-mixin:clean')
+	dependsOn tasks.getByPath(':module-spongemixins:clean')
+}
+
+reobf.enabled = false
