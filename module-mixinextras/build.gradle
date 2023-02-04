@@ -1,0 +1,59 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+
+buildscript {
+	repositories {
+		gradlePluginPortal()
+	}
+	dependencies {
+		classpath 'com.github.jengelman.gradle.plugins:shadow:6.1.0'
+	}
+}
+
+repositories {
+	maven {
+		name = 'sponge'
+		url = 'https://repo.spongepowered.org/maven/'
+	}
+	maven {
+		url = "https://mvn.falsepattern.com/releases"
+	}
+	maven {
+		name = "GTNH Maven"
+		url = "http://jenkins.usrv.eu:8081/nexus/content/groups/public/"
+		allowInsecureProtocol = true
+	}
+	mavenLocal()
+}
+
+configurations {
+	shadowBridge
+}
+
+ext.extraVersion = "0.1.1"
+
+dependencies {
+	shadow("com.github.LlamaLad7:MixinExtras:$extraVersion")
+}
+
+archivesBaseName = archivesBaseName.replace("-1.7.10", "-mixinextras-1.7.10")
+version += "+${extraVersion}"
+
+apply plugin: "com.github.johnrengelman.shadow"
+
+shadowJar {
+	classifier = ''
+	configurations = [project.configurations.shadow]
+	
+	manifest {
+		attributes (
+			'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
+			//'FMLCorePluginContainsFMLMod': 'true',
+			//'ForceLoadAsMod': 'true',
+		)
+	}
+}
+
+jar {
+	enabled = false
+	dependsOn shadowJar
+}
