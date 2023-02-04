@@ -1,0 +1,13 @@
+Source: https://github.com/GTNewHorizons/GTNHMixins/tree/73e389805d2343e7a000f40879dbe232e53c08f1
+
+Classes used:
+
+com.gtnewhorizon.gtnhmixins.*
+
+Modifications:
+- removed Mixin environment initialization in GTNHMixinsCore
+- added Mixin 0.7 support
+	- made MixinExtras initialization get suppressed if Mixin version is below 0.8.5
+	- made reflection support Mixin 0.7.11
+
+License: LGPL3 (see LICENSE)

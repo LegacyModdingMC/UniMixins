@@ -1,0 +1,26 @@
+:replaceableFile # This file will get OVERWRITTEN at launch, nullifying any changes made to it, unless you delete this line. It is recommended to edit transformer_inclusion_list.txt and transformer_exclusion_list.txt instead, though.
+
+# Mixingasm adds all transformers it doesn't "trust" to be Mixin-safe to the
+# mixin environment's transformer exclusion list, avoiding running them an
+# additional time when processing mixins at startup.
+
+# This fixes issues that can arise from non-Mixin-aware transformers being run
+# in that way. For example, some transformers break when run more than once.
+
+# A transformer is considered "trusted" if one of these are true...
+# * It's matched by a pattern in this file
+# * It's matched by a pattern in transformer_inclusion_list.txt
+# * It was added to Mixingasm's dynamic inclusion list by a mod using the API at startup
+# * The transformer implements IMixinSafeTransformer
+# AND the transformer is not matched by a pattern in transformer_exclusion_list.txt
+
+# '*' can be used as a wildcard character.
+
+
+# --- Trusted transformers ---
+
+cpw.mods.fml.common.asm.*
+net.minecraftforge.*
+codechicken.core.asm.*
+codechicken.lib.asm.*
+org.spongepowered.asm.*

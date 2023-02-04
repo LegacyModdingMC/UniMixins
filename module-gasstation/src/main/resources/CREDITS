@@ -1,0 +1,11 @@
+Source: https://github.com/FalsePattern/GasStation/tree/0.5.1
+
+Classes used:
+
+com.falsepattern.gasstation.*
+
+Modifications:
+
+Removed Mixin and MixinExtras bootstrap from GasStationCore.
+
+License: LGPL3+SNEED (see LICENSE)
