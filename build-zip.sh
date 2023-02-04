@@ -1,7 +1,7 @@
 #!/bin/bash
 # Creates a modular zip in the build directory.
 #
-# To test with local UniMix, set ALL_BUILD_EXTRA_ARG=-PmixinSourceIsLocal
+# To test with local UniMix, set ALL_BUILD_EXTRA_ARG=-Plocal
 
 ./gradlew clean
 

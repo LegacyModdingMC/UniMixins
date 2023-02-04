@@ -86,7 +86,7 @@ When editing the source code of modules, please document your changes in the [CR
 
 ### Build flags
 * `-PmixinSource`: sets the mixin flavor that should be used to build the Mixin module. Can be set to `spongepowered`, `fabric`, `gasstation`, `gtnh` and `unimix`.
-* `-PmixinSourceIsLocal`: use the locally built version of `unimix` when building the Mixin module.
+* `-Plocal`: use the locally built version of `unimix` when building the Mixin module.
 
 ### Roadmap
 
