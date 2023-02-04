@@ -53,7 +53,7 @@ All modules depend on the Mixin module. Note that the dependents don't necessari
 
 ### Optional
 
-* **Mixin (SpongeMixins)**: Provides the upstream fork of Mixin.
+* **Mixin (SpongePowered)**: Provides the upstream fork of Mixin.
 * **Mixin (Fabric)**: Provides the Fabric fork of Mixin.
 * **Mixin (GasMix)**: Provides the GasStation fork of Mixin.
 * **Mixin (GTNH)**: Provides the GTNH fork of Mixin.
