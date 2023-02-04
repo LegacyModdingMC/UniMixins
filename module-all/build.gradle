@@ -48,6 +48,7 @@ task createMergedMcmodInfo() {
 task createEmbeddedCorePluginsFile() {
 	def path = "build/tmp/unimixins-all.EmbeddedFMLCorePlugins.txt"
 	outputs.file(path)
+	outputs.upToDateWhen { false }
 	doLast {
 		file(path).text = getModuleJars().findResults { getCorePlugin(it) }.join(' ')
 		return file(path)
