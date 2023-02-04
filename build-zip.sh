@@ -14,4 +14,4 @@ rm -r module-*/build/libs/*
 
 mkdir build -p
 
-zip -j build/unimixins-modular-INSERT_VERSION.zip $(find -name "00unimixins-*.jar" | grep "build/libs" | grep -v sources | grep -v "module-all" | xargs)
+zip -j build/unimixins-modular-INSERT_VERSION.zip $(find -name "_unimixins-*.jar" | grep "build/libs" | grep -v sources | grep -v "module-all" | xargs)
