@@ -19,8 +19,8 @@ Note: A more detailed version of this table is available [here](https://legacymo
   <img src="docs/comparison-chart.png">
 </picture>
 
-* <sup>[NOP]</sup>: Module does not do anything. [(issue)](https://github.com/FalsePattern/GasStation/issues/15)
-* <sup>[SEP]</sup>: Module is available as a separate mod.
+* <sup>[NOP]</sup>: Does not do anything. [(issue)](https://github.com/FalsePattern/GasStation/issues/15)
+* <sup>[SEP]</sup>: Is available as a separate mod.
 
 ## Usage
 
