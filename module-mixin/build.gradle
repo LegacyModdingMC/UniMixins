@@ -117,8 +117,7 @@ if(mixinSource == "fabric" || mixinSource == "spongepowered" || mixinSource == "
 		exclude 'META-INF/services/cpw.mods.modlauncher.serviceapi.ILaunchPluginService'
 		
 		// Exclude jar-specific stuff
-		
-		exclude 'LICENSE.txt'
+
 		exclude 'META-INF/MUMFREY*'
 	}
 

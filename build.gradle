@@ -42,4 +42,16 @@ allprojects {
 	artifacts {
 		archives sourcesJar
 	}
+
+	// Put license, credits and readme in jar
+
+	delete "$projectDir/build/tmp/license"
+
+	copy {
+		from "$projectDir"
+		into "$projectDir/build/tmp/license"
+		include "CREDITS", "LICENSE", "README*"
+	}
+	
+	sourceSets.main.resources.srcDir("build/tmp/license")
 }

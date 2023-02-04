@@ -1,5 +1,3 @@
-The project as a whole is licensed under the GNU LGPL v3, as specified in
-LICENSE.LGPLv3.
-
-See CREDITS for a full list of projects UniMixins borrows code from and
-their respective licenses.
+UniMixins is licensed under the Unlicense, as specified in LICENSE.UNLICENSE,
+with the exception of some modules, which are licensed under different terms.
+See CREDITS for a full list of these.

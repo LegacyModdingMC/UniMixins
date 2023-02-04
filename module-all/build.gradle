@@ -3,8 +3,12 @@ archivesBaseName = archivesBaseName.replace("-1.7.10", "-all-1.7.10")
 // The order of these determines the order embedded core plugins get initialized in
 ext.moduleNames = ["module-mixin", "module-compat", "module-mixingasm", "module-spongemixins", "module-mixinbooterlegacy", "module-gtnhmixins"]
 
+def getModuleJar(name) {
+	return tasks.getByPath(":$name:jar").getOutputs().getFiles().getSingleFile()
+}
+
 def getModuleJars() {
-	return moduleNames.collect { it -> tasks.getByPath(":$it:jar").getOutputs().getFiles().getSingleFile() }
+	return moduleNames.collect { getModuleJar(it) }
 }
 
 import java.util.jar.Manifest;
@@ -56,10 +60,19 @@ jar {
 	dependsOn tasks.createMergedMcmodInfo
 	dependsOn tasks.createEmbeddedCorePluginsFile
 	
-	getModuleJars().each {
-		j -> from zipTree(j).matching {
+	moduleNames.each {
+		def name = it
+		def j = getModuleJar(it)
+		into ""
+		from(zipTree(j)){
 			exclude 'mcmod.info'
 			exclude 'META-INF/MANIFEST.MF'
+			exclude 'CREDITS', 'LICENSE*', 'README*'
+			into("")
+		}
+		from(zipTree(j)){
+			include 'CREDITS', 'LICENSE*', 'README*'
+			into("META-INF/licenses/$name")
 		}
 	}
 	

@@ -95,4 +95,4 @@ A rough roadmap of the project is available [here](https://gist.github.com/makam
 
 ## License
 
-UniMixins is licensed under the LGPL v3. See [LICENSE](LICENSE) for the full details.
+UniMixins is licensed under the Unlicense, with the exception of some modules. See [LICENSE](LICENSE) for the full details.
