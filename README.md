@@ -14,7 +14,10 @@ Below is a table comparing the feature sets of known Mixin loaders.
 
 Note: A more detailed version of this table is available [here](https://legacymoddingmc.github.io/wiki/#comparison-of-1.7.10-mixin-loaders/).
 
-![](docs/comparison-chart.png)
+<picture>
+  <source srcset="docs/comparison-chart-dark.png" media="(prefers-color-scheme: dark)">
+  <img src="docs/comparison-chart.png">
+</picture>
 
 * <sup>[NOP]</sup>: Module does not do anything. [(issue)](https://github.com/FalsePattern/GasStation/issues/15)
 * <sup>[SEP]</sup>: Module is available as a separate mod.
