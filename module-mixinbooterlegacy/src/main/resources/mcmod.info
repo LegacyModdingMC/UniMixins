@@ -1,0 +1,18 @@
+[
+  {
+    "modid": "mixinbooterlegacy",
+    "name": "UniMixins: MixinBooterLegacy",
+    "description": "UniMixins module that provides MixinBooterLegacy extras and MixinExtras with MixinBooterLegacy's package name.",
+    "version": "${extraVersion}",
+    "mcversion": "${mcversion}",
+    "url": "https://github.com/tox1cozZ/mixin-booter-legacy",
+    "updateUrl": "",
+    "authorList": [
+      "Rongmario", "tox1cozZ"
+    ],
+    "credits": "Thanks Rongmario for a MixinBooter on Minecraft 1.12.2.",
+    "logoFile": "/icon.png",
+    "screenshots": [],
+    "dependencies": []
+  }
+]

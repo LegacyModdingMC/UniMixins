@@ -1,6 +1,6 @@
 [
   {
-    "modid": "spongemixins",
+    "modid": "mixingasm",
     "name": "UniMixins: Mixingasm",
     "description": "UniMixins module that implements Mixingasm (version: ${extraVersion}).",
     "version": "${extraVersion}",

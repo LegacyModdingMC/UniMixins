@@ -9,7 +9,7 @@ dependencies {
 	compile('org.spongepowered:mixin:0.7.11-SNAPSHOT')
 }
 
-archivesBaseName = archivesBaseName.replace("-1.7.10", "-spongemixins-1.7.10")
+archivesBaseName = archivesBaseName.replace("-1.7.10", "-mixingasm-1.7.10")
 
 jar {
 	manifest {

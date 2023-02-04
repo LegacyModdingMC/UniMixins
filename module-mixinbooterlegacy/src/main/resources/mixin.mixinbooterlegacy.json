@@ -1,0 +1,14 @@
+{
+  "minVersion": "0.8",
+  "compatibilityLevel": "JAVA_8",
+  "required": true,
+  "target": "@env(DEFAULT)",
+  "package": "io.github.tox1cozz.mixinbooterlegacy.loader.mixin",
+  "refmap": "mixin.mixinbooterlegacy.refmap.json",
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "mixins": [
+    "LoadControllerMixin"
+  ]
+}

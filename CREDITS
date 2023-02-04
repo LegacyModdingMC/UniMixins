@@ -39,3 +39,17 @@ Modifications:
 - removed update check in MixingasmMod
 
 License: Unlicense (see LICENSE.UNLICENSE)
+
+## module-mixinbooterlegacy
+
+Source: https://github.com/tox1cozZ/mixin-booter-legacy/tree/1.2.0
+
+Classes used:
+
+*
+
+Modifications:
+- Replaced mod container with a @Mod annotation
+- Changed shaded ASM package name to legacy one
+
+License: LGPL 2.1 (see LICENSE.LGPLv2.1)

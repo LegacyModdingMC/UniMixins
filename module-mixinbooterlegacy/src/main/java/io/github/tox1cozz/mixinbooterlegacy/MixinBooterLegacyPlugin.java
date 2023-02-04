@@ -1,0 +1,83 @@
+package io.github.tox1cozz.mixinbooterlegacy;
+
+import cpw.mods.fml.common.DummyModContainer;
+import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
+import cpw.mods.fml.relauncher.IFMLLoadingPlugin.MCVersion;
+import cpw.mods.fml.relauncher.IFMLLoadingPlugin.Name;
+import cpw.mods.fml.relauncher.IFMLLoadingPlugin.SortingIndex;
+import io.github.tox1cozz.mixinextras.MixinExtrasBootstrap;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.spongepowered.asm.mixin.Mixins;
+
+import java.lang.reflect.Field;
+import java.util.List;
+import java.util.Map;
+
+@Name("MixinBooterLegacy")
+@MCVersion("1.7.10")
+@SortingIndex(Integer.MIN_VALUE + 1)
+public final class MixinBooterLegacyPlugin implements IFMLLoadingPlugin {
+
+    public static final Logger LOGGER = LogManager.getLogger("MixinBooter");
+
+    static {
+        LOGGER.info("MixinBootstrap Initializing...");
+        // Initialize MixinExtras
+        MixinExtrasBootstrap.init();
+        Mixins.addConfiguration("mixin.mixinbooterlegacy.json");
+    }
+
+    @Override
+    public String[] getASMTransformerClass() {
+        return new String[0];
+    }
+
+    @Override
+    public String getModContainerClass() {
+        return null;
+    }
+
+    @Override
+    public String getSetupClass() {
+        return null;
+    }
+
+    @Override
+    public void injectData(Map<String, Object> data) {
+        Object coremodList = data.get("coremodList");
+        if (coremodList instanceof List) {
+            // noinspection rawtypes
+            for (Object coremod : (List)coremodList) {
+                try {
+                    Field field = coremod.getClass().getField("coreModInstance");
+                    field.setAccessible(true);
+                    Object theMod = field.get(coremod);
+                    if (theMod instanceof IEarlyMixinLoader) {
+                        IEarlyMixinLoader loader = (IEarlyMixinLoader)theMod;
+                        for (String mixinConfig : loader.getMixinConfigs()) {
+                            if (loader.shouldMixinConfigQueue(mixinConfig)) {
+                                LOGGER.info("Adding {} mixin configuration.", mixinConfig);
+                                Mixins.addConfiguration(mixinConfig);
+                                loader.onMixinConfigQueued(mixinConfig);
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                    LOGGER.error("Unexpected error", e);
+                }
+            }
+        }
+    }
+
+    @Override
+    public String getAccessTransformerClass() {
+        return null;
+    }
+
+    @Mod(modid = "mixinbooterlegacy", name = "MixinBooterLegacy", version = "@VERSION@")
+    public static class Container {
+
+    }
+}

@@ -1,0 +1,83 @@
+buildscript {
+	repositories {
+		gradlePluginPortal()
+	}
+	dependencies {
+		classpath 'com.github.jengelman.gradle.plugins:shadow:6.1.0'
+	}
+}
+
+repositories {
+	maven {
+		name = 'sponge'
+		url = 'https://repo.spongepowered.org/maven/'
+	}
+}
+
+repositories {
+	mavenLocal()
+	maven {
+		// GTNH ForgeGradle Fork
+		name = "GTNH Maven"
+		url = "http://jenkins.usrv.eu:8081/nexus/content/groups/public/"
+	}
+	maven {
+		name 'Overmind forge repo mirror'
+		url 'https://gregtech.overminddl1.com/'
+	}
+	maven {
+		url = "https://mvn.falsepattern.com/releases"
+	}
+}
+
+dependencies {
+	compileOnly('org.spongepowered:mixin:0.8.5-gasstation_7')
+	//compileOnly('com.github.LlamaLad7:MixinExtras:0.1.1')
+	//shadow('com.github.LlamaLad7:MixinExtras:0.1.1')
+}
+
+archivesBaseName = archivesBaseName.replace("-1.7.10", "-mixinbooterlegacy-1.7.10")
+
+apply plugin: "com.github.johnrengelman.shadow"
+
+/*shadowJar {
+	classifier = ''
+	configurations = [project.configurations.shadow]
+	
+	relocate 'com.llamalad7.mixinextras', 'com.gtnewhorizon.mixinextras'
+	relocate 'org.objectweb.asm', 'org.spongepowered.asm.lib'
+	
+	manifest {
+		attributes (
+			'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
+			'FMLCorePluginContainsFMLMod': true,
+			'ForceLoadAsMod': true,
+			'MixinConfigs': 'mixins.gtnhmixins.json',
+			'FMLCorePlugin': 'com.gtnewhorizon.gtnhmixins.core.GTNHMixinsCore'
+		)
+	}
+}
+
+jar {
+	dependsOn shadowJar
+	enabled = false
+}*/
+
+jar {
+	manifest {
+		attributes (
+			'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
+			'FMLCorePluginContainsFMLMod': true,
+			'ForceLoadAsMod': true,
+			'FMLCorePlugin': 'io.github.tox1cozz.mixinbooterlegacy.MixinBooterLegacyPlugin',
+			//'MixinConfigs': 'mixin.mixinbooterlegacy.json',
+		)
+	}
+}
+
+ext.extraVersion = "1.2.0"
+ext.mcversion = "1.7.10"
+
+minecraft {
+	replace("@VERSION@", extraVersion)
+}
