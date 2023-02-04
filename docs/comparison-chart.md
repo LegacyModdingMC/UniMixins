@@ -6,13 +6,13 @@
 | ASM (relocated) | | | ✅ (5.2) | | ✅ (9.4) | | ✅ (9.4) |
 | SpongeMixins extras | ✅ | | | ✅ | ✅ | | ✅ |
 | Grimoire extras | | ✅ | | | | | |
-| MixinBooterLegacy extras <sup>[NOP]</sup> | | | ✅ | ✅ | | | |
-| GasStation extras <sup>[NOP]</sup> | | | | ✅ | | | |
-| MixinExtras (upstream package) | | | | ✅ | | | |
-| MixinExtras (MixinBooterLegacy package) | | | ✅ | | | | |
+| MixinBooterLegacy extras | | | ✅ | ✅ | | | ✅ |
+| GasStation extras <sup>[NOP]</sup> | | | | ✅ | | | ✅ |
+| MixinExtras (upstream package) | | | | ✅ | | | ✅ |
+| MixinExtras (MixinBooterLegacy package) | | | ✅ | | | | ✅ |
 | MixinExtras (GTNH package) | | | | | ✅ | ✅ | ✅ |
 | GTNHMixins extras | | | | | ✅ | ✅ | ✅ |
-| Mixingasm <sup>[SEP]</sup> | | | | ✅ | | | |
+| Mixingasm <sup>[SEP]</sup> | | | | ✅ | | | ✅ |
 
 * <sup>[NOP]</sup>: Module does not do anything. [(issue)](https://github.com/FalsePattern/GasStation/issues/15)
 * <sup>[SEP]</sup>: Module is available as a separate mod.
