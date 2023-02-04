@@ -1,0 +1,6 @@
+# Classes listed in this file will be considered "untrusted" by Mixingasm and
+# added to the mixin environment's transformer exclusion list.
+# See transformer_inclusion_list_default.txt for more info.
+
+
+# --- Untrusted transformers ---

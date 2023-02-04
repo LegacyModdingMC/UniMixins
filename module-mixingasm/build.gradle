@@ -1,0 +1,31 @@
+repositories {
+	maven {
+		name = 'sponge'
+		url = 'https://repo.spongepowered.org/maven/'
+	}
+}
+
+dependencies {
+	compile('org.spongepowered:mixin:0.7.11-SNAPSHOT')
+}
+
+archivesBaseName = archivesBaseName.replace("-1.7.10", "-spongemixins-1.7.10")
+
+jar {
+	manifest {
+		attributes (
+			'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
+			'FMLCorePluginContainsFMLMod': true,
+			'ForceLoadAsMod': true,
+			'MixinConfigs': 'mixingasm.mixin.json',
+			'TweakOrder': 0,
+		)
+	}
+}
+
+ext.extraVersion = "0.2.2"
+version += "+" + ext.extraVersion
+
+minecraft {
+    replace("@VERSION@", extraVersion)
+}

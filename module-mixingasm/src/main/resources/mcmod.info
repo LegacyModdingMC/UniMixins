@@ -1,0 +1,17 @@
+[
+  {
+    "modid": "spongemixins",
+    "name": "UniMixins: Mixingasm",
+    "description": "UniMixins module that implements Mixingasm (version: ${extraVersion}).",
+    "version": "${extraVersion}",
+    "mcversion": "${minecraft_version}",
+    "url": "",
+    "updateUrl": "",
+    "authorList": [
+      "makamys"
+    ],
+    "credits": "",
+    "logoFile": "",
+    "screenshots": []
+  }
+]

@@ -25,3 +25,17 @@ Modifications:
 	- made reflection support Mixin 0.7.11
 
 License: LGPL3 (see LICENSE.LGPLv3)
+
+
+## module-mixingasm
+
+Source: https://github.com/makamys/Mixingasm/tree/v0.2.2
+
+Classes used:
+
+*
+
+Modifications:
+- removed update check in MixingasmMod
+
+License: Unlicense (see LICENSE.UNLICENSE)
