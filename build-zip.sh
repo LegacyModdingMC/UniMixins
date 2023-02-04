@@ -3,6 +3,8 @@
 #
 # To test with local UniMix, set ALL_BUILD_EXTRA_ARG=-Plocal
 
+set -e
+
 ./gradlew clean
 
 ./gradlew module-mixin:build -PmixinSource=spongepowered
