@@ -87,6 +87,7 @@ When editing the source code of modules, please document your changes in the [CR
 ### Build flags
 * `-PmixinSource`: sets the mixin flavor that should be used to build the Mixin module. Can be set to `spongepowered`, `fabric`, `gasstation`, `gtnh` and `unimix`.
 * `-Plocal`: use the locally built version of `unimix` when building the Mixin module.
+    * Invoke `./gradlew publishToMavenLocal` in the UniMix repo first to install a local build.
 
 ### Roadmap
 
