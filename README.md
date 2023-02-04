@@ -40,9 +40,16 @@ All modules depend on the Mixin module. Note that the dependents don't necessari
 
 * **Mixin (UniMix)**: Provides a Mixin fork maintained by the UniMixins developers, based on the Fabric fork.
 * **SpongeMixins**: Provides an emulation of SpongeMixins's extras.
-* **GTNHMixins**: Provides an emulation of GTNHMixins's extras.
+* **MixinBooterLegacy**: Provides an emulation of MixinBooterLegacy's extras, and a relocated MixinExtras.
+* **MixinExtras**: Provides MixinExtras.
+* **GasStation**: Provides an emulation of GasStation's extras.
+    * Depends on SpongeMixins.
+    * Depends on MixinBooterLegacy.
+    * Depends on MixinExtras
+* **GTNHMixins**: Provides an emulation of GTNHMixins's extras, and a relocated MixinExtras.
     * Depends on SpongeMixins.
 * **Compat**: Improves compatibility by fixing incorrect references to Mixin classes (specifically the shaded ASM) in mods.
+* **Mixingasm**: Improves Mixin's compatibility with ASM transformers.
 
 ### Optional
 
