@@ -68,6 +68,7 @@ reobf.enabled = false
 ext.extraVersion = "2.1.9"
 ext.extraModid = "gtnhmixins"
 ext.mcversion = "1.7.10"
+version += "+" + ext.extraVersion
 
 minecraft {
 	replaceIn("GTNHMixins.java")
