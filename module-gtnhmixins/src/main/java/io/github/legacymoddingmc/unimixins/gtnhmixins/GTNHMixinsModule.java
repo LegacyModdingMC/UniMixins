@@ -1,10 +1,12 @@
 package io.github.legacymoddingmc.unimixins.gtnhmixins;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import cpw.mods.fml.common.versioning.ComparableVersion;
 import net.minecraft.launchwrapper.Launch;
+import net.minecraftforge.common.config.Configuration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -42,7 +44,16 @@ public class GTNHMixinsModule {
     }
 
     private static boolean skipIntegrityChecks() {
-        return Boolean.parseBoolean(System.getProperty("unimixins.skipIntegrityChecks", "false"));
+        Configuration config = new Configuration(new File(Launch.minecraftHome, "config/unimixins.cfg"));
+        config.load();
+
+        boolean disableIntegrityChecks = config.getBoolean("disableIntegrityChecks", "general", false, "Don't throw an error if an invalid combination of modules is detected. For advanced users.");
+
+        if(config.hasChanged()) {
+            config.save();
+        }
+
+        return disableIntegrityChecks;
     }
 
     private static void checkComponentIntegrity() {
