@@ -25,6 +25,7 @@ def getCorePlugin(file) {
 
 task createMergedMcmodInfo() {
 	outputs.file("build/tmp/mcmod.info")
+	outputs.upToDateWhen { false }
 	doLast {
 		def mergedJson = []
 		getModuleJars().each {
