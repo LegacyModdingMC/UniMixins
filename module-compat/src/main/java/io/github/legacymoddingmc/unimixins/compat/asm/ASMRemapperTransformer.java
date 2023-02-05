@@ -15,10 +15,11 @@ import org.objectweb.asm.tree.MethodNode;
 import java.util.*;
 
 /**
- * <p>Some classes use Mixin internals, so we need to make sure they uses the correct type names, and remap them if they don't.</p>
+ * <p>Some classes use Mixin internals, so we need to make sure they use the correct type names, and remap them if they don't.</p>
+ * <p>We do this for every class for maximum compatibility.</p>
  */
-// Ideally this should be done for every mod class, but we do it selectively out of caution.
-// TODO Test if doing this for every class would affect performance or cause other issues.
+
+// TODO Measure the performance impact of this and switch to doing it selectively if it would improve things.
 public class ASMRemapperTransformer implements IClassTransformer {
 
     /** A class will be remapped if it implements one of these interfaces. */

@@ -30,7 +30,7 @@ public class CompatCore implements IFMLLoadingPlugin {
     }
 
     /** LWJGL3ify excludes transformation of its core package, which prevents us from remapping its
-     * LwjglRedirectTransformer. However, the exception appears to be unnecessary, since its transformers already
+     * LwjglRedirectTransformer. However, the exclusion appears to be unnecessary, since its transformers already
      * have checks that prevent ClassCircularityErrors.
      */
     private static void applyLWJGL3ifyCompatibilityHack() {
