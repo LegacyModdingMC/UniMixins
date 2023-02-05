@@ -1,13 +1,11 @@
-Source: https://github.com/GTNewHorizons/GTNHMixins/tree/73e389805d2343e7a000f40879dbe232e53c08f1
+Source: https://github.com/FalsePattern/GasStation/tree/0.5.1
 
 Classes used:
 
-com.gtnewhorizon.gtnhmixins.*
+com.falsepattern.gasstation.*
 
 Modifications:
-- removed Mixin environment initialization in GTNHMixinsCore
-- added Mixin 0.7 support
-	- made MixinExtras initialization get suppressed if Mixin version is below 0.8.5
-	- made reflection support Mixin 0.7.11
 
-License: LGPL3 (see LICENSE)
+Removed Mixin and MixinExtras bootstrap from GasStationCore.
+
+License: LGPL3+SNEED (see LICENSE, COPYING and COPYING.LESSER)
