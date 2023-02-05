@@ -34,7 +34,7 @@ task createMergedMcmodInfo() {
 				mergedJson += json
 		}
 		
-		def desc = mergedJson.collect{ "* " + it.name + "\n" }.join("")
+		def desc = mergedJson.collect{ it.name.split(": ")[1]}.join("; ")
 		mergedJson[0].name = "UniMixins"
 		mergedJson[0].description = "UniMixins composite jar consisting of the following modules:\n" + desc
 		mergedJson[0].version = version
