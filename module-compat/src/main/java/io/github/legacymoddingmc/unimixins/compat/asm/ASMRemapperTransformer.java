@@ -53,38 +53,40 @@ public class ASMRemapperTransformer implements IClassTransformer {
         if(basicClass == null) {
             return null;
         }
-        ClassReader classReader = new ClassReader(basicClass);
+        if(!transformedName.startsWith("io.github.legacymoddingmc.unimixins.compat.asm.")) {
+            ClassReader classReader = new ClassReader(basicClass);
 
-        ClassNode classNode = new ClassNode();
-        ClassReader classReaderForNode = new ClassReader(basicClass);
-        classReaderForNode.accept(classNode, 0);
+            ClassNode classNode = new ClassNode();
+            ClassReader classReaderForNode = new ClassReader(basicClass);
+            classReaderForNode.accept(classNode, 0);
 
-        boolean doRemap = !remapSelectively;
+            boolean doRemap = !remapSelectively;
 
-        if(!doRemap) {
-            for (String itf : classNode.interfaces) {
-                if (interfaceWhitelist.contains(itf)) {
-                    doRemap = true;
+            if(!doRemap) {
+                for (String itf : classNode.interfaces) {
+                    if (interfaceWhitelist.contains(itf)) {
+                        doRemap = true;
+                    }
                 }
             }
-        }
 
-        if(!doRemap) {
-            for (String pkg : packageWhitelist) {
-                if(transformedName.startsWith(pkg)) {
-                    doRemap = true;
+            if(!doRemap) {
+                for (String pkg : packageWhitelist) {
+                    if(transformedName.startsWith(pkg)) {
+                        doRemap = true;
+                    }
                 }
             }
-        }
 
-        if(doRemap) {
-            if(remapSelectively) {
-                LOGGER.info("Transforming class " + transformedName + " to fit current Mixin environment.");
+            if(doRemap) {
+                if(remapSelectively) {
+                    LOGGER.info("Transforming class " + transformedName + " to fit current Mixin environment.");
+                }
+                ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_MAXS);
+                RemappingClassAdapter remapAdapter = new SpongepoweredASMRemappingAdapter(classWriter);
+                classReader.accept(remapAdapter, ClassReader.EXPAND_FRAMES);
+                return classWriter.toByteArray();
             }
-            ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_MAXS);
-            RemappingClassAdapter remapAdapter = new SpongepoweredASMRemappingAdapter(classWriter);
-            classReader.accept(remapAdapter, ClassReader.EXPAND_FRAMES);
-            return classWriter.toByteArray();
         }
         return basicClass;
     }
