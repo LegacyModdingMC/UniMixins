@@ -4,6 +4,7 @@ import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 
 import com.falsepattern.gasstation.Tags;
 import com.falsepattern.gasstation.IEarlyMixinLoader;
+import io.github.legacymoddingmc.unimixins.gasstation.GasStationModule;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.spongepowered.asm.mixin.Mixins;
@@ -22,6 +23,7 @@ public class GasStationCore implements IFMLLoadingPlugin {
 
     static {
         LOGGER.info("Initializing " + Tags.MODNAME + "Core");
+        GasStationModule.init();
     }
     
     @Override
