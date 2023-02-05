@@ -100,6 +100,10 @@ When editing the source code of modules, please document your changes in the [CR
 
 A rough roadmap of the project is available [here](https://gist.github.com/makamys/5eaf2ebb878b74213630eae122460f00).
 
+### Test cases
+
+See [testing.md](testing.md) for a list of mods we have used to verify the functionality of various UniMixins modules.
+
 ## License
 
 UniMixins is licensed under the Unlicense, with the exception of some modules. See [LICENSE](LICENSE) for the full details.
