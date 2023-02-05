@@ -27,6 +27,8 @@ public class ASMRemapperTransformer implements IClassTransformer {
     /** A class will be remapped if its name starts with one of these strings. */
     private static Set<String> packageWhitelist = new HashSet<>();
 
+    private static final boolean remapSelectively = Boolean.parseBoolean(System.getProperty("unimixins.compat.remapSelectively", "false"));
+
     private static final List<String> ASM_PACKAGE_PREFIXES = Arrays.asList(
             "org/spongepowered/libraries/org/objectweb/asm/",
             "org/spongepowered/asm/lib/"
@@ -57,11 +59,13 @@ public class ASMRemapperTransformer implements IClassTransformer {
         ClassReader classReaderForNode = new ClassReader(basicClass);
         classReaderForNode.accept(classNode, 0);
 
-        boolean doRemap = false;
+        boolean doRemap = !remapSelectively;
 
-        for(String itf : classNode.interfaces) {
-            if(interfaceWhitelist.contains(itf)) {
-                doRemap = true;
+        if(!doRemap) {
+            for (String itf : classNode.interfaces) {
+                if (interfaceWhitelist.contains(itf)) {
+                    doRemap = true;
+                }
             }
         }
 
@@ -74,7 +78,9 @@ public class ASMRemapperTransformer implements IClassTransformer {
         }
 
         if(doRemap) {
-            LOGGER.info("Transforming class " + transformedName + " to fit current Mixin environment.");
+            if(remapSelectively) {
+                LOGGER.info("Transforming class " + transformedName + " to fit current Mixin environment.");
+            }
             ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_MAXS);
             RemappingClassAdapter remapAdapter = new SpongepoweredASMRemappingAdapter(classWriter);
             classReader.accept(remapAdapter, ClassReader.EXPAND_FRAMES);
