@@ -7,6 +7,12 @@ To depend on UniMixins, merge this into your build script.
 > If using RetroFuturaGradle, replace each occurrence of `compile` with `implementation`.
 
 ```gradle
+repositories {
+    maven {
+        url 'https://jitpack.io'
+    }
+}
+
 def unimixinsVersion = "insert version here"
 
 dependencies {    
