@@ -32,6 +32,10 @@ The `-modular` zip contains a separate jar for each module. Some modules depend 
 
 The game will crash if modules are missing dependencies. This can be suppressed by adding the `-Dunimixins.skipIntegrityChecks=true` JVM flag.
 
+### Developer usage
+
+See [docs/developer-usage.md](docs/developer-usage.md) to see how to make a mod depend on UniMixins.
+
 ## List of modules
 
 All modules depend on the Mixin module. Note that the dependents don't necessarily have to come from UniMixins modules, other mods may also be used to provide them.
