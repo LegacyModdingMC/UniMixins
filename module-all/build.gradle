@@ -58,9 +58,28 @@ task createEmbeddedCorePluginsFile() {
 	moduleNames.each { dependsOn tasks.getByPath(":$it:build") }
 }
 
+task createMergedAnnotationProcessorConfig() {
+	def path = "build/tmp/javax.annotation.processing.Processor"
+	outputs.file(path)
+	outputs.upToDateWhen { false }
+	doLast {
+		// MixinExtras's APs have to be registered before Mixin's,
+		// so we manually merge the APs to ensure this is the case.
+		file(path).text = """com.llamalad7.mixinextras.MixinExtrasAP
+io.github.tox1cozz.mixinextras.MixinExtrasAnnotationProcessor
+com.gtnewhorizon.mixinextras.MixinExtrasAP
+org.spongepowered.tools.obfuscation.MixinObfuscationProcessorInjection
+org.spongepowered.tools.obfuscation.MixinObfuscationProcessorTargets
+"""
+
+		return file(path)
+	}
+}
+
 jar {
 	dependsOn tasks.createMergedMcmodInfo
 	dependsOn tasks.createEmbeddedCorePluginsFile
+	dependsOn tasks.createMergedAnnotationProcessorConfig
 	
 	moduleNames.each {
 		def name = it
@@ -70,6 +89,7 @@ jar {
 			exclude 'mcmod.info'
 			exclude 'META-INF/MANIFEST.MF'
 			exclude 'CREDITS', 'LICENSE*', 'README*'
+			exclude 'META-INF/services/javax.annotation.processing.Processor'
 			into("")
 		}
 		from(zipTree(j)){
@@ -81,6 +101,9 @@ jar {
 	from tasks.createMergedMcmodInfo.getOutputs().getFiles().getSingleFile()
 	from(tasks.createEmbeddedCorePluginsFile.getOutputs().getFiles().getSingleFile()) {
 		into 'META-INF'
+	}
+	from(tasks.createMergedAnnotationProcessorConfig.getOutputs().getFiles().getSingleFile()) {
+		into 'META-INF/services'
 	}
 	
 	manifest {
