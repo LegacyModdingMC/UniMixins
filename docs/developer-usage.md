@@ -4,7 +4,7 @@ UniMix, the mixin fork included in the all jar, currently does not work in dev e
 
 To depend on UniMixins, merge this into your build script.
 
-> If using RetroFuturaGradle, replace each occurence of `compile` with `implementation`.
+> If using RetroFuturaGradle, replace each occurrence of `compile` with `implementation`.
 
 ```gradle
 def unimixinsVersion = "insert version here"
