@@ -6,6 +6,7 @@ com.falsepattern.gasstation.*
 
 Modifications:
 
-Removed Mixin and MixinExtras bootstrap from GasStationCore.
+- Removed Mixin and MixinExtras bootstrap from GasStationCore.
+- Disabled dev mixin plugin because UniMixins's Compat module does the same thing.
 
 License: LGPL3+SNEED (see LICENSE, COPYING and COPYING.LESSER)
