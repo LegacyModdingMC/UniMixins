@@ -15,7 +15,7 @@ repositories {
 }
 
 dependencies {
-	compile('org.spongepowered:mixin:0.8.5')
+	compileOnly('org.spongepowered:mixin:0.8.5')
 }
 
 archivesBaseName = archivesBaseName.replace("-1.7.10", "-spongemixins-1.7.10")
