@@ -1,3 +1,4 @@
 UniMixins is licensed under the Unlicense, as specified in LICENSE.UNLICENSE,
-with the exception of some modules, which are licensed under different terms.
-See CREDITS for a full list of these.
+with the exception of certain modules (found in directories named module-*),
+which are licensed under different terms. Refer to CREDITS and LICENSE inside
+these directories for more information.
