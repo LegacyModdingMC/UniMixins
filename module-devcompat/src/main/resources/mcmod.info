@@ -1,0 +1,17 @@
+[
+  {
+    "modid": "unimixins-compat",
+    "name": "UniMixins: Compatibility",
+    "description": "UniMixins module that remaps mods to use the correct names for Mixin packages.",
+    "version": "${version}",
+    "mcversion": "${minecraft_version}",
+    "url": "",
+    "updateUrl": "",
+    "authorList": [
+      "makamys"
+    ],
+    "credits": "",
+    "logoFile": "",
+    "screenshots": []
+  }
+]

@@ -49,6 +49,7 @@ All modules depend on the Mixin module. Note that the dependents don't necessari
 * **GTNHMixins**: Provides an emulation of GTNHMixins's extras, and a relocated MixinExtras.
     * Depends on SpongeMixins.
 * **Compat**: Improves compatibility by fixing incorrect references to Mixin classes (specifically the shaded ASM) in mods.
+* **DevCompat**: Compatibility tweaks for dev environments.
 * **Mixingasm**: Improves Mixin's compatibility with ASM transformers.
 
 ### Optional
