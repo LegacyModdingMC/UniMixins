@@ -71,7 +71,7 @@ Mixin loaders on 1.7.10 are currently far too fragmented, with different mods re
 
 ### Why are you using the Fabric fork of Mixin? Isn't this a Forge mod?
 
-The Fabric fork of Mixin is more actively maintained than the upstream fork, and has some extra fixes. Most of the Fabric fork's changes are not Fabric-specific, and the single class that is is functional without Fabric.
+The Fabric fork of Mixin is more actively maintained than the upstream fork, and has some extra fixes. Most of the Fabric fork's changes are not Fabric-specific.
 
 ### What do the "extras" do anyway?
 
