@@ -47,19 +47,19 @@ Generic Mixin stuff (your build script might already have this):
 ext.outRefMapFile = "${tasks.compileJava.temporaryDir}/${project.modid}.mixin.refmap.json"
 
 jar {
-	manifest {
+    manifest {
         attributes (
-			'MixinConfigs': "${project.modid}.mixin.json",
+            'MixinConfigs': "${project.modid}.mixin.json",
             'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
             'TweakOrder': 0,
-			
-			// Needed if the mod contains a @Mod annotation
+            
+            // Needed if the mod contains a @Mod annotation
             'FMLCorePluginContainsFMLMod': 'true',
             'ForceLoadAsMod': 'true',
-		)
-	}
-	
-	from outRefMapFile;
+        )
+    }
+    
+    from outRefMapFile;
 }
 
 def outSrgFile = "${tasks.compileJava.temporaryDir}/outSrg.srg"
