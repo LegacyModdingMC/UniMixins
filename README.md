@@ -24,7 +24,7 @@ Note: A more detailed version of this table is available [here](https://legacymo
 
 ## Usage
 
-Download the `-all` jar, and put it in your mods directory. Remove any other conflicting Mixin loaders (refer to the above table). It's important to keep the `00` at the beginning of the file name to avoid [an issue](https://github.com/tox1cozZ/mixin-booter-legacy/issues/1) with mods that shade mixin.
+Download the `-all` jar, and put it in your mods directory. Remove any other conflicting Mixin loaders (refer to the above table). It's important to keep the `_` at the beginning of the file name to avoid [an issue](https://github.com/tox1cozZ/mixin-booter-legacy/issues/1) with mods that shade mixin.
 
 ### Advanced usage
 
