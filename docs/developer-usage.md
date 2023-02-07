@@ -26,9 +26,9 @@ dependencies {
     compile("io.github.legacymoddingmc.unimixins:_unimixins-spongemixins-1.7.10:$unimixinsVersion+gtnh-2.0.1")
     compile("io.github.legacymoddingmc.unimixins:_unimixins-mixinbooterlegacy-1.7.10:$unimixinsVersion+1.2.0")
     compile("io.github.legacymoddingmc.unimixins:_unimixins-gasstation-1.7.10:$unimixinsVersion+0.5.1")
-    compile("io.github.legacymoddingmc.unimixins:_unimixins-mixinextras-1.7.10:$unimixinsVersion+0.2.2")
+    compile("io.github.legacymoddingmc.unimixins:_unimixins-mixinextras-1.7.10:$unimixinsVersion+0.1.1")
     compile("io.github.legacymoddingmc.unimixins:_unimixins-gtnhmixins-1.7.10:$unimixinsVersion+2.1.9")
-    compile("io.github.legacymoddingmc.unimixins:_unimixins-mixingasm-1.7.10:$unimixinsVersion+0.1.1")
+    compile("io.github.legacymoddingmc.unimixins:_unimixins-mixingasm-1.7.10:$unimixinsVersion+0.2.2")
     
     // Needed if not using GTNH's Mixin fork
     compile("io.github.legacymoddingmc.unimixins:_unimixins-devcompat-1.7.10:$unimixinsVersion")
