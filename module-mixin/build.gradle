@@ -25,209 +25,265 @@ repositories {
 	mavenLocal()
 }
 
-configurations {
-	shadowBridge
-}
-
-ext.mixinSource = project.findProperty("mixinSource") ?: "unimix"
-
-if(mixinSource == "fabric" || mixinSource == "unimix"){
-	def mixinVersion = mixinSource == "fabric" ? "0.11.4+mixin.0.8.5" : "0.11.5+mixin.0.8.5"
-	if(mixinSource == "unimix" && (project.hasProperty("local") || true)) {
-		mixinVersion += "-local"
-	}
-	def mixinGroup = mixinSource == "fabric" ? "net.fabricmc" : "io.github.legacymoddingmc"
-	def mixinDep = mixinSource == "fabric" ? 'net.fabricmc:sponge-mixin:0.11.4+mixin.0.8.5' : 'io.github.legacymoddingmc:sponge-mixin:0.11.4+mixin.0.8.5-local'
-	ext.mixinClassifier = "$mixinSource-$mixinVersion"
-	dependencies {
-		shadow("$mixinGroup:sponge-mixin:$mixinVersion") {
-			exclude group: "org.ow2.asm"
-		}
-		shadow('org.ow2.asm:asm-tree:9.4')
-		shadow('org.ow2.asm:asm-commons:9.4')
-		shadow('org.ow2.asm:asm-util:9.4')
-		
-		shadowBridge("$mixinGroup:sponge-mixin:$mixinVersion") {
-			transitive = false
-		}
-	}
-} else if(mixinSource == "spongepowered"){
-	ext.mixinClassifier = "spongepowered-0.8.5"
-	dependencies {
-		shadow('org.spongepowered:mixin:0.8.5')
-		shadowBridge('org.spongepowered:mixin:0.8.5') {
-			transitive = false
-		}
-		shadow('com.google.guava:guava:21.0')
-		shadow('com.google.code.gson:gson:2.2.4')
-		shadow('org.ow2.asm:asm-tree:9.2')
-		shadow('org.ow2.asm:asm-commons:9.2')
-		shadow('org.ow2.asm:asm-util:9.2')
-	}
-} else if(mixinSource == "gasmix"){
-	ext.mixinClassifier = "gasmix-0.8.5-gasstation_7"
-	dependencies {
-		shadow('org.spongepowered:mixin:0.8.5-gasstation_7')
-	}
-} else if(mixinSource == "gtnh"){
-	// Adapted from GTNHMixins's build script
-	
-	ext.mixinVersion = "0.8.5-GTNH-2"
-	ext.mixinClassifier = "gtnh-$mixinVersion"
-	def asmVersion = "9.4"
-	dependencies {
-		shadow("org.spongepowered:mixin:$mixinVersion")
-		shadow("org.ow2.asm:asm-tree:$asmVersion")
-		shadow("org.ow2.asm:asm-commons:$asmVersion")
-		shadow("org.ow2.asm:asm-util:$asmVersion")
-		shadow("com.google.guava:guava:21.0")
-		shadowBridge('org.spongepowered:mixin:0.8.5')
-	}
-}
-
+def versionBase = version
 archivesBaseName = archivesBaseName.replace("-1.7.10", "-mixin-1.7.10")
-version += "+${mixinClassifier}"
+
+configurations.archives.artifacts.clear()
 
 apply plugin: "com.github.johnrengelman.shadow"
 
-if(mixinSource == "fabric" || mixinSource == "spongepowered" || mixinSource == "unimix") {
-	// We want to *not* relocate ASM in the bridge classes. So we use a multi-step
-	// build procedure:
+["spongepowered", "fabric", "gasmix", "gtnh", "unimix"].each {
+	def mixinSource = it
+	def sourceSuffix = it.capitalize()
+	def mixinClassifier = "UNKNOWN"
+	def mixinSourceCapitalized = [spongepowered: "SpongePowered", fabric: "Fabric", gasmix: "GasMix", gtnh: "GTNH", unimix: "UniMix"][mixinSource]
 
-	// 1. Create relocated Mixin jar with relocation, without the bridge classes
-	task mixinJar(type: ShadowJar) {
-		classifier = 'tmpMixin'
-		configurations = [project.configurations.shadow]
-		
-		relocate 'com.google', 'org.spongepowered.libraries.com.google'
-		relocate 'org.objectweb.asm', 'org.spongepowered.asm.lib'
-		
-		exclude 'org/spongepowered/asm/bridge/RemapperAdapter.class'
-		exclude 'org/spongepowered/asm/bridge/RemapperAdapterFML.class'
-		
-		// Exclude stuff that's compiled for Java 16 
-		
-		exclude 'org/spongepowered/asm/service/modlauncher/*'
-		exclude 'org/spongepowered/asm/launch/MixinTransformationServiceLegacy*'
-		exclude 'org/spongepowered/asm/launch/MixinLaunchPlugin*'
-		exclude 'org/spongepowered/asm/launch/MixinTransformationService*'
-		exclude 'org/spongepowered/asm/launch/platform/container/ContainerHandleModLauncherEx*'
-		
-		exclude 'META-INF/services/cpw.mods.modlauncher.api.ITransformationService'
-		exclude 'META-INF/services/cpw.mods.modlauncher.serviceapi.ILaunchPluginService'
-		
-		// Exclude jar-specific stuff
+	configurations.create("shadow$sourceSuffix")
+	configurations.create("shadowBridge$sourceSuffix")
 
-		exclude 'META-INF/MUMFREY*'
-	}
+	if (mixinSource == "fabric" || mixinSource == "spongepowered" || mixinSource == "unimix") {
+		if (mixinSource == "fabric" || mixinSource == "unimix") {
+			def mixinVersion = mixinSource == "fabric" ? "0.11.4+mixin.0.8.5" : "0.11.5+mixin.0.8.5"
+			if (mixinSource == "unimix" && (project.hasProperty("local") || true)) {
+				mixinVersion += "-local"
+			}
+			def mixinGroup = mixinSource == "fabric" ? "net.fabricmc" : "io.github.legacymoddingmc"
+			def mixinDep = mixinSource == "fabric" ? 'net.fabricmc:sponge-mixin:0.11.4+mixin.0.8.5' : 'io.github.legacymoddingmc:sponge-mixin:0.11.4+mixin.0.8.5-local'
+			mixinClassifier = "$mixinSource-$mixinVersion"
+			dependencies {
+				add("shadow$sourceSuffix", "$mixinGroup:sponge-mixin:$mixinVersion", {
+					exclude group: "org.ow2.asm"
+				})
+				add("shadow$sourceSuffix", 'org.ow2.asm:asm-tree:9.4')
+				add("shadow$sourceSuffix", 'org.ow2.asm:asm-commons:9.4')
+				add("shadow$sourceSuffix", 'org.ow2.asm:asm-util:9.4')
 
-	// 2. Create Mixin jar without relocation, with *only* the bridge classes
-	task bridgeJar(type: ShadowJar) {
-		classifier = 'tmpBridge'
-		configurations = [project.configurations.shadowBridge]
-		
-		include 'org/spongepowered/asm/bridge/RemapperAdapter.class'
-		include 'org/spongepowered/asm/bridge/RemapperAdapterFML.class'
-	}
-
-	// 3. Combine the two jars
-	jar {
-		//enabled = false
-		dependsOn tasks.mixinJar
-		dependsOn tasks.bridgeJar
-
-		from zipTree(tasks.mixinJar.archiveFile).matching { exclude 'module-info.class' }
-		from zipTree(tasks.bridgeJar.archiveFile).matching { include 'org/spongepowered/asm/bridge/*' }
-		
-		doLast {
-			delete mixinJar.archiveFile
-			delete bridgeJar.archiveFile
+				add("shadowBridge$sourceSuffix", "$mixinGroup:sponge-mixin:$mixinVersion", {
+					transitive = false
+				})
+			}
+		} else {
+			mixinClassifier = "spongepowered-0.8.5"
+			dependencies {
+				add("shadow$sourceSuffix", 'org.spongepowered:mixin:0.8.5')
+				add("shadowBridge$sourceSuffix", 'org.spongepowered:mixin:0.8.5', {
+					transitive = false
+				})
+				add("shadow$sourceSuffix", 'com.google.guava:guava:21.0')
+				add("shadow$sourceSuffix", 'com.google.code.gson:gson:2.2.4')
+				add("shadow$sourceSuffix", 'org.ow2.asm:asm-tree:9.2')
+				add("shadow$sourceSuffix", 'org.ow2.asm:asm-commons:9.2')
+				add("shadow$sourceSuffix", 'org.ow2.asm:asm-util:9.2')
+			}
 		}
-		
-		manifest {
-			attributes (
-				'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
-				'FMLCorePluginContainsFMLMod': 'true',
-				'ForceLoadAsMod': 'true',
-			)
+
+		// We want to *not* relocate ASM in the bridge classes. So we use a multi-step
+		// build procedure:
+
+		// 1. Create relocated Mixin jar with relocation, without the bridge classes
+		tasks.register("mixinJar$sourceSuffix", ShadowJar) {
+			destinationDirectory = file("build/tmp")
+			classifier = "tmpMixin$sourceSuffix"
+			configurations = [project.configurations.getByName("shadow$sourceSuffix")]
+
+			relocate 'com.google', 'org.spongepowered.libraries.com.google'
+			relocate 'org.objectweb.asm', 'org.spongepowered.asm.lib'
+
+			exclude 'org/spongepowered/asm/bridge/RemapperAdapter.class'
+			exclude 'org/spongepowered/asm/bridge/RemapperAdapterFML.class'
+
+			// Exclude stuff that's compiled for Java 16
+
+			exclude 'org/spongepowered/asm/service/modlauncher/*'
+			exclude 'org/spongepowered/asm/launch/MixinTransformationServiceLegacy*'
+			exclude 'org/spongepowered/asm/launch/MixinLaunchPlugin*'
+			exclude 'org/spongepowered/asm/launch/MixinTransformationService*'
+			exclude 'org/spongepowered/asm/launch/platform/container/ContainerHandleModLauncherEx*'
+
+			exclude 'META-INF/services/cpw.mods.modlauncher.api.ITransformationService'
+			exclude 'META-INF/services/cpw.mods.modlauncher.serviceapi.ILaunchPluginService'
+
+			// Exclude jar-specific stuff
+
+			exclude 'META-INF/MUMFREY*'
+		}
+
+		// 2. Create Mixin jar without relocation, with *only* the bridge classes
+		tasks.register("bridgeJar$sourceSuffix", ShadowJar) {
+			destinationDirectory = file("build/tmp")
+			classifier = "tmpBridge$sourceSuffix"
+			configurations = [project.configurations.getByName("shadowBridge$sourceSuffix")]
+
+			include 'org/spongepowered/asm/bridge/RemapperAdapter.class'
+			include 'org/spongepowered/asm/bridge/RemapperAdapterFML.class'
+		}
+
+		// 3. Combine the two jars
+		tasks.register("shadowJar$sourceSuffix", ShadowJar) {
+			version = versionBase + "+" + mixinClassifier
+			from(sourceSets.main.output) {
+				exclude "mcmod.info"
+			}
+
+			//enabled = false
+			dependsOn tasks.getByName("mixinJar$sourceSuffix")
+			dependsOn tasks.getByName("bridgeJar$sourceSuffix")
+
+			from zipTree(tasks.getByName("mixinJar$sourceSuffix").archiveFile).matching { exclude 'module-info.class' }
+			from zipTree(tasks.getByName("bridgeJar$sourceSuffix").archiveFile).matching { include 'org/spongepowered/asm/bridge/*' }
+
+			doLast {
+				delete tasks.getByName("mixinJar$sourceSuffix").archiveFile
+				delete tasks.getByName("bridgeJar$sourceSuffix")
+			}
+
+			manifest {
+				attributes(
+						'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
+						'FMLCorePluginContainsFMLMod': 'true',
+						'ForceLoadAsMod': 'true',
+				)
+			}
+		}
+
+		jar.dependsOn(tasks.getByName("shadowJar$sourceSuffix"))
+	} else if (mixinSource == "gasmix") {
+		mixinClassifier = "gasmix-0.8.5-gasstation_7"
+		dependencies {
+			add("shadow$sourceSuffix", 'org.spongepowered:mixin:0.8.5-gasstation_7')
+		}
+
+		tasks.register("shadowJar$sourceSuffix", ShadowJar) {
+			from(sourceSets.main.output) {
+				exclude "mcmod.info"
+			}
+
+			version = versionBase + "+" + mixinClassifier
+			classifier = ''
+			configurations = [project.configurations.getByName("shadow$sourceSuffix")]
+
+			manifest {
+				attributes(
+						'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
+						'FMLCorePluginContainsFMLMod': 'true',
+						'ForceLoadAsMod': 'true',
+				)
+			}
+		}
+
+		jar.dependsOn(tasks.getByName("shadowJar$sourceSuffix"))
+	} else if (mixinSource == "gtnh") {
+		// Adapted from GTNHMixins's build script
+
+		def mixinVersion = "0.8.5-GTNH-2"
+		mixinClassifier = "gtnh-$mixinVersion"
+		def asmVersion = "9.4"
+		dependencies {
+			add("shadow$sourceSuffix", "org.spongepowered:mixin:$mixinVersion")
+			add("shadow$sourceSuffix", "org.ow2.asm:asm-tree:$asmVersion")
+			add("shadow$sourceSuffix", "org.ow2.asm:asm-commons:$asmVersion")
+			add("shadow$sourceSuffix", "org.ow2.asm:asm-util:$asmVersion")
+			add("shadow$sourceSuffix", "com.google.guava:guava:21.0")
+			add("shadowBridge$sourceSuffix", 'org.spongepowered:mixin:0.8.5')
+		}
+
+		// Adapted from GTNHMixins's build script
+
+		// We want to *not* relocate ASM in the bridge classes. So we use a multi-step
+		// build procedure:
+
+		// 1. Create relocated Mixin jar with relocation, without the bridge classes
+		tasks.register("mixinJar$sourceSuffix", ShadowJar) {
+			destinationDirectory = file("build/tmp")
+			archiveFileName.set("mixin-$mixinVersion-repack.jar")
+			configurations = [project.configurations.getByName("shadow$sourceSuffix")]
+
+			mergeServiceFiles()
+
+			exclude 'META-INF/MANIFEST.MF', 'META-INF/maven/**', 'META-INF/*.RSA', 'META-INF/*.SF'
+			exclude '**/module-info.class'
+
+			// we use this instead of 'org.spongepowered.libraries.org.objectweb.asm'
+			relocate 'org.objectweb.asm', 'org.spongepowered.asm.lib'
+			relocate 'com.google.common', 'org.spongepowered.libraries.com.google.common'
+			relocate 'com.google.thirdparty.publicsuffix', 'org.spongepowered.libraries.com.google.thirdparty.publicsuffix'
+		}
+
+		// 2. Create Mixin jar without relocation, with *only* the bridge classes
+		tasks.register("bridgeJar$sourceSuffix", ShadowJar) {
+			destinationDirectory = file("build/tmp")
+			classifier = 'tmpBridge'
+			configurations = [project.configurations.getByName("shadowBridge$sourceSuffix")]
+
+			include 'org/spongepowered/asm/bridge/RemapperAdapter.class'
+			include 'org/spongepowered/asm/bridge/RemapperAdapterFML.class'
+		}
+
+		// 3. Combine the two jars
+		tasks.register("shadowJar$sourceSuffix", ShadowJar) {
+			from(sourceSets.main.output) {
+				exclude "mcmod.info"
+			}
+
+			version = versionBase + "+" + mixinClassifier
+
+			dependsOn tasks.getByName("mixinJar$sourceSuffix")
+			dependsOn tasks.getByName("bridgeJar$sourceSuffix")
+
+			from zipTree(tasks.getByName("mixinJar$sourceSuffix").archiveFile).matching {
+				exclude "META-INF/*.RSA", "META-INF/*.SF", "META-INF/*.MF"
+				exclude "META-INF/services/*.Processor"
+				// Replaced by local classes
+				exclude "org/spongepowered/asm/bridge/**"
+			}
+			from zipTree(tasks.getByName("bridgeJar$sourceSuffix").archiveFile).matching { include 'org/spongepowered/asm/bridge/*' }
+
+			doLast {
+				delete tasks.getByName("mixinJar$sourceSuffix").archiveFile
+				delete tasks.getByName("bridgeJar$sourceSuffix").archiveFile
+			}
+
+			manifest {
+				attributes(
+						'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
+						'FMLCorePluginContainsFMLMod': 'true',
+						'ForceLoadAsMod': 'true',
+				)
+			}
+		}
+
+		jar.dependsOn(tasks.getByName("shadowJar$sourceSuffix"))
+	}
+
+	tasks.register("createMcmodInfo$sourceSuffix", Copy) {
+		outputs.upToDateWhen { false }
+		from 'src/main/resources/mcmod.info'
+		into "build/tmp/mcmod.${mixinSource}.info"
+		filter {
+			line -> line.replaceAll('@MIXIN_CLASSIFIER@', mixinClassifier).replaceAll('@MIXIN_SOURCE_CAPITALIZED@', mixinSourceCapitalized).replaceAll('@VERSION@', "$versionBase+$mixinClassifier")
 		}
 	}
-} else if(mixinSource == "gasmix") {
-	shadowJar {
-		classifier = ''
-		configurations = [project.configurations.shadow]
-		
-		manifest {
-			attributes (
-				'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
-				'FMLCorePluginContainsFMLMod': 'true',
-				'ForceLoadAsMod': 'true',
-			)
-		}
+
+
+	tasks.getByName("shadowJar$sourceSuffix") {
+		dependsOn(tasks.getByName("createMcmodInfo$sourceSuffix"))
+		from "build/tmp/mcmod.${mixinSource}.info/mcmod.info"
 	}
-	
-	jar {
-		enabled = false
-		dependsOn shadowJar
-	}
-} else if(mixinSource == "gtnh") {
-	// Adapted from GTNHMixins's build script
-	
-	// We want to *not* relocate ASM in the bridge classes. So we use a multi-step
-	// build procedure:
 
-	// 1. Create relocated Mixin jar with relocation, without the bridge classes
-	task mixinJar(type: ShadowJar) {
-		archiveFileName.set("mixin-$mixinVersion-repack.jar")
-		configurations = [project.configurations.shadow]
+	publishing {
+		publications {
+			create("mavenShadowJar$sourceSuffix", MavenPublication) {
+				artifact tasks.getByName("shadowJar$sourceSuffix")
 
-		mergeServiceFiles()
-
-		exclude 'META-INF/MANIFEST.MF', 'META-INF/maven/**', 'META-INF/*.RSA', 'META-INF/*.SF'
-		exclude '**/module-info.class'
-
-		// we use this instead of 'org.spongepowered.libraries.org.objectweb.asm'
-		relocate 'org.objectweb.asm', 'org.spongepowered.asm.lib'
-		relocate 'com.google.common', 'org.spongepowered.libraries.com.google.common'
-		relocate 'com.google.thirdparty.publicsuffix', 'org.spongepowered.libraries.com.google.thirdparty.publicsuffix'
-	}
-	
-	// 2. Create Mixin jar without relocation, with *only* the bridge classes
-	task bridgeJar(type: ShadowJar) {
-		classifier = 'tmpBridge'
-		configurations = [project.configurations.shadowBridge]
-		
-		include 'org/spongepowered/asm/bridge/RemapperAdapter.class'
-		include 'org/spongepowered/asm/bridge/RemapperAdapterFML.class'
-	}
-	
-	// 3. Combine the two jars
-	jar {
-		dependsOn tasks.mixinJar
-		dependsOn tasks.bridgeJar
-
-		from zipTree(tasks.mixinJar.archiveFile).matching {
-			exclude "META-INF/*.RSA", "META-INF/*.SF", "META-INF/*.MF"
-			exclude "META-INF/services/*.Processor"
-			// Replaced by local classes
-			exclude "org/spongepowered/asm/bridge/**"
-		}
-		from zipTree(tasks.bridgeJar.archiveFile).matching { include 'org/spongepowered/asm/bridge/*' }
-		
-		doLast {
-			delete mixinJar.archiveFile
-			delete bridgeJar.archiveFile
-		}
-		
-		manifest {
-			attributes (
-				'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
-				'FMLCorePluginContainsFMLMod': 'true',
-				'ForceLoadAsMod': 'true',
-			)
+				artifactId = archivesBaseName
+				version = tasks.getByName("shadowJar$sourceSuffix").version
+			}
 		}
 	}
 }
 
 // Obfuscation is useless because we're not compiling code referencing Minecraft classes
 reobf.enabled = false
+
+jar.enabled = false
+sourcesJar.enabled = false

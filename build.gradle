@@ -23,6 +23,7 @@ plugins {
 
 allprojects {
 	apply plugin: 'com.github.johnrengelman.shadow'
+	apply plugin: 'maven-publish'
 	// For some reason this is needed when using Gradle 6.9 (but not if using 4.4.1)
 	repositories {
 		maven {
@@ -39,8 +40,23 @@ allprojects {
 		classifier = 'sources'
 	}
 
-	artifacts {
-		archives sourcesJar
+	if(project.name.startsWith("module-") && project.name != "module-mixin") {
+		artifacts {
+			archives sourcesJar
+		}
+		
+		afterEvaluate {
+			publishing {
+				publications {
+					create("maven", MavenPublication) {
+						artifact jar.enabled ? jar : shadowJar
+						artifact source: sourcesJar, classifier: 'sources'
+						artifactId = archivesBaseName
+						version = jar.version
+					}
+				}
+			}
+		}
 	}
 
 	// Put license, credits and readme in jar

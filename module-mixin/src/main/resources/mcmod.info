@@ -1,10 +1,10 @@
 [
 {
   "modid": "unimixins-mixin",
-  "name": "UniMixins: Mixin (${mixinSource.capitalize()})",
-  "description": "UniMixins module that provides the ${mixinSource.capitalize()} fork of Mixin (version: ${mixinClassifier}).",
-  "version": "${version}",
-  "mcversion": "${minecraft_version}",
+  "name": "UniMixins: Mixin (@MIXIN_SOURCE_CAPITALIZED@)",
+  "description": "UniMixins module that provides the @MIXIN_SOURCE_CAPITALIZED@ fork of Mixin (version: @MIXIN_CLASSIFIER@).",
+  "version": "@VERSION@",
+  "mcversion": "1.7.10",
   "url": "",
   "updateUrl": "",
   "authorList": ["makamys"],
