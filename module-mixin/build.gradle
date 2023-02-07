@@ -33,51 +33,51 @@ configurations.archives.artifacts.clear()
 apply plugin: "com.github.johnrengelman.shadow"
 
 ["spongepowered", "fabric", "gasmix", "gtnh", "unimix"].each {
-	def mixinSource = it
-	def sourceSuffix = it.capitalize()
-	def mixinClassifier = "UNKNOWN"
-	def mixinSourceCapitalized = [spongepowered: "SpongePowered", fabric: "Fabric", gasmix: "GasMix", gtnh: "GTNH", unimix: "UniMix"][mixinSource]
+	def mixinFlavor = it
+	def _flavor = it.capitalize()
+	def mixinFlavorClassifier = "UNKNOWN"
+	def mixinFlavorCapitalized = [spongepowered: "SpongePowered", fabric: "Fabric", gasmix: "GasMix", gtnh: "GTNH", unimix: "UniMix"][mixinFlavor]
 
-	configurations.create("shadow$sourceSuffix")
-	configurations.create("shadowBridge$sourceSuffix")
+	configurations.create("shadow$_flavor")
+	configurations.create("shadowBridge$_flavor")
 
-	if (mixinSource == "fabric" || mixinSource == "spongepowered" || mixinSource == "unimix") {
+	if (mixinFlavor == "fabric" || mixinFlavor == "spongepowered" || mixinFlavor == "unimix") {
 		// Fabric / SpongePowered / UniMix
 		
-		if (mixinSource == "fabric" || mixinSource == "unimix") {
-			def mixinVersion = mixinSource == "fabric" ? "0.11.4+mixin.0.8.5" : "0.11.5+mixin.0.8.5"
-			if (mixinSource == "unimix" && (project.hasProperty("local") || true)) {
+		if (mixinFlavor == "fabric" || mixinFlavor == "unimix") {
+			def mixinVersion = mixinFlavor == "fabric" ? "0.11.4+mixin.0.8.5" : "0.11.5+mixin.0.8.5"
+			if (mixinFlavor == "unimix" && (project.hasProperty("local") || true)) {
 				mixinVersion += "-local"
 			}
-			def mixinGroup = mixinSource == "fabric" ? "net.fabricmc" : "io.github.legacymoddingmc"
-			def mixinDep = mixinSource == "fabric" ? "net.fabricmc:sponge-mixin:$mixinVersion" : "io.github.legacymoddingmc:sponge-mixin:$mixinVersion"
-			mixinClassifier = "$mixinSource-$mixinVersion"
+			def mixinGroup = mixinFlavor == "fabric" ? "net.fabricmc" : "io.github.legacymoddingmc"
+			def mixinDep = mixinFlavor == "fabric" ? "net.fabricmc:sponge-mixin:$mixinVersion" : "io.github.legacymoddingmc:sponge-mixin:$mixinVersion"
+			mixinFlavorClassifier = "$mixinFlavor-$mixinVersion"
 			
 			dependencies {
-				add("shadow$sourceSuffix", "$mixinGroup:sponge-mixin:$mixinVersion", {
+				add("shadow$_flavor", "$mixinGroup:sponge-mixin:$mixinVersion", {
 					exclude group: "org.ow2.asm"
 				})
-				add("shadow$sourceSuffix", 'org.ow2.asm:asm-tree:9.4')
-				add("shadow$sourceSuffix", 'org.ow2.asm:asm-commons:9.4')
-				add("shadow$sourceSuffix", 'org.ow2.asm:asm-util:9.4')
+				add("shadow$_flavor", 'org.ow2.asm:asm-tree:9.4')
+				add("shadow$_flavor", 'org.ow2.asm:asm-commons:9.4')
+				add("shadow$_flavor", 'org.ow2.asm:asm-util:9.4')
 
-				add("shadowBridge$sourceSuffix", "$mixinGroup:sponge-mixin:$mixinVersion", {
+				add("shadowBridge$_flavor", "$mixinGroup:sponge-mixin:$mixinVersion", {
 					transitive = false
 				})
 			}
 		} else {
-			mixinClassifier = "spongepowered-0.8.5"
+			mixinFlavorClassifier = "spongepowered-0.8.5"
 			
 			dependencies {
-				add("shadow$sourceSuffix", 'org.spongepowered:mixin:0.8.5')
-				add("shadowBridge$sourceSuffix", 'org.spongepowered:mixin:0.8.5', {
+				add("shadow$_flavor", 'org.spongepowered:mixin:0.8.5')
+				add("shadowBridge$_flavor", 'org.spongepowered:mixin:0.8.5', {
 					transitive = false
 				})
-				add("shadow$sourceSuffix", 'com.google.guava:guava:21.0')
-				add("shadow$sourceSuffix", 'com.google.code.gson:gson:2.2.4')
-				add("shadow$sourceSuffix", 'org.ow2.asm:asm-tree:9.2')
-				add("shadow$sourceSuffix", 'org.ow2.asm:asm-commons:9.2')
-				add("shadow$sourceSuffix", 'org.ow2.asm:asm-util:9.2')
+				add("shadow$_flavor", 'com.google.guava:guava:21.0')
+				add("shadow$_flavor", 'com.google.code.gson:gson:2.2.4')
+				add("shadow$_flavor", 'org.ow2.asm:asm-tree:9.2')
+				add("shadow$_flavor", 'org.ow2.asm:asm-commons:9.2')
+				add("shadow$_flavor", 'org.ow2.asm:asm-util:9.2')
 			}
 		}
 
@@ -85,10 +85,10 @@ apply plugin: "com.github.johnrengelman.shadow"
 		// build procedure:
 
 		// 1. Create relocated Mixin jar, without the bridge classes
-		task("mixinJar$sourceSuffix", type: ShadowJar) {
+		task("mixinJar$_flavor", type: ShadowJar) {
 			destinationDirectory = file("build/tmp")
-			classifier = "tmpMixin$sourceSuffix"
-			configurations = [project.configurations."shadow$sourceSuffix"]
+			classifier = "tmpMixin$_flavor"
+			configurations = [project.configurations."shadow$_flavor"]
 
 			relocate 'com.google', 'org.spongepowered.libraries.com.google'
 			relocate 'org.objectweb.asm', 'org.spongepowered.asm.lib'
@@ -113,32 +113,32 @@ apply plugin: "com.github.johnrengelman.shadow"
 		}
 
 		// 2. Create Mixin jar without relocation, with *only* the bridge classes
-		task("bridgeJar$sourceSuffix", type: ShadowJar) {
+		task("bridgeJar$_flavor", type: ShadowJar) {
 			destinationDirectory = file("build/tmp")
-			classifier = "tmpBridge$sourceSuffix"
-			configurations = [project.configurations."shadowBridge$sourceSuffix"]
+			classifier = "tmpBridge$_flavor"
+			configurations = [project.configurations."shadowBridge$_flavor"]
 
 			include 'org/spongepowered/asm/bridge/RemapperAdapter.class'
 			include 'org/spongepowered/asm/bridge/RemapperAdapterFML.class'
 		}
 
 		// 3. Combine the two jars
-		task("shadowJar$sourceSuffix", type: ShadowJar) {
-			version = versionBase + "+" + mixinClassifier
+		task("shadowJar$_flavor", type: ShadowJar) {
+			version = versionBase + "+" + mixinFlavorClassifier
 			from(sourceSets.main.output) {
 				exclude "mcmod.info"
 			}
 
 			//enabled = false
-			dependsOn "mixinJar$sourceSuffix"
-			dependsOn "bridgeJar$sourceSuffix"
+			dependsOn "mixinJar$_flavor"
+			dependsOn "bridgeJar$_flavor"
 
-			from zipTree(tasks."mixinJar$sourceSuffix".archiveFile).matching { exclude 'module-info.class' }
-			from zipTree(tasks."bridgeJar$sourceSuffix".archiveFile).matching { include 'org/spongepowered/asm/bridge/*' }
+			from zipTree(tasks."mixinJar$_flavor".archiveFile).matching { exclude 'module-info.class' }
+			from zipTree(tasks."bridgeJar$_flavor".archiveFile).matching { include 'org/spongepowered/asm/bridge/*' }
 
 			doLast {
-				delete tasks."mixinJar$sourceSuffix".archiveFile
-				delete tasks."bridgeJar$sourceSuffix"
+				delete tasks."mixinJar$_flavor".archiveFile
+				delete tasks."bridgeJar$_flavor"
 			}
 
 			manifest {
@@ -150,24 +150,24 @@ apply plugin: "com.github.johnrengelman.shadow"
 			}
 		}
 
-		jar.dependsOn("shadowJar$sourceSuffix")
-	} else if (mixinSource == "gasmix") {
+		jar.dependsOn("shadowJar$_flavor")
+	} else if (mixinFlavor == "gasmix") {
 		// GasMix
 		
-		mixinClassifier = "gasmix-0.8.5-gasstation_7"
+		mixinFlavorClassifier = "gasmix-0.8.5-gasstation_7"
 		
 		dependencies {
-			add("shadow$sourceSuffix", 'org.spongepowered:mixin:0.8.5-gasstation_7')
+			add("shadow$_flavor", 'org.spongepowered:mixin:0.8.5-gasstation_7')
 		}
 
-		task("shadowJar$sourceSuffix", type: ShadowJar) {
+		task("shadowJar$_flavor", type: ShadowJar) {
 			from(sourceSets.main.output) {
 				exclude "mcmod.info"
 			}
 
-			version = versionBase + "+" + mixinClassifier
+			version = versionBase + "+" + mixinFlavorClassifier
 			classifier = ''
-			configurations = [project.configurations."shadow$sourceSuffix"]
+			configurations = [project.configurations."shadow$_flavor"]
 
 			manifest {
 				attributes(
@@ -178,33 +178,33 @@ apply plugin: "com.github.johnrengelman.shadow"
 			}
 		}
 
-		jar.dependsOn("shadowJar$sourceSuffix")
-	} else if (mixinSource == "gtnh") {
+		jar.dependsOn("shadowJar$_flavor")
+	} else if (mixinFlavor == "gtnh") {
 		// GTNH
 		
 		// Adapted from GTNHMixins's build script
 
 		def mixinVersion = "0.8.5-GTNH-2"
-		mixinClassifier = "gtnh-$mixinVersion"
+		mixinFlavorClassifier = "gtnh-$mixinVersion"
 		def asmVersion = "9.4"
 		
 		dependencies {
-			add("shadow$sourceSuffix", "org.spongepowered:mixin:$mixinVersion")
-			add("shadow$sourceSuffix", "org.ow2.asm:asm-tree:$asmVersion")
-			add("shadow$sourceSuffix", "org.ow2.asm:asm-commons:$asmVersion")
-			add("shadow$sourceSuffix", "org.ow2.asm:asm-util:$asmVersion")
-			add("shadow$sourceSuffix", "com.google.guava:guava:21.0")
-			add("shadowBridge$sourceSuffix", 'org.spongepowered:mixin:0.8.5')
+			add("shadow$_flavor", "org.spongepowered:mixin:$mixinVersion")
+			add("shadow$_flavor", "org.ow2.asm:asm-tree:$asmVersion")
+			add("shadow$_flavor", "org.ow2.asm:asm-commons:$asmVersion")
+			add("shadow$_flavor", "org.ow2.asm:asm-util:$asmVersion")
+			add("shadow$_flavor", "com.google.guava:guava:21.0")
+			add("shadowBridge$_flavor", 'org.spongepowered:mixin:0.8.5')
 		}
 
 		// We want to *not* relocate ASM in the bridge classes. So we use a multi-step
 		// build procedure:
 
 		// 1. Create relocated Mixin jar, without the bridge classes
-		task("mixinJar$sourceSuffix", type: ShadowJar) {
+		task("mixinJar$_flavor", type: ShadowJar) {
 			destinationDirectory = file("build/tmp")
 			archiveFileName.set("mixin-$mixinVersion-repack.jar")
-			configurations = [project.configurations."shadow$sourceSuffix"]
+			configurations = [project.configurations."shadow$_flavor"]
 
 			mergeServiceFiles()
 
@@ -218,37 +218,37 @@ apply plugin: "com.github.johnrengelman.shadow"
 		}
 
 		// 2. Create Mixin jar without relocation, with *only* the bridge classes
-		task("bridgeJar$sourceSuffix", type: ShadowJar) {
+		task("bridgeJar$_flavor", type: ShadowJar) {
 			destinationDirectory = file("build/tmp")
 			classifier = 'tmpBridge'
-			configurations = [project.configurations."shadowBridge$sourceSuffix"]
+			configurations = [project.configurations."shadowBridge$_flavor"]
 
 			include 'org/spongepowered/asm/bridge/RemapperAdapter.class'
 			include 'org/spongepowered/asm/bridge/RemapperAdapterFML.class'
 		}
 
 		// 3. Combine the two jars
-		task("shadowJar$sourceSuffix", type: ShadowJar) {
+		task("shadowJar$_flavor", type: ShadowJar) {
 			from(sourceSets.main.output) {
 				exclude "mcmod.info"
 			}
 
-			version = versionBase + "+" + mixinClassifier
+			version = versionBase + "+" + mixinFlavorClassifier
 
-			dependsOn "mixinJar$sourceSuffix"
-			dependsOn "bridgeJar$sourceSuffix"
+			dependsOn "mixinJar$_flavor"
+			dependsOn "bridgeJar$_flavor"
 
-			from zipTree(tasks."mixinJar$sourceSuffix".archiveFile).matching {
+			from zipTree(tasks."mixinJar$_flavor".archiveFile).matching {
 				exclude "META-INF/*.RSA", "META-INF/*.SF", "META-INF/*.MF"
 				exclude "META-INF/services/*.Processor"
 				// Replaced by local classes
 				exclude "org/spongepowered/asm/bridge/**"
 			}
-			from zipTree(tasks."bridgeJar$sourceSuffix".archiveFile).matching { include 'org/spongepowered/asm/bridge/*' }
+			from zipTree(tasks."bridgeJar$_flavor".archiveFile).matching { include 'org/spongepowered/asm/bridge/*' }
 
 			doLast {
-				delete tasks."mixinJar$sourceSuffix".archiveFile
-				delete tasks."bridgeJar$sourceSuffix".archiveFile
+				delete tasks."mixinJar$_flavor".archiveFile
+				delete tasks."bridgeJar$_flavor".archiveFile
 			}
 
 			manifest {
@@ -260,32 +260,32 @@ apply plugin: "com.github.johnrengelman.shadow"
 			}
 		}
 
-		jar.dependsOn("shadowJar$sourceSuffix")
+		jar.dependsOn("shadowJar$_flavor")
 	}
 
 	// Common
 
-	task("createMcmodInfo$sourceSuffix", type: Copy) {
+	task("createMcmodInfo$_flavor", type: Copy) {
 		outputs.upToDateWhen { false }
 		from 'src/main/resources/mcmod.info'
-		into "build/tmp/mcmod.${mixinSource}.info"
+		into "build/tmp/mcmod.${mixinFlavor}.info"
 		filter {
-			line -> line.replaceAll('@MIXIN_CLASSIFIER@', mixinClassifier).replaceAll('@MIXIN_SOURCE_CAPITALIZED@', mixinSourceCapitalized).replaceAll('@VERSION@', "$versionBase+$mixinClassifier")
+			line -> line.replaceAll('@MIXIN_CLASSIFIER@', mixinFlavorClassifier).replaceAll('@MIXIN_SOURCE_CAPITALIZED@', mixinFlavorCapitalized).replaceAll('@VERSION@', "$versionBase+$mixinFlavorClassifier")
 		}
 	}
 
-	tasks."shadowJar$sourceSuffix" {
-		dependsOn("createMcmodInfo$sourceSuffix")
-		from "build/tmp/mcmod.${mixinSource}.info/mcmod.info"
+	tasks."shadowJar$_flavor" {
+		dependsOn("createMcmodInfo$_flavor")
+		from "build/tmp/mcmod.${mixinFlavor}.info/mcmod.info"
 	}
 
 	publishing {
 		publications {
-			create("maven$sourceSuffix", MavenPublication) {
-				artifact tasks."shadowJar$sourceSuffix"
+			create("maven$_flavor", MavenPublication) {
+				artifact tasks."shadowJar$_flavor"
 
 				artifactId = archivesBaseName
-				version = tasks."shadowJar$sourceSuffix".version
+				version = tasks."shadowJar$_flavor".version
 			}
 		}
 	}
