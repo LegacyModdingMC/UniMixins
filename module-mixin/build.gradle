@@ -143,8 +143,8 @@ apply plugin: "com.github.johnrengelman.shadow"
 			classifier = "tmpBridge$_flavor"
 			configurations = [project.configurations."shadowBridge$_flavor"]
 
-			include 'org/spongepowered/asm/bridge/RemapperAdapter.class'
-			include 'org/spongepowered/asm/bridge/RemapperAdapterFML.class'
+			include '*.jar'
+			include 'org/spongepowered/asm/bridge/*'
 		}
 
 		// 3. Combine the two jars
