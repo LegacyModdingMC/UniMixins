@@ -77,6 +77,7 @@ jar {
 
 ext.extraVersion = "1.2.0"
 ext.mcversion = "1.7.10"
+version += "+" + extraVersion
 
 minecraft {
 	replace("@VERSION@", extraVersion)
