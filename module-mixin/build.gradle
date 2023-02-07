@@ -40,6 +40,7 @@ apply plugin: "com.github.johnrengelman.shadow"
 
 	configurations.create("shadow$_flavor")
 	configurations.create("shadowBridge$_flavor")
+	configurations.create("shadowSources$_flavor")
 
 	if (mixinFlavor == "fabric" || mixinFlavor == "spongepowered" || mixinFlavor == "unimix" || mixinFlavor == "gtnh") {
 		// Fabric / SpongePowered / UniMix / GTNH
@@ -64,6 +65,10 @@ apply plugin: "com.github.johnrengelman.shadow"
 				add("shadowBridge$_flavor", "$mixinGroup:sponge-mixin:$mixinVersion", {
 					transitive = false
 				})
+
+				add("shadowSources$_flavor", "$mixinGroup:sponge-mixin:$mixinVersion:sources", {
+					transitive = false
+				})
 			}
 		} else if(mixinFlavor == "spongepowered") {
 			mixinFlavorClassifier = "spongepowered-0.8.5"
@@ -78,6 +83,8 @@ apply plugin: "com.github.johnrengelman.shadow"
 				add("shadow$_flavor", 'org.ow2.asm:asm-tree:9.2')
 				add("shadow$_flavor", 'org.ow2.asm:asm-commons:9.2')
 				add("shadow$_flavor", 'org.ow2.asm:asm-util:9.2')
+
+				add("shadowSources$_flavor", 'org.spongepowered:mixin:0.8.5:sources')
 			}
 		} else if(mixinFlavor == "gtnh") {
 			// Adapted from GTNHMixins's build script
@@ -93,6 +100,7 @@ apply plugin: "com.github.johnrengelman.shadow"
 				add("shadow$_flavor", "org.ow2.asm:asm-util:$asmVersion")
 				add("shadow$_flavor", "com.google.guava:guava:21.0")
 				add("shadowBridge$_flavor", 'org.spongepowered:mixin:0.8.5')
+				add("shadowSources$_flavor", 'org.spongepowered:mixin:0.8.5:sources')
 			}
 
 		}
@@ -184,6 +192,7 @@ apply plugin: "com.github.johnrengelman.shadow"
 		
 		dependencies {
 			add("shadow$_flavor", 'org.spongepowered:mixin:0.8.5-gasstation_7')
+			add("shadowSources$_flavor", 'org.spongepowered:mixin:0.8.5-gasstation_7:sources')
 		}
 
 		task("shadowJar$_flavor", type: ShadowJar) {
@@ -223,10 +232,21 @@ apply plugin: "com.github.johnrengelman.shadow"
 		from "build/tmp/mcmod.${mixinFlavor}.info/mcmod.info"
 	}
 
+	task("shadowSourcesJar$_flavor", type: ShadowJar) {
+		from sourceSets.main.allSource
+		
+		version = versionBase + "+" + mixinFlavorClassifier
+		classifier = "sources"
+		configurations = [project.configurations."shadowSources$_flavor"]
+	}
+
+	jar.dependsOn("shadowSourcesJar$_flavor")
+
 	publishing {
 		publications {
 			create("maven$_flavor", MavenPublication) {
 				artifact tasks."shadowJar$_flavor"
+				artifact tasks."shadowSourcesJar$_flavor"
 
 				artifactId = archivesBaseName
 				version = tasks."shadowJar$_flavor".version
@@ -239,4 +259,3 @@ apply plugin: "com.github.johnrengelman.shadow"
 reobf.enabled = false
 
 jar.enabled = false
-sourcesJar.enabled = false

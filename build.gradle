@@ -33,24 +33,25 @@ allprojects {
 	}
 	
 	apply from: "${project.rootDir}/buildscript/forge-1.7.gradle"
-	
-	task sourcesJar(type: Jar) {
-		from sourceSets.main.allSource
-		//from (file("$projectDir/LICENSE"))
-		classifier = 'sources'
-	}
 
 	if(project.name.startsWith("module-") && project.name != "module-mixin") {
-		artifacts {
-			archives sourcesJar
+		if(project.name != "module-all") {
+			task sourcesJar(type: Jar) {
+				from sourceSets.main.allSource
+				classifier = 'sources'
+			}
 		}
 		
 		afterEvaluate {
+			artifacts {
+				archives tasks."sourcesJar"
+			}
+
 			publishing {
 				publications {
 					create("maven", MavenPublication) {
 						artifact jar.enabled ? jar : shadowJar
-						artifact source: sourcesJar, classifier: 'sources'
+						artifact source: tasks."sourcesJar", classifier: 'sources'
 						artifactId = archivesBaseName
 						version = jar.version
 					}
