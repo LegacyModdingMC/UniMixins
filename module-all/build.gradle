@@ -18,10 +18,8 @@ import java.util.jar.Manifest;
 def getCorePlugin(file) {
 	def plugin = null
 	zipTree(file).matching { include 'META-INF/MANIFEST.MF' }.getSingleFile().withInputStream {
-		is ->
-			def man = new Manifest(is)
-			plugin = man.mainAttributes.getValue("FMLCorePlugin")
-		}
+		plugin = new Manifest(it).mainAttributes.getValue("FMLCorePlugin")
+	}
 	return plugin
 }
 
@@ -31,9 +29,8 @@ task createMergedMcmodInfo() {
 	doLast {
 		def mergedJson = []
 		getModuleJars().each {
-			j ->
-				def json = new groovy.json.JsonSlurper().parseText(zipTree(j).matching { include 'mcmod.info' }.getSingleFile().text)
-				mergedJson += json
+			def json = new groovy.json.JsonSlurper().parseText(zipTree(it).matching { include 'mcmod.info' }.getSingleFile().text)
+			mergedJson += json
 		}
 		
 		def desc = mergedJson.collect{ it.name.split(": ")[1]}.join("; ")
