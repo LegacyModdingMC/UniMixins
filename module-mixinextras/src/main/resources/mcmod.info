@@ -2,7 +2,7 @@
 {
   "name": "UniMixins: MixinExtras",
   "description": "UniMixins module that provides MixinExtras (version: ${extraVersion}).",
-  "version": "${version}",
+  "version": "${extraVersion}+uni-${uniVersion}",
   "mcversion": "${minecraft_version}",
   "url": "",
   "updateUrl": "",

@@ -3,7 +3,7 @@
     "modid": "gasstation",
     "name": "UniMixins: GasStation",
     "description": "UniMixins module that provides GasStation extras.",
-    "version": "${extraVersion}",
+    "version": "${extraVersion}+uni-${uniVersion}",
     "mcversion": "${mcversion}",
     "url": "",
     "updateUrl": "",

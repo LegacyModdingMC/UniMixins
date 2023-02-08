@@ -34,6 +34,7 @@ minecraft {
 	srgExtra "PK: com/gtnewhorizon ru/timeconqueror/spongemixins/repackage/com/gtnewhorizon"
 }
 
+ext.uniVersion = version
 ext.mcversion = "1.7.10"
 ext.extraVersion = "2.0.1"
 version += "+gtnh-" + ext.extraVersion

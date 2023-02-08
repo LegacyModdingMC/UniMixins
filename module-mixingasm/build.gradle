@@ -24,6 +24,7 @@ jar {
 	}
 }
 
+ext.uniVersion = version
 ext.extraVersion = "0.2.2"
 version += "+" + ext.extraVersion
 

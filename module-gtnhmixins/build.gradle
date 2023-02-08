@@ -65,6 +65,7 @@ jar {
 
 reobf.enabled = false
 
+ext.uniVersion = version
 ext.extraVersion = "2.1.9"
 ext.extraModid = "gtnhmixins"
 ext.mcversion = "1.7.10"
