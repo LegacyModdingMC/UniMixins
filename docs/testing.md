@@ -1,8 +1,8 @@
-List of test cases verifying the functionality of modules. An item is checked if all of its children are either known to work, or no mod is known to use them.
+## Production
+
+List of test cases we have used to verify the functionality of modules. An item is checked if all of its children are either known to work, or no mod is known to use them.
 
 All test cases assume default configs for mods.
-
-## Test cases
 
 * [x] SpongeMixins
     * [x] Mod annotation
@@ -65,3 +65,14 @@ All test cases assume default configs for mods.
         * [x] [BugTorch 1.1.6.6-GTNH](https://github.com/GTNewHorizons/BugTorch/releases/download/1.1.6.6-GTNH/bugtorch-1.7.10-1.1.6.6-GTNH.jar)
             * [x] When a cobweb is broken with unenchanted shears, a cobweb is dropped.
                 * The mod uses the MixinBooterLegacy-style ASM package name (`org.spongepowered.libraries.org.objectweb.asm`) [in its mixin config plugin](https://github.com/GTNewHorizons/BugTorch/blob/3e1758a12bd92d6dabab566ed9a1e811528c655f/src/main/java/jss/bugtorch/core/BugTorchMixinPlugin.java#L13), while UniMixins uses the legacy package name (`org.spongeweb.asm.lib`). If the mod loads, that means the remapping was successful.
+
+## Development
+
+Mods we have gotten running in a development environment.
+
+* [x] Hodgepodge [@ 6e3907f](https://github.com/GTNewHorizons/Hodgepodge/tree/6e3907fbc619a217678734448295880bb736a063)   
+    * Uses GTNH build script with RFG
+* [x] BugTorch [@ d5d4a51](https://github.com/jss2a98aj/BugTorch/tree/d5d4a51fd0414fb35692c83004ee5d9152e1a3fe)
+    * Uses GTNH build script with RFG
+* [x] ArchaicFix [@ 1dac308](https://github.com/embeddedt/ArchaicFix/tree/1dac308d2d15abf82a409cb5574b901b54a6f38c)
+    * Uses FalsePattern's build script
