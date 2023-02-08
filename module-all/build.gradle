@@ -113,6 +113,7 @@ jar {
 			'FMLCorePluginContainsFMLMod': true,
 			'ForceLoadAsMod': true,
 			'FMLCorePlugin': 'io.github.legacymoddingmc.unimixins.all.AllCore',
+			'MixinConfigs': 'mixins.gtnhmixins.json,mixins.gasstation.json,mixins.gtnhmixins.json,mixingasm.mixin.json'
 		)
 	}
 }
