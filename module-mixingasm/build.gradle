@@ -6,7 +6,8 @@ repositories {
 }
 
 dependencies {
-	compile('org.spongepowered:mixin:0.7.11-SNAPSHOT')
+	compile project(":module-mixin")
+	compile files(tasks.getByPath(":module-mixin:shadowJarUnimix").getOutputs().getFiles().getSingleFile())
 }
 
 archivesBaseName = archivesBaseName.replace("-1.7.10", "-mixingasm-1.7.10")

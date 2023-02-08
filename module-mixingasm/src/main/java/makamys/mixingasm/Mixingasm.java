@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import cpw.mods.fml.common.versioning.ComparableVersion;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,6 +19,8 @@ import makamys.mixingasm.api.IMixinSafeTransformer;
 import makamys.mixingasm.api.TransformerInclusions;
 import net.minecraft.launchwrapper.IClassTransformer;
 import net.minecraft.launchwrapper.Launch;
+import org.spongepowered.asm.service.ITransformerProvider;
+import org.spongepowered.asm.service.MixinService;
 
 public class Mixingasm {
     
@@ -28,7 +31,19 @@ public class Mixingasm {
         List<String> badTransformers = getBadTransformers();
         LOGGER.debug("Excluding transformers: " + badTransformers);
         for(String badTransformer : badTransformers) {
-            MixinEnvironment.getCurrentEnvironment().addTransformerExclusion(badTransformer);
+            addTransformerExclusion(badTransformer);
+        }
+    }
+
+    private static void addTransformerExclusion(String transformer) {
+        String mixinVersion = (String)Launch.blackboard.get("mixin.initialised");
+        if(mixinVersion != null && new ComparableVersion(mixinVersion).compareTo(new ComparableVersion("0.8.5")) >= 0) {
+            ITransformerProvider transformers = MixinService.getService().getTransformerProvider();
+            if(transformers != null) {
+                transformers.addTransformerExclusion(transformer);
+            }
+        } else {
+            MixinEnvironment.getCurrentEnvironment().addTransformerExclusion(transformer);
         }
     }
     
