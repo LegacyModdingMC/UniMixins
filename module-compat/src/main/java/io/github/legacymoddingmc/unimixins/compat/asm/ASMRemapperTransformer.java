@@ -2,6 +2,7 @@ package io.github.legacymoddingmc.unimixins.compat.asm;
 
 import static io.github.legacymoddingmc.unimixins.compat.CompatCore.LOGGER;
 
+import com.google.common.primitives.Bytes;
 import net.minecraft.launchwrapper.IClassTransformer;
 import net.minecraft.launchwrapper.Launch;
 import org.apache.commons.lang3.StringUtils;
@@ -61,32 +62,40 @@ public class ASMRemapperTransformer implements IClassTransformer {
             ClassReader classReaderForNode = new ClassReader(basicClass);
             classReaderForNode.accept(classNode, 0);
 
-            boolean doRemap = !remapSelectively;
+            boolean doRemap = false;
 
-            if(!doRemap) {
-                for (String itf : classNode.interfaces) {
-                    if (interfaceWhitelist.contains(itf)) {
-                        doRemap = true;
+            if(remapSelectively) {
+                if(!doRemap) {
+                    for (String itf : classNode.interfaces) {
+                        if (interfaceWhitelist.contains(itf)) {
+                            doRemap = true;
+                        }
                     }
                 }
-            }
 
-            if(!doRemap) {
-                for (String pkg : packageWhitelist) {
-                    if(transformedName.startsWith(pkg)) {
-                        doRemap = true;
+                if(!doRemap) {
+                    for (String pkg : packageWhitelist) {
+                        if(transformedName.startsWith(pkg)) {
+                            doRemap = true;
+                        }
                     }
                 }
+            } else {
+                doRemap = Bytes.indexOf(basicClass, getFakeASMPackagePrefix().getBytes()) != -1;
             }
 
             if(doRemap) {
-                if(remapSelectively) {
-                    LOGGER.info("Transforming class " + transformedName + " to fit current Mixin environment.");
-                }
+                LOGGER.info("Transforming class " + transformedName + " to fit current Mixin environment.");
+                int oldLength = basicClass.length;
                 ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_MAXS);
                 RemappingClassAdapter remapAdapter = new SpongepoweredASMRemappingAdapter(classWriter);
                 classReader.accept(remapAdapter, ClassReader.EXPAND_FRAMES);
-                return classWriter.toByteArray();
+                basicClass = classWriter.toByteArray();
+                int newLength = basicClass.length;
+
+                if(newLength != oldLength) {
+                    LOGGER.info("Transformed class " + transformedName + " to fit current mixin environment (size: " + oldLength + " -> " + newLength + ")");
+                }
             }
         }
         return basicClass;
@@ -121,6 +130,10 @@ public class ASMRemapperTransformer implements IClassTransformer {
         }
         return realASMPackagePrefix;
     }
+
+    private static String getFakeASMPackagePrefix() {
+        return ASM_PACKAGE_PREFIXES.get(ASM_PACKAGE_PREFIXES.get(0).equals(getRealASMPackagePrefix()) ? 1 : 0);
+     }
 
     private static class SpongepoweredASMRemappingAdapter extends RemappingClassAdapter {
         public SpongepoweredASMRemappingAdapter(ClassWriter classWriter) {
