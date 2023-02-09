@@ -31,7 +31,7 @@ apply plugin: "com.github.johnrengelman.shadow"
 		
 		if (mixinFlavor == "fabric" || mixinFlavor == "unimix") {
 			def mixinVersion = mixinFlavor == "fabric" ? "0.11.4+mixin.0.8.5" : "0.11.5+mixin.0.8.5"
-			if (mixinFlavor == "unimix" && (project.hasProperty("local") || true)) {
+			if (mixinFlavor == "unimix" && project.hasProperty("local")) {
 				mixinVersion += "-local"
 			}
 			def mixinGroup = mixinFlavor == "fabric" ? "net.fabricmc" : "io.github.legacymoddingmc"
