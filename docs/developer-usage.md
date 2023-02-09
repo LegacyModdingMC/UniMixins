@@ -54,6 +54,7 @@ dependencies {
     
     // Needed if not using UniMix or GTNH's Mixin fork
     //implementation("io.github.legacymoddingmc.unimixins:_unimixins-devcompat-1.7.10:$unimixinsVersion")
+}
 ```
 
 ## Pitfalls
