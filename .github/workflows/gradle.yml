@@ -22,11 +22,15 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Set up Gradle build
-      run: ./gradlew SetupCIWorkspace build
+      run: ./gradlew setupCIWorkspace
     - name: Build with Gradle
-      run: ./gradlew cleanBuildAll
-      working-directory: publish
+      run: ./gradlew build
+    - name: Assemble modular zip
+      run: ./build-zip.sh
     - uses: actions/upload-artifact@v3
       with:
         name: Package
-        path: build/libs
+        path: |
+          module-all/build/libs
+          !module-all/build/libs/*-sources.jar
+          build/*-modular-*.zip
