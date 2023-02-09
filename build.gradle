@@ -80,7 +80,7 @@ allprojects {
 	copy {
 		from "$projectDir"
 		into "$projectDir/build/tmp/license"
-		include "CREDITS", "LICENSE", "README*"
+		include "CREDITS", "LICENSE*", "README*"
 	}
 	
 	sourceSets.main.resources.srcDir("build/tmp/license")

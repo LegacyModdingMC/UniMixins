@@ -5,7 +5,7 @@ Classes used:
 ru.timeconqueror.spongemixins.*
 com.gtnewhorizon.gtnhmixins.GTNHMixins (modified to not have @Mod annotation)
 
-License: LGPL3 (see LICENSE.GTNHMixins)
+License: LGPL3 (see LICENSE.LGPLv3)
 
 
 Source: https://github.com/GTNewHorizons/SpongeMixins/tree/c372c9010f9854dc80415a8fd1ff414fd0822f00
