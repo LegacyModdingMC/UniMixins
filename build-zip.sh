@@ -6,13 +6,7 @@
 set -e
 
 ./gradlew clean
-
-./gradlew module-mixin:build -PmixinSource=spongepowered
-./gradlew module-mixin:build -PmixinSource=fabric
-./gradlew module-mixin:build -PmixinSource=gasmix
-./gradlew module-mixin:build -PmixinSource=gtnh
-
-./gradlew module-all:build $ALL_BUILD_EXTRA_ARG
+./gradlew build
 
 mkdir build -p
 
