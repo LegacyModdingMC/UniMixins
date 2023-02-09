@@ -85,17 +85,11 @@ public class ASMRemapperTransformer implements IClassTransformer {
             }
 
             if(doRemap) {
-                LOGGER.info("Transforming class " + transformedName + " to fit current Mixin environment.");
-                int oldLength = basicClass.length;
+                LOGGER.info("Transforming class " + transformedName + " to fit current mixin environment.");
                 ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_MAXS);
                 RemappingClassAdapter remapAdapter = new SpongepoweredASMRemappingAdapter(classWriter);
                 classReader.accept(remapAdapter, ClassReader.EXPAND_FRAMES);
                 basicClass = classWriter.toByteArray();
-                int newLength = basicClass.length;
-
-                if(newLength != oldLength) {
-                    LOGGER.info("Transformed class " + transformedName + " to fit current mixin environment (size: " + oldLength + " -> " + newLength + ")");
-                }
             }
         }
         return basicClass;
