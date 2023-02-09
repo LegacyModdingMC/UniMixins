@@ -43,6 +43,9 @@ allprojects {
 			url = "http://jenkins.usrv.eu:8081/nexus/content/groups/public/"
 			allowInsecureProtocol = true
 		}
+		maven {
+			url 'https://jitpack.io'
+		}
 	}
 	
 	apply from: "${project.rootDir}/buildscript/forge-1.7.gradle"

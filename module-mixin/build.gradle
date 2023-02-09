@@ -30,27 +30,27 @@ apply plugin: "com.github.johnrengelman.shadow"
 		// Fabric / SpongePowered / UniMix / GTNH
 		
 		if (mixinFlavor == "fabric" || mixinFlavor == "unimix") {
-			def mixinVersion = mixinFlavor == "fabric" ? "0.11.4+mixin.0.8.5" : "0.11.5+mixin.0.8.5"
+			def mixinVersion = mixinFlavor == "fabric" ? "0.11.4+mixin.0.8.5" : "0.11.6"
 			if (mixinFlavor == "unimix" && project.hasProperty("local")) {
 				mixinVersion += "-local"
 			}
-			def mixinGroup = mixinFlavor == "fabric" ? "net.fabricmc" : "io.github.legacymoddingmc"
-			def mixinDep = mixinFlavor == "fabric" ? "net.fabricmc:sponge-mixin:$mixinVersion" : "io.github.legacymoddingmc:sponge-mixin:$mixinVersion"
+			def mixinGroup = mixinFlavor == "fabric" ? "net.fabricmc" : "com.github.legacymoddingmc"
+			def mixinDep = mixinFlavor == "fabric" ? "net.fabricmc:sponge-mixin:$mixinVersion" : "com.github.LegacyModdingMC:UniMix:$mixinVersion"
 			mixinFlavorClassifier = "$mixinFlavor-$mixinVersion"
 			
 			dependencies {
-				add("shadow$_flavor", "$mixinGroup:sponge-mixin:$mixinVersion", {
+				add("shadow$_flavor", "$mixinDep", {
 					exclude group: "org.ow2.asm"
 				})
 				add("shadow$_flavor", 'org.ow2.asm:asm-tree:9.4')
 				add("shadow$_flavor", 'org.ow2.asm:asm-commons:9.4')
 				add("shadow$_flavor", 'org.ow2.asm:asm-util:9.4')
 
-				add("shadowBridge$_flavor", "$mixinGroup:sponge-mixin:$mixinVersion", {
+				add("shadowBridge$_flavor", "$mixinDep", {
 					transitive = false
 				})
 
-				add("shadowSources$_flavor", "$mixinGroup:sponge-mixin:$mixinVersion:sources", {
+				add("shadowSources$_flavor", "$mixinDep:sources", {
 					transitive = false
 				})
 			}
