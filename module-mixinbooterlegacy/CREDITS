@@ -7,5 +7,6 @@ Classes used:
 Modifications:
 - Replaced mod container with a @Mod annotation
 - Changed shaded ASM package name to legacy one
+- Changed mixin config to use PREINIT phase
 
 License: LGPL 2.1 (see LICENSE)
