@@ -9,22 +9,6 @@ buildscript {
 	}
 }
 
-repositories {
-	maven {
-		name = 'sponge'
-		url = 'https://repo.spongepowered.org/maven/'
-	}
-	maven {
-		url = "https://mvn.falsepattern.com/releases"
-	}
-	maven {
-		name = "GTNH Maven"
-		url = "http://jenkins.usrv.eu:8081/nexus/content/groups/public/"
-		allowInsecureProtocol = true
-	}
-	mavenLocal()
-}
-
 def versionBase = version
 archivesBaseName = archivesBaseName.replace("-1.7.10", "-mixin-1.7.10")
 
