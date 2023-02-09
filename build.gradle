@@ -85,3 +85,6 @@ allprojects {
 	
 	sourceSets.main.resources.srcDir("build/tmp/license")
 }
+
+jar.enabled = false
+reobf.enabled = false
