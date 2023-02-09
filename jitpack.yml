@@ -1,7 +1,2 @@
-before_install:
-# jitpack doesn't come with Python, so we have to do this
-# https://github.com/facebook/buck/blob/5c6382b3d81beae78c64499440847f210570a987/jitpack.yml
-   - mkdir python_tmp
-   - wget https://github.com/kageiit/jitpack-python/releases/download/3.8/python-3.8-ubuntu-16.tar.gz -O python_tmp/python.tar.gz
-   - tar -C python_tmp -xf python_tmp/python.tar.gz
-   - export PATH="$PATH:python_tmp/bin"
+install:
+   - ./gradlew publishToMavenLocal
