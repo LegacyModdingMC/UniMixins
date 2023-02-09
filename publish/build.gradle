@@ -9,22 +9,41 @@ import groovy.json.JsonSlurper
 import okhttp3.OkHttpClient
 import java.util.concurrent.TimeUnit
 
-def getCommitVersion(){
-	try {
-		def commitHashProc = "python3 ${projectDir}/get_version.py".execute()
-		commitHashProc.waitFor()
-		if(commitHashProc.exitValue() == 0){
-			def commitHash = commitHashProc.text.trim()
-			
-			return commitHash
-		} else {
-			println commitHashProc.err.text
-			throw new Exception("get_version.py exited with non-zero return value")
+def commitHashProc = cmd.execute(null, file("${projectDir}"))
+commitHashProc.waitFor()
+if(commitHashProc.exitValue() == 0){
+	def commitHash = commitHashProc.text.trim()
+
+	return commitHash
+} else {
+	println commitHashProc.err.text
+	println(cmd + " exited with non-zero return value")
+	return null
+}
+}
+
+def getCommitVersion() {
+	def ver = null
+
+	def versionPath = publishDir + "/version.txt"
+	if(file(versionPath).isFile()) {
+		ver = file(versionPath).text
+	} else {
+
+		try {
+			ver = runCommand("git describe --tags --dirty") ?: "UNKNOWN-" + runCommand("git describe --always --dirty") ?: "UNKNOWN"
+		} catch(Exception e){
+			println "Failed to run " + cmd + ": " + e.getMessage()
+			ver = "UNKNOWN"
 		}
-	} catch(Exception e){
-		println "Failed to run get_version.py: " + e.getMessage()
 	}
-	return "UNKNOWN" // fallback
+
+	ver = ver.trim()
+	if(ver.charAt(0) == 'v') {
+		ver = ver.substring(1)
+	}
+
+	return ver
 }
 
 def buildVersion = getCommitVersion()

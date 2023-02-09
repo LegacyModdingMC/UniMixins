@@ -4,22 +4,42 @@ apply plugin: 'forge'
 
 ext.publishDir = project.multiproject_structure.toBoolean() ? "${projectDir}/../publish" : "${rootDir}/publish"
 
-def getCommitVersion(){
-	try {
-		def commitHashProc = "python3 ${ext.publishDir}/get_version.py".execute(null, file("${projectDir}"))
-		commitHashProc.waitFor()
-		if(commitHashProc.exitValue() == 0){
-			def commitHash = commitHashProc.text.trim()
-			
-			return commitHash
-		} else {
-			println commitHashProc.err.text
-			throw new Exception("get_version.py exited with non-zero return value")
-		}
-	} catch(Exception e){
-		println "Failed to run get_version.py: " + e.getMessage()
+def runCommand(cmd) {
+	def commitHashProc = cmd.execute(null, file("${projectDir}"))
+	commitHashProc.waitFor()
+	if(commitHashProc.exitValue() == 0){
+		def commitHash = commitHashProc.text.trim()
+
+		return commitHash
+	} else {
+		println commitHashProc.err.text
+		println(cmd + " exited with non-zero return value")
+		return null
 	}
-	return "UNKNOWN" // fallback
+}
+
+def getCommitVersion() {
+	def ver = null
+
+	def versionPath = publishDir + "/version.txt"
+	if(file(versionPath).isFile()) {
+		ver = file(versionPath).text
+	} else {
+
+		try {
+			ver = runCommand("git describe --tags --dirty") ?: "UNKNOWN-" + runCommand("git describe --always --dirty") ?: "UNKNOWN"
+		} catch(Exception e){
+			println "Failed to run " + cmd + ": " + e.getMessage()
+			ver = "UNKNOWN"
+		}
+	}
+
+	ver = ver.trim()
+	if(ver.charAt(0) == 'v') {
+		ver = ver.substring(1)
+	}
+
+	return ver
 }
 
 project.version = getCommitVersion()
