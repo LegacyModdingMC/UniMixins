@@ -58,7 +58,7 @@ All modules depend on the Mixin module. Note that the dependents don't necessari
 ### Optional
 
 * **Mixin (SpongePowered)**: Provides [the upstream fork](https://github.com/SpongePowered/Mixin) of Mixin.
-* **Mixin (Fabric)**: Provides [the Fabric fork]((https://github.com/FabricMC/Mixin) of Mixin.
+* **Mixin (Fabric)**: Provides [the Fabric fork](https://github.com/FabricMC/Mixin) of Mixin.
 * **Mixin (GasMix)**: Provides the GasStation fork of Mixin.
 * **Mixin (GTNH)**: Provides [the GTNH fork](https://github.com/GTNewHorizons/SpongePoweredMixin) of Mixin.
 * **DevCompat**: Compatibility tweaks for dev environments. Not needed if using UniMix or GTNH's Mixin fork.
