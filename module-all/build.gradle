@@ -17,12 +17,12 @@ def getModuleJars(source = false) {
 
 import java.util.jar.Manifest;
 
-def getCorePlugin(file) {
-	def plugin = null
+def getManifest(file) {
+	def man = null
 	zipTree(file).matching { include 'META-INF/MANIFEST.MF' }.getSingleFile().withInputStream {
-		plugin = new Manifest(it).mainAttributes.getValue("FMLCorePlugin")
+		man = new Manifest(it).mainAttributes
 	}
-	return plugin
+	return man
 }
 
 task createMergedMcmodInfo() {
@@ -52,7 +52,7 @@ task createEmbeddedCorePluginsFile() {
 	outputs.file(path)
 	outputs.upToDateWhen { false }
 	doLast {
-		file(path).text = getModuleJars().findResults { getCorePlugin(it) }.join(' ')
+		file(path).text = getModuleJars().findResults { getManifest(it).getValue("FMLCorePlugin") }.join(' ')
 		return file(path)
 	}
 	
@@ -113,7 +113,17 @@ jar {
 			'FMLCorePluginContainsFMLMod': true,
 			'ForceLoadAsMod': true,
 			'FMLCorePlugin': 'io.github.legacymoddingmc.unimixins.all.AllCore',
-			'MixinConfigs': 'mixins.gtnhmixins.json,mixins.gasstation.json,mixins.gtnhmixins.json,mixingasm.mixin.json'
+			'MixinConfigs': 'mixins.gtnhmixins.json,mixins.gasstation.json,mixins.gtnhmixins.json,mixingasm.mixin.json',
+			'Premain-Class': 'org.spongepowered.tools.agent.MixinAgent',
+			'Agent-Class': 'org.spongepowered.tools.agent.MixinAgent',
+			'Can-Redefine-Classes': true,
+			'Can-Retransform-Classes': true,
+		)
+	}
+
+	doFirst {
+		manifest.attributes (
+			'Implementation-Version': getManifest(getModuleJar("module-mixin")).getValue("Implementation-Version")
 		)
 	}
 }
