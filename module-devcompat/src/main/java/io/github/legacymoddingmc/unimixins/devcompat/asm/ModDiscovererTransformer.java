@@ -25,6 +25,8 @@ public class ModDiscovererTransformer implements IClassTransformer {
         if(basicClass == null) {
             return null;
         }
+        if(transformedName.startsWith("org.objectweb.asm.")) return basicClass;
+
         if(transformedName.equals("cpw.mods.fml.common.discovery.ModDiscoverer")) {
             basicClass = doTransformModDiscoverer(basicClass);
         }

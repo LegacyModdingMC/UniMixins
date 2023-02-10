@@ -55,42 +55,46 @@ public class ASMRemapperTransformer implements IClassTransformer {
         if(basicClass == null) {
             return null;
         }
-        if(!transformedName.startsWith("io.github.legacymoddingmc.unimixins.compat.asm.")) {
-            ClassReader classReader = new ClassReader(basicClass);
+        if(transformedName.startsWith("io.github.legacymoddingmc.unimixins.compat.asm.")
+            || transformedName.startsWith("com.google.")
+            || transformedName.startsWith("org.apache.")
+            || transformedName.startsWith("org.objectweb.asm.")
+        ) return basicClass;
 
-            ClassNode classNode = new ClassNode();
-            ClassReader classReaderForNode = new ClassReader(basicClass);
-            classReaderForNode.accept(classNode, 0);
+        ClassReader classReader = new ClassReader(basicClass);
 
-            boolean doRemap = false;
+        ClassNode classNode = new ClassNode();
+        ClassReader classReaderForNode = new ClassReader(basicClass);
+        classReaderForNode.accept(classNode, 0);
 
-            if(remapSelectively) {
-                if(!doRemap) {
-                    for (String itf : classNode.interfaces) {
-                        if (interfaceWhitelist.contains(itf)) {
-                            doRemap = true;
-                        }
+        boolean doRemap = false;
+
+        if(remapSelectively) {
+            if(!doRemap) {
+                for (String itf : classNode.interfaces) {
+                    if (interfaceWhitelist.contains(itf)) {
+                        doRemap = true;
                     }
                 }
+            }
 
-                if(!doRemap) {
-                    for (String pkg : packageWhitelist) {
-                        if(transformedName.startsWith(pkg)) {
-                            doRemap = true;
-                        }
+            if(!doRemap) {
+                for (String pkg : packageWhitelist) {
+                    if(transformedName.startsWith(pkg)) {
+                        doRemap = true;
                     }
                 }
-            } else {
-                doRemap = Bytes.indexOf(basicClass, getFakeASMPackagePrefix().getBytes()) != -1;
             }
+        } else {
+            doRemap = Bytes.indexOf(basicClass, getFakeASMPackagePrefix().getBytes()) != -1;
+        }
 
-            if(doRemap) {
-                LOGGER.info("Transforming class " + transformedName + " to fit current mixin environment.");
-                ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_MAXS);
-                RemappingClassAdapter remapAdapter = new SpongepoweredASMRemappingAdapter(classWriter);
-                classReader.accept(remapAdapter, ClassReader.EXPAND_FRAMES);
-                basicClass = classWriter.toByteArray();
-            }
+        if(doRemap) {
+            LOGGER.info("Transforming class " + transformedName + " to fit current mixin environment.");
+            ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_MAXS);
+            RemappingClassAdapter remapAdapter = new SpongepoweredASMRemappingAdapter(classWriter);
+            classReader.accept(remapAdapter, ClassReader.EXPAND_FRAMES);
+            basicClass = classWriter.toByteArray();
         }
         return basicClass;
     }
