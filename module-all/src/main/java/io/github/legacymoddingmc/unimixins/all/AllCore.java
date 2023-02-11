@@ -1,11 +1,15 @@
 package io.github.legacymoddingmc.unimixins.all;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.io.File;
+import java.net.URL;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin.MCVersion;
+import net.minecraft.launchwrapper.Launch;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,7 +22,21 @@ public class AllCore implements IFMLLoadingPlugin {
     private static List<Class<?>> embeddedCorePluginClasses = new ArrayList<>();
     private static List<IFMLLoadingPlugin> embeddedCorePluginInstances = new ArrayList<>();
 
+    private static List<String> CONCERNING_JAR_PREFIXES = Arrays.asList(
+            "gtnhmixins-",
+            "gasstation-",
+            "mixinbooterlegacy-",
+            "spongemixins-",
+            "mixingasm-"
+    );
+
+    private static final Pattern LETTER = Pattern.compile("[a-z]");
+
     static {
+        if(isIntegrityCheckEnabled()) {
+            doSanityCheck();
+        }
+
         try {
             for(String s : IOUtils.toString(AllCore.class.getResource("/META-INF/unimixins-all.EmbeddedFMLCorePlugins.txt")).split(" ")) {
                 Class<?> cls = Class.forName(s);
@@ -28,6 +46,59 @@ public class AllCore implements IFMLLoadingPlugin {
         } catch(Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private static void doSanityCheck() {
+        List<String> concerningJars = new ArrayList<>();
+
+        for(URL url : Launch.classLoader.getSources()) {
+            String path = url.getPath();
+            if(path.endsWith(".jar")) {
+                String[] components = path.split("/");
+                String name = components[components.length - 1].toLowerCase();
+                Matcher matcher = LETTER.matcher(name);
+                if(matcher.find()) {
+                    int firstLetterIndex = matcher.start();
+                    name = name.substring(firstLetterIndex);
+                    if (anyPrefixesMatch(name, CONCERNING_JAR_PREFIXES)) {
+                        concerningJars.add(name);
+                    }
+                }
+            }
+        }
+
+        if(!concerningJars.isEmpty()) {
+            // Any throwables we throw here will get caught, so all we can do is warn.
+            String theWarning = "Detected incompatible jars: " + concerningJars;
+
+            LOGGER.warn("=======================================================================================");
+            LOGGER.warn("WARNING / WARNING / WARNING / WARNING / WARNING / WARNING / WARNING / WARNING / WARNING");
+            LOGGER.warn("=======================================================================================");
+            LOGGER.error(theWarning);
+            LOGGER.error("The game will almost certainly crash!");
+            LOGGER.fatal("======================================================================================");
+            throw new Error(theWarning); // Attention grabbing stack trace
+        }
+    }
+
+    private static boolean anyPrefixesMatch(String s, Collection<String> prefixes) {
+        for(String p : prefixes) {
+            if(s.startsWith(p)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static boolean isIntegrityCheckEnabled() {
+        // I'm scared to load Forge classes this early so we're doing this
+        File file = new File(Launch.minecraftHome, "config/unimixins.cfg");
+        if(file.exists()) {
+            try {
+                return !FileUtils.readFileToString(file).contains("B:disableIntegrityChecks=true");
+            } catch(Exception e){}
+        }
+        return true;
     }
 
     public AllCore() {
