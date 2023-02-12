@@ -69,7 +69,7 @@ public class GTNHMixinsModule {
         
         if(!missingComponents.isEmpty()) {
             LOGGER.error("The following missing components were detected: " + missingComponents);
-            LOGGER.error("Please obtain mods which provide them. See the readme inside the mod jar or the mod's GitHub page for more details.");
+            LOGGER.error("Please obtain mods which provide them.");
             throw new RuntimeException("Missing components detected");
         }
     }
