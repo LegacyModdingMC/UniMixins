@@ -5,7 +5,7 @@
     "description": "UniMixins module that provides GasStation extras.",
     "version": "${extraVersion}+uni-${uniVersion}",
     "mcversion": "${mcversion}",
-    "url": "",
+    "url": "${project_url}",
     "updateUrl": "",
     "authorList": [
       "FalsePattern"

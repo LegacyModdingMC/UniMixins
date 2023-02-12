@@ -5,7 +5,7 @@
     "description": "UniMixins module that provides an emulation of SpongeMixins (version: ${extraVersion} from GTNHMixins).",
     "version": "${extraVersion}+uni-${uniVersion}",
     "mcversion": "${minecraft_version}",
-    "url": "",
+    "url": "${project_url}",
     "updateUrl": "",
     "authorList": [
       "Time_Conqueror", "mitchej123"

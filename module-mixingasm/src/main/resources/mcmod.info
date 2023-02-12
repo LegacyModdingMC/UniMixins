@@ -5,7 +5,7 @@
     "description": "UniMixins module that implements Mixingasm (version: ${extraVersion}).",
     "version": "${extraVersion}+uni-${uniVersion}",
     "mcversion": "${minecraft_version}",
-    "url": "",
+    "url": "${project_url}",
     "updateUrl": "",
     "authorList": [
       "makamys"

@@ -44,6 +44,7 @@ task createMergedMcmodInfo() {
 				  description: "UniMixins composite jar consisting of the following modules:\n" + desc,
 				  version: version,
 				  mcversion: "1.7.10",
+				  url: project_url,
 				  authorList: ["makamys"],
 			  ]
 		] + mergedJson

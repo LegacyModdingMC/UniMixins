@@ -5,7 +5,7 @@
     "description": "UniMixins module that provides GTNHMixins extras and MixinExtras with the GTNH package name.",
     "version": "${extraVersion}+uni-${uniVersion}",
     "mcversion": "${mcversion}",
-    "url": "",
+    "url": "${project_url}",
     "updateUrl": "",
     "authorList": [
       "mitchej123"

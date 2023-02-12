@@ -5,7 +5,7 @@
     "description": "UniMixins module that remaps mods to use the correct names for Mixin packages.",
     "version": "${version}",
     "mcversion": "${minecraft_version}",
-    "url": "",
+    "url": "${project_url}",
     "updateUrl": "",
     "authorList": [
       "makamys"
