@@ -32,13 +32,21 @@ task createMergedMcmodInfo() {
 		def mergedJson = []
 		getModuleJars().each {
 			def json = new groovy.json.JsonSlurper().parseText(zipTree(it).matching { include 'mcmod.info' }.getSingleFile().text)
+			json[0]["parent"] = "unimixins"
 			mergedJson += json
 		}
 		
 		def desc = mergedJson.collect{ it.name.split(": ")[1]}.join("; ")
-		mergedJson[0].name = "UniMixins"
-		mergedJson[0].description = "UniMixins composite jar consisting of the following modules:\n" + desc
-		mergedJson[0].version = version
+		mergedJson = [
+				[
+				  modid: "unimixins",
+				  name: "UniMixins",
+				  description: "UniMixins composite jar consisting of the following modules:\n" + desc,
+				  version: version,
+				  mcversion: "1.7.10",
+				  authorList: ["makamys"],
+			  ]
+		] + mergedJson
 		
 		file("build/tmp/mcmod.info").text = groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson(mergedJson))
 		return file("build/tmp/mcmod.info")
