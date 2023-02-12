@@ -221,6 +221,7 @@ apply plugin: "com.github.johnrengelman.shadow"
 				'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
 				'FMLCorePluginContainsFMLMod': 'true',
 				'ForceLoadAsMod': 'true',
+				'FMLCorePlugin': 'io.github.legacymoddingmc.unimixins.mixin.MixinCore',
 				'Premain-Class': 'org.spongepowered.tools.agent.MixinAgent',
 				'Agent-Class': 'org.spongepowered.tools.agent.MixinAgent',
 				'Can-Redefine-Classes': true,
