@@ -2,7 +2,7 @@
   {
     "modid": "${extraModid}",
     "name": "UniMixins: GTNHMixins",
-    "description": "UniMixins module that provides GTNHMixins extras and MixinExtras with the GTNH package name.",
+    "description": "UniMixins module that provides GTNHMixins extras and MixinExtras with the GTNH package name.\nDepends on: SpongeMixins",
     "version": "${extraVersion}+uni-${uniVersion}",
     "mcversion": "${mcversion}",
     "url": "${project_url}",
