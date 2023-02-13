@@ -14,6 +14,10 @@ archivesBaseName = archivesBaseName.replace("-1.7.10", "-mixin-1.7.10")
 
 configurations.archives.artifacts.clear()
 
+dependencies {
+	compileOnly("org.spongepowered:mixin:0.8.5")
+}
+
 apply plugin: "com.github.johnrengelman.shadow"
 
 ["spongepowered", "fabric", "gasmix", "gtnh", "unimix"].each {
@@ -34,7 +38,7 @@ apply plugin: "com.github.johnrengelman.shadow"
 			def uniLocal = mixinFlavor == "unimix" && project.hasProperty("local")
 			def uniJitpack = mixinFlavor == "unimix" && !uniLocal
 
-			mixinVersion = mixinFlavor == "fabric" ? "0.11.4+mixin.0.8.5" : "0.11.8+mixin.0.8.5"
+			mixinVersion = mixinFlavor == "fabric" ? "0.11.4+mixin.0.8.5" : "0.11.9+mixin.0.8.5"
 			if (uniLocal) {
 				mixinVersion += "-local"
 			}

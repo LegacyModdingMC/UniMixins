@@ -4,8 +4,7 @@ import cpw.mods.fml.relauncher.IFMLLoadingPlugin;;
 import java.util.*;
 
 /**
- * This plugin only exists to make Mixin add the MixinPlatformAgentFMLLegacy agent for the primary mixin container,
- * which is where we run the Forge-specific init code.
+ * Handles platform-specific setup of the Mixin environment.
  */
 
 @IFMLLoadingPlugin.MCVersion("1.7.10")
@@ -26,9 +25,13 @@ public class MixinCore implements IFMLLoadingPlugin {
         return null;
     }
 
+    /**
+     * This method is the earliest point we can run code after Mixin is initialized via MixinTweaker.
+     * @param data
+     */
     @Override
     public void injectData(Map<String, Object> data) {
-
+        MixinModidDecorator.apply();
     }
 
     @Override
