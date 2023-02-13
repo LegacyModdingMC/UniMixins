@@ -28,7 +28,12 @@ Download the `-all` jar, and put it in your mods directory. Remove any other con
 
 ### Advanced usage
 
-The `-modular` zip contains a separate jar for each module. Some modules depend on other modules, see the below list.
+You can also assemble your own combination of modules using the module jars. Some modules depend on other modules, see the **List of modules** section.
+
+Assuming no other Mixin loaders are present, you will generally want the following modules:
+* **Mixin** (any single flavor)
+* **Compat** and **Mixingasm** (optional but highly recommended)
+* Modules providing any extras you need
 
 The game will crash if modules are missing dependencies. This can be disabled in the config.
 
