@@ -25,14 +25,11 @@ jobs:
       run: ./gradlew setupCIWorkspace
     - name: Build with Gradle
       run: ./gradlew build
-    - name: Assemble modular zip
-      run: ./build-zip.sh
     - name: Copy artifacts to a single directory
       run: |
         mkdir build/tmp/ci -p
-        cp module-all/build/libs/* build/tmp/ci
+        cp module-*/build/libs/* build/tmp/ci
         rm build/tmp/ci/*-sources.jar
-        cp build/*-modular-*.zip build/tmp/ci
     - uses: actions/upload-artifact@v3
       with:
         name: Package
