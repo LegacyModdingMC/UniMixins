@@ -20,7 +20,9 @@ dependencies {
 
 apply plugin: "com.github.johnrengelman.shadow"
 
-["spongepowered", "fabric", "gasmix", "gtnh", "unimix"].each {
+def flavors = (project.hasProperty("noAltMixin") ? [] : ["spongepowered", "fabric", "gasmix", "gtnh"]) + ["unimix"]
+
+flavors.each {
 	def mixinFlavor = it
 	def _flavor = it.capitalize()
 	def mixinFlavorClassifier = "UNKNOWN"

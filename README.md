@@ -62,11 +62,16 @@ All modules depend on the Mixin module. Note that the dependents don't necessari
 
 ### Optional
 
+* **DevCompat**: Compatibility tweaks for dev environments. Not needed if using UniMix or GTNH's Mixin fork.
+
+### Very Optional
+
+These are not included in releases, they mainly exist for testing purposes. (Note: You can only use a single Mixin module at the same time.)
+
 * **Mixin (SpongePowered)**: Provides [the upstream fork](https://github.com/SpongePowered/Mixin) of Mixin.
 * **Mixin (Fabric)**: Provides [the Fabric fork](https://github.com/FabricMC/Mixin) of Mixin.
 * **Mixin (GasMix)**: Provides the GasStation fork of Mixin.
 * **Mixin (GTNH)**: Provides [the GTNH fork](https://github.com/GTNewHorizons/SpongePoweredMixin) of Mixin.
-* **DevCompat**: Compatibility tweaks for dev environments. Not needed if using UniMix or GTNH's Mixin fork.
 
 ## FAQ
 
@@ -102,6 +107,7 @@ When editing the source code of modules, please document your changes in the [CR
 ### Build flags
 * `-Plocal`: use the locally built version of `unimix` when building the Mixin module.
     * Invoke `./gradlew publishToMavenLocal` in the UniMix repo first to install a local build.
+* `-PnoAltMixin`: do not build alternate flavors of the Mixin module, only UniMix. Used by the release workflow.
 
 ### Roadmap
 
