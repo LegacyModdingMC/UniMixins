@@ -1,4 +1,26 @@
 UniMixins is licensed under the Unlicense, as specified in LICENSE.UNLICENSE,
-with the exception of certain modules (found in directories named module-*),
-which are licensed under different terms. Refer to CREDITS and LICENSE inside
-these directories for more information.
+with the exception of the following modules, which are licensed under different
+terms.
+Refer to CREDITS, LICENSE, and README.original.md (whichever of these exist)
+inside their directories for full information, inluding reproductions of their
+original license texts.
+
+## SpongeMixins
+
+Directory: module-spongemixins
+LICENSE: LGPLv3
+
+## MixinBooterLegacy
+
+Directory: module-mixinbooterlegacy
+LICENSE: LGPLv2.1
+
+## GasStation
+
+Directory: module-gasstation
+LICENSE: LGPLv3+SNEED
+
+## GTNHMixins
+
+Directory: module-gtnhmixins
+LICENSE: LGPLv3
