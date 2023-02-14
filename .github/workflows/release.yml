@@ -1,0 +1,63 @@
+# This workflow will build the project and publish a release using the changelog
+# in the last draft release. The draft is deleted after the task is finished.
+
+# Usage:
+# 1. Create a draft release. Set the description and the tag (everything else
+#    will be ignored)
+# 2. Push a tag with the same name
+
+name: Release tagged build
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set release version
+        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV  
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: 8
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      - name: Set up Gradle build
+        run: ./gradlew setupCIWorkspace
+      - name: Build with Gradle
+        run: ./gradlew build
+      - name: Copy artifacts to a single directory
+        run: |
+          mkdir build/tmp/ci -p
+          cp module-*/build/libs/* build/tmp/ci
+          rm build/tmp/ci/*-sources.jar
+      - name: Read changelog from last draft release
+        run: |
+          gh api "/repos/${GITHUB_REPOSITORY}/releases?per_page=1" \
+            | jq ".[0]" > /tmp/last-release.json
+          [ $(cat /tmp/last-release.json | jq '.draft' -r) == true ] || (echo "Error: Last release is not a draft" && false)
+          DRAFT_TAG=$(cat /tmp/last-release.json | jq '.tag_name' -r)
+          [ $DRAFT_TAG == $RELEASE_VERSION ] || (echo "Error: Last draft's tag does not match pushed tag" && false)
+          cat /tmp/last-release.json | jq '.body' -r > /tmp/changelog.md
+          cat /tmp/last-release.json | jq '.id' > /tmp/draft_id.txt
+        env:
+          GH_TOKEN: ${{ github.token }}
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: build/tmp/ci/*.jar
+          body_path: /tmp/changelog.md
+      - name: Delete last draft release
+        run: |
+          gh api -X DELETE "/repos/${GITHUB_REPOSITORY}/releases/$(cat /tmp/draft_id.txt)"
+        env:
+          GH_TOKEN: ${{ github.token }}
