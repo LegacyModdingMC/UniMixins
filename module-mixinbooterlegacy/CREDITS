@@ -8,5 +8,6 @@ Modifications:
 - Replaced mod container with a @Mod annotation
 - Changed shaded ASM package name to legacy one
 - Changed mixin config to use PREINIT phase
+- Added call to "unimixins.mixinModidDecorator.refresh" after loading early mixins in MixinBooterLegacyPlugin and late mixins in LoadControllerMixin
 
 License: LGPL 2.1 (see LICENSE)

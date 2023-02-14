@@ -8,5 +8,6 @@ Modifications:
 
 - Removed Mixin and MixinExtras bootstrap from GasStationCore.
 - Disabled dev mixin plugin because UniMixins's Compat module does the same thing.
+- Added call to "unimixins.mixinModidDecorator.refresh" after loading early mixins in GasStationCore and late mixins in LoadControllerMixin
 
 License: LGPL3+SNEED (see LICENSE, COPYING and COPYING.LESSER)

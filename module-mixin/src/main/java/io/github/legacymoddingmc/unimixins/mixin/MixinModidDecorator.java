@@ -7,6 +7,7 @@ import com.google.gson.JsonElement;
 import net.minecraft.launchwrapper.Launch;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mixins;
 import org.spongepowered.asm.mixin.transformer.Config;
 
@@ -24,25 +25,28 @@ public final class MixinModidDecorator {
 
     public static final String KEY_MOD_ID = "fabric-modId";
 
+    private static Map<String, String> jarNameToModid;
+
     private MixinModidDecorator() {}
 
-    private static boolean hasRun;
-
     public static void apply() {
-        if(hasRun) return;
+        if(jarNameToModid == null) {
+            jarNameToModid = createJarNameToModidMap();
 
-        hasRun = true;
-
-        Map<String, String> jarNameToModid = createJarNameToModidMap();
+            // A method handle that can be used anywhere to trigger a refresh
+            Launch.blackboard.put("unimixins.mixinModidDecorator.refresh", (Runnable)MixinModidDecorator::apply);
+        }
 
         for (Config config : Mixins.getConfigs()) {
-            URL resource = Launch.classLoader.getResource(config.getName());
-            if (resource != null) {
-                String jarName = getJarNameFromResourceUrl(resource);
-                if (jarName != null) {
-                    String modid = jarNameToModid.get(jarName);
-                    if (modid != null) {
-                        config.getConfig().decorate(KEY_MOD_ID, modid);
+            if(!config.getConfig().hasDecoration(KEY_MOD_ID)) {
+                URL resource = Launch.classLoader.getResource(config.getName());
+                if (resource != null) {
+                    String jarName = getJarNameFromResourceUrl(resource);
+                    if (jarName != null) {
+                        String modid = jarNameToModid.get(jarName);
+                        if (modid != null) {
+                            config.getConfig().decorate(KEY_MOD_ID, modid);
+                        }
                     }
                 }
             }

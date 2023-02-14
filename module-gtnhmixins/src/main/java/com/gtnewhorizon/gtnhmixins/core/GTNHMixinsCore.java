@@ -1,6 +1,7 @@
 package com.gtnewhorizon.gtnhmixins.core;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.util.concurrent.Runnables;
 import com.gtnewhorizon.gtnhmixins.IEarlyMixinLoader;
 import com.gtnewhorizon.gtnhmixins.Reflection;
 import com.llamalad7.mixinextras.MixinExtrasBootstrap;
@@ -120,7 +121,8 @@ public class GTNHMixinsCore implements IFMLLoadingPlugin {
                 }
             }
         }
-       
+
+        ((Runnable)Launch.blackboard.getOrDefault("unimixins.mixinModidDecorator.refresh", Runnables.doNothing())).run();
     }
 
     @Override

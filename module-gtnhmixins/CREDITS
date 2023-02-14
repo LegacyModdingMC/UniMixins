@@ -9,5 +9,6 @@ Modifications:
 - added Mixin 0.7 support
 	- made MixinExtras initialization get suppressed if Mixin version is below 0.8.5
 	- made reflection support Mixin 0.7.11
+- added call to "unimixins.mixinModidDecorator.refresh" after loading early mixins in GTNHMixinsCore and late mixins in LateMixinOrchestrationMixin
 
 License: LGPL3 (see LICENSE)

@@ -1,5 +1,6 @@
 package com.gtnewhorizon.gtnhmixins.mixins;
 
+import com.google.common.util.concurrent.Runnables;
 import com.gtnewhorizon.gtnhmixins.GTNHMixins;
 import com.gtnewhorizon.gtnhmixins.ILateMixinLoader;
 import com.gtnewhorizon.gtnhmixins.LateMixin;
@@ -69,6 +70,8 @@ public class LateMixinOrchestrationMixin {
             Reflection.registerConfigurationMethod.invoke(null, config);
 
         }
+
+        ((Runnable)Launch.blackboard.getOrDefault("unimixins.mixinModidDecorator.refresh", Runnables.doNothing())).run();
 
         // Add all mods to the classpath now so they're available for mixin
         for (ModContainer container : loader.getActiveModList()) {

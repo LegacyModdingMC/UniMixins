@@ -1,5 +1,6 @@
 package io.github.tox1cozz.mixinbooterlegacy.loader.mixin;
 
+import com.google.common.util.concurrent.Runnables;
 import cpw.mods.fml.common.*;
 import cpw.mods.fml.common.discovery.ASMDataTable;
 import io.github.tox1cozz.mixinbooterlegacy.LateMixin;
@@ -56,6 +57,8 @@ public class LoadControllerMixin {
                 }
             }
         }
+
+        ((Runnable)Launch.blackboard.getOrDefault("unimixins.mixinModidDecorator.refresh", Runnables.doNothing())).run();
 
         for (ModContainer container : loader.getActiveModList()) {
             modClassLoader.addFile(container.getSource());

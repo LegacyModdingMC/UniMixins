@@ -1,10 +1,12 @@
 package com.falsepattern.gasstation.core;
 
+import com.google.common.util.concurrent.Runnables;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 
 import com.falsepattern.gasstation.Tags;
 import com.falsepattern.gasstation.IEarlyMixinLoader;
 import io.github.legacymoddingmc.unimixins.gasstation.GasStationModule;
+import net.minecraft.launchwrapper.Launch;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.spongepowered.asm.mixin.Mixins;
@@ -66,6 +68,8 @@ public class GasStationCore implements IFMLLoadingPlugin {
                 }
             }
         }
+
+        ((Runnable) Launch.blackboard.getOrDefault("unimixins.mixinModidDecorator.refresh", Runnables.doNothing())).run();
     }
 
     @Override

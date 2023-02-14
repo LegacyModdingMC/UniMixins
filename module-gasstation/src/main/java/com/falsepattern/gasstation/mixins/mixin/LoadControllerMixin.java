@@ -1,5 +1,6 @@
 package com.falsepattern.gasstation.mixins.mixin;
 
+import com.google.common.util.concurrent.Runnables;
 import cpw.mods.fml.common.*;
 import cpw.mods.fml.common.discovery.ASMDataTable;
 
@@ -53,6 +54,8 @@ public abstract class LoadControllerMixin {
                 }
             }
         }
+
+        ((Runnable)Launch.blackboard.getOrDefault("unimixins.mixinModidDecorator.refresh", Runnables.doNothing())).run();
 
         for (ModContainer container : loader.getActiveModList()) {
             modClassLoader.addFile(container.getSource());
