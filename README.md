@@ -70,7 +70,7 @@ These are not included in releases, they mainly exist for testing purposes. (Not
 
 * **Mixin (SpongePowered)**: Provides [the upstream fork](https://github.com/SpongePowered/Mixin) of Mixin.
 * **Mixin (Fabric)**: Provides [the Fabric fork](https://github.com/FabricMC/Mixin) of Mixin.
-* **Mixin (GasMix)**: Provides the GasStation fork of Mixin.
+* **Mixin (GasMix)**: Provides [the GasStation fork](https://github.com/FalsePattern/GasMix) of Mixin.
 * **Mixin (GTNH)**: Provides [the GTNH fork](https://github.com/GTNewHorizons/SpongePoweredMixin) of Mixin.
 
 ## FAQ
