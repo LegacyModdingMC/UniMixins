@@ -6,7 +6,7 @@ UniMixins is a Mixin loader for Minecraft 1.7.10 designed for maximum compatibil
 
 Numerous Mixin loaders exist for 1.7.10, and each one provides a differing set of extra features we refer to as *"extras"* on top of providing Mixin.
 
-Since each of these loaders is "glued together", different ones cannot be used at the same time due to unavoidable feature overlap. UniMixins breaks this tradition by offering each feature as a separate module (but a combined jar is still provided for convenience.)
+Since each of these loaders is monolithic, different ones cannot be used at the same time due to unavoidable feature overlap. To avoid this problem, UniMixins offers each feature as a separate module (but a combined jar is still provided for convenience.)
 
 ## Comparison table
 
