@@ -31,7 +31,7 @@ Download the `-all` jar, and put it in your mods directory. Remove any other con
 You can also assemble your own combination of modules using the module jars. Some modules depend on other modules, see the **List of modules** section.
 
 Assuming no other Mixin loaders are present, you will generally want the following modules:
-* **Mixin** (any single flavor)
+* **Mixin** (any single fork)
 * **Compat** and **Mixingasm** (optional but highly recommended)
 * Modules providing any extras you need
 
