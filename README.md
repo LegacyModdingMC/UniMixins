@@ -115,7 +115,7 @@ A rough roadmap of the project is available [here](https://gist.github.com/makam
 
 ### Test cases
 
-See [docs/testing.md](testing.md) for a list of mods we have used to test the functionality of various UniMixins modules.
+See [docs/testing.md](docs/testing.md) for a list of mods we have used to test the functionality of various UniMixins modules.
 
 ## License
 
