@@ -1,6 +1,6 @@
 package io.github.legacymoddingmc.unimixins.compat;
 
-import java.util.Map;
+import java.util.*;
 
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin.MCVersion;
@@ -17,13 +17,21 @@ public class CompatCore implements IFMLLoadingPlugin {
     public CompatCore() {
         LOGGER.info("Instantiating CompatCore");
 
-        // We register the transformer this way to register it as early as possible.
-        Launch.classLoader.registerTransformer(relativeClassName("asm.ASMRemapperTransformer"));
+        CompatConfig.load();
+
+        if(CompatConfig.enableRemapper) {
+            // We register the transformer this way to register it as early as possible.
+            Launch.classLoader.registerTransformer(relativeClassName("asm.ASMRemapperTransformer"));
+        }
     }
 
     @Override
     public String[] getASMTransformerClass() {
-        return new String[] {"io.github.legacymoddingmc.unimixins.compat.asm.FMLCommonHandlerTransformer"};
+        List<String> classes = new ArrayList<>();
+        if(CompatConfig.enhanceCrashReports) {
+            classes.add("io.github.legacymoddingmc.unimixins.compat.asm.FMLCommonHandlerTransformer");
+        }
+        return classes.toArray(new String[0]);
     }
 
     private static String relativeClassName(String relName) {
@@ -49,7 +57,9 @@ public class CompatCore implements IFMLLoadingPlugin {
      */
     @Override
     public void injectData(Map<String, Object> data) {
-        Mixins.registerErrorHandlerClass("io.github.legacymoddingmc.unimixins.compat.MixinErrorHandler");
+        if(CompatConfig.enhanceCrashReports) {
+            Mixins.registerErrorHandlerClass("io.github.legacymoddingmc.unimixins.compat.MixinErrorHandler");
+        }
     }
 
     @Override
