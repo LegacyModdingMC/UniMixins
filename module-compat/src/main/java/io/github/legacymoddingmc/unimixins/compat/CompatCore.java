@@ -7,6 +7,7 @@ import cpw.mods.fml.relauncher.IFMLLoadingPlugin.MCVersion;
 import net.minecraft.launchwrapper.Launch;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.spongepowered.asm.mixin.Mixins;
 
 @MCVersion("1.7.10")
 public class CompatCore implements IFMLLoadingPlugin {
@@ -22,7 +23,7 @@ public class CompatCore implements IFMLLoadingPlugin {
 
     @Override
     public String[] getASMTransformerClass() {
-        return new String[] {};
+        return new String[] {"io.github.legacymoddingmc.unimixins.compat.asm.FMLCommonHandlerTransformer"};
     }
 
     private static String relativeClassName(String relName) {
@@ -42,9 +43,13 @@ public class CompatCore implements IFMLLoadingPlugin {
         return null;
     }
 
+    /**
+     * <p>This is the earliest point after the Mixin environment's initialization where we can inject code.
+     * <p>We register our error handler here.
+     */
     @Override
     public void injectData(Map<String, Object> data) {
-
+        Mixins.registerErrorHandlerClass("io.github.legacymoddingmc.unimixins.compat.MixinErrorHandler");
     }
 
     @Override

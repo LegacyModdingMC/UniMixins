@@ -14,5 +14,3 @@ jar {
 		)
 	}
 }
-
-reobf.enabled = false
