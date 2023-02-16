@@ -1,11 +1,18 @@
 dependencies {
 	compileOnly('org.spongepowered:mixin:0.8.5-gasstation_7')
 	compileOnly project(':module-mixinbooterlegacy')
+	shadow(project(":module-common")) {
+		transitive = false
+	}
 }
 
 archivesBaseName = archivesBaseName.replace("-1.7.10", "-gasstation-1.7.10")
 
-jar {
+shadowJar {
+	configurations = [project.configurations.shadow]
+	classifier = ''
+	relocate 'io.github.legacymoddingmc.unimixins.common', 'io.github.legacymoddingmc.unimixins.gasstation.repackage.common'
+
 	manifest {
 		attributes (
 			'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
@@ -15,6 +22,11 @@ jar {
 			'FMLCorePlugin': 'com.falsepattern.gasstation.core.GasStationCore'
 		)
 	}
+}
+
+jar {
+	enabled = false
+	dependsOn shadowJar
 }
 
 ext.uniVersion = version

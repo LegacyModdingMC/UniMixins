@@ -86,8 +86,10 @@ public class AnnotatedProperties {
                     } else {
                         prop = line;
 
-                        PropertyToken token = new PropertyToken(comment, prop);
+                        PropertyToken token = new PropertyToken(new ArrayList<>(comment), prop);
                         tokens.put(token.key, token);
+
+                        comment.clear();
                     }
                 }
             } catch (Exception e) {

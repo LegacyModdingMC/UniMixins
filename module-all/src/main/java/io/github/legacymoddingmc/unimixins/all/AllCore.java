@@ -1,6 +1,5 @@
 package io.github.legacymoddingmc.unimixins.all;
 
-import java.io.File;
 import java.net.URL;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -8,8 +7,8 @@ import java.util.regex.Pattern;
 
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin.MCVersion;
+import io.github.legacymoddingmc.unimixins.common.ConfigUtil;
 import net.minecraft.launchwrapper.Launch;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -33,7 +32,8 @@ public class AllCore implements IFMLLoadingPlugin {
     private static final Pattern LETTER = Pattern.compile("[a-z]");
 
     static {
-        if(isIntegrityCheckEnabled()) {
+        ConfigUtil.load(AllConfig.class);
+        if(!AllConfig.disableIntegrityChecks) {
             doSanityCheck();
         }
 
@@ -88,17 +88,6 @@ public class AllCore implements IFMLLoadingPlugin {
             }
         }
         return false;
-    }
-
-    private static boolean isIntegrityCheckEnabled() {
-        // I'm scared to load Forge classes this early so we're doing this
-        File file = new File(Launch.minecraftHome, "config/unimixins.cfg");
-        if(file.exists()) {
-            try {
-                return !FileUtils.readFileToString(file).contains("B:disableIntegrityChecks=true");
-            } catch(Exception e){}
-        }
-        return true;
     }
 
     public AllCore() {

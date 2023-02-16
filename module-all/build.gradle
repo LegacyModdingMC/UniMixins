@@ -86,10 +86,20 @@ org.spongepowered.tools.obfuscation.MixinObfuscationProcessorTargets
 	}
 }
 
-jar {
+dependencies {
+	shadow(project(":module-common")) {
+		transitive = false
+	}
+}
+
+shadowJar {
 	dependsOn tasks.createMergedMcmodInfo
 	dependsOn tasks.createEmbeddedCorePluginsFile
 	dependsOn tasks.createMergedAnnotationProcessorConfig
+
+	configurations = [project.configurations.shadow]
+	classifier = ''
+	relocate 'io.github.legacymoddingmc.unimixins.common', 'io.github.legacymoddingmc.unimixins.all.repackage.common'
 	
 	moduleNames.each {
 		def name = it
@@ -137,8 +147,13 @@ jar {
 	}
 }
 
+jar {
+	enabled = false
+	dependsOn shadowJar
+}
+
 task sourcesJar(type: ShadowJar) {
-	dependsOn jar
+	dependsOn shadowJar
 
 	classifier = 'sources'
 
@@ -152,7 +167,7 @@ task sourcesJar(type: ShadowJar) {
 		}
 	}
 
-	from(zipTree(tasks.jar.getOutputs().getFiles().getSingleFile())) {
+	from(zipTree(tasks.shadowJar.getOutputs().getFiles().getSingleFile())) {
 		include "CREDITS"
 		include "META-INF/licenses/**"
 	}

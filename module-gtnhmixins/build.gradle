@@ -2,6 +2,9 @@ dependencies {
 	compileOnly('org.spongepowered:mixin:0.8.5')
 	compileOnly('com.github.LlamaLad7:MixinExtras:0.1.1')
 	shadow('com.github.LlamaLad7:MixinExtras:0.1.1')
+	shadow(project(":module-common")) {
+		transitive = false
+	}
 }
 
 archivesBaseName = archivesBaseName.replace("-1.7.10", "-gtnhmixins-1.7.10")
@@ -14,6 +17,7 @@ shadowJar {
 	
 	relocate 'com.llamalad7.mixinextras', 'com.gtnewhorizon.mixinextras'
 	relocate 'org.objectweb.asm', 'org.spongepowered.asm.lib'
+	relocate 'io.github.legacymoddingmc.unimixins.common', 'io.github.legacymoddingmc.unimixins.gtnhmixins.repackage.common'
 	
 	manifest {
 		attributes (
