@@ -1,37 +1,10 @@
 package io.github.legacymoddingmc.unimixins.compat;
 
-import net.minecraft.launchwrapper.Launch;
-
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Properties;
+import io.github.legacymoddingmc.unimixins.common.AnnotatedProperties;
 
 public class CompatConfig {
-    private static final Properties PROPS = new Properties();
-
+    @AnnotatedProperties.ConfigString(def = "true", com = "Remap references to Mixin's shaded ASM.", cat = "compat")
     public static boolean enableRemapper;
+    @AnnotatedProperties.ConfigString(def = "true", com = "Include Mixin errors in crash reports.", cat = "compat")
     public static boolean enhanceCrashReports;
-
-    public static void load() {
-        try(FileReader fr = new FileReader(new File(Launch.minecraftHome, "config/unimixins.properties"))) {
-            PROPS.load(fr);
-        } catch(IOException e){
-            e.printStackTrace();
-        }
-
-        applyProperties();
-
-        try(FileWriter fw = new FileWriter(new File(Launch.minecraftHome, "config/unimixins.properties"))) {
-            PROPS.store(fw, "");
-        } catch(IOException e){
-            e.printStackTrace();
-        }
-    }
-
-    private static void applyProperties() {
-        enableRemapper = Boolean.parseBoolean(PROPS.getProperty("unimixins.compat.remap", "true"));
-        enhanceCrashReports = Boolean.parseBoolean(PROPS.getProperty("unimixins.compat.enhanceCrashReports", "true"));
-    }
 }

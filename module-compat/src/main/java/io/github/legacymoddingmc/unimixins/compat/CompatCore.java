@@ -1,9 +1,11 @@
 package io.github.legacymoddingmc.unimixins.compat;
 
+import java.io.File;
 import java.util.*;
 
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin.MCVersion;
+import io.github.legacymoddingmc.unimixins.common.AnnotatedProperties;
 import net.minecraft.launchwrapper.Launch;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,7 +19,7 @@ public class CompatCore implements IFMLLoadingPlugin {
     public CompatCore() {
         LOGGER.info("Instantiating CompatCore");
 
-        CompatConfig.load();
+        AnnotatedProperties.load(new File(Launch.minecraftHome, "config/unimixins.properties"), CompatConfig.class);
 
         if(CompatConfig.enableRemapper) {
             // We register the transformer this way to register it as early as possible.
