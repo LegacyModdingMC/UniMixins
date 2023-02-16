@@ -30,6 +30,8 @@ jobs:
         mkdir build/tmp/ci -p
         cp module-*/build/libs/* build/tmp/ci
         rm build/tmp/ci/*-sources.jar
+        rm build/tmp/ci/*-dev.jar
+        rm build/tmp/ci/*-common-*.jar
     - uses: actions/upload-artifact@v3
       with:
         name: Package

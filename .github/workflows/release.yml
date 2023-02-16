@@ -40,6 +40,8 @@ jobs:
           mkdir build/tmp/ci -p
           cp module-*/build/libs/* build/tmp/ci
           rm build/tmp/ci/*-sources.jar
+          rm build/tmp/ci/*-dev.jar
+          rm build/tmp/ci/*-common-*.jar
       - name: Read changelog from last draft release
         run: |
           gh api "/repos/${GITHUB_REPOSITORY}/releases?per_page=1" \
