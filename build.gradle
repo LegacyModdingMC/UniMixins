@@ -50,7 +50,7 @@ allprojects {
 	
 	apply from: "${project.rootDir}/buildscript/forge-1.7.gradle"
 
-	if(project.name.startsWith("module-") && project.name != "module-mixin") {
+	if(project.name.startsWith("module-") && project.name != "module-mixin" && project.name != "module-common") {
 		if(project.name != "module-all") {
 			task sourcesJar(type: Jar) {
 				from sourceSets.main.allSource
