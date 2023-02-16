@@ -6,7 +6,7 @@ archivesBaseName = archivesBaseName.replace("-1.7.10", "-all-1.7.10")
 ext.moduleNames = ["module-mixin", "module-compat", "module-mixingasm", "module-spongemixins", "module-mixinbooterlegacy", "module-gasstation", "module-gtnhmixins", "module-mixinextras"]
 
 def getModuleJar(name, source = false) {
-	def jarTaskName = name == "module-mixin" ? ":module-mixin:shadow${source ? 'Sources' : ''}JarUnimix" : ":$name:${source ? 'sourcesJar' : 'jar'}"
+	def jarTaskName = name == "module-mixin" ? ":module-mixin:shadow${source ? 'Sources' : ''}JarUnimix" : ":$name:${source ? 'sourcesJar' : 'devJar'}"
 	
 	return tasks.getByPath(jarTaskName).getOutputs().getFiles().getSingleFile()
 }
@@ -176,5 +176,3 @@ task sourcesJar(type: ShadowJar) {
 clean {
 	moduleNames.each { dependsOn tasks.getByPath(":$it:clean") }
 }
-
-reobf.enabled = false

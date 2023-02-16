@@ -59,8 +59,20 @@ allprojects {
 		}
 		
 		afterEvaluate {
+			task devJar(type: Jar) {
+				classifier = 'dev'
+				def jarTask = (jar.enabled ? jar : shadowJar)
+				from zipTree(jarTask.getOutputs().getFiles().getSingleFile())
+				manifest = jarTask.manifest
+
+				dependsOn jarTask
+			}
+
+			reobf.dependsOn devJar
+
 			artifacts {
 				archives tasks."sourcesJar"
+				archives tasks."devJar"
 			}
 
 			publishing {
@@ -68,6 +80,7 @@ allprojects {
 					create("maven", MavenPublication) {
 						artifact jar.enabled ? jar : shadowJar
 						artifact source: tasks."sourcesJar", classifier: 'sources'
+						artifact source: tasks."devJar", classifier: 'dev'
 						artifactId = archivesBaseName
 						version = jar.version
 					}
