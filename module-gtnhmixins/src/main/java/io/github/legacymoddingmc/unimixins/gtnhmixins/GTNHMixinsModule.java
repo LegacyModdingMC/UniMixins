@@ -15,7 +15,7 @@ public class GTNHMixinsModule {
 
     public static void init() {
         ConfigUtil.load(GTNHMixinsConfig.class);
-        if(!GTNHMixinsConfig.disableIntegrityChecks) {
+        if(GTNHMixinsConfig.enableIntegrityChecks) {
             checkComponentIntegrity();
         }
         registerASMRemapPackage("com.gtnewhorizon.mixinextras");
@@ -27,7 +27,7 @@ public class GTNHMixinsModule {
         if(mixinVersion != null && new ComparableVersion(mixinVersion).compareTo(new ComparableVersion(requiredVersion)) >= 0) {
             LOGGER.debug("Intializing MixinExtras");
             return true;
-        } else if(GTNHMixinsConfig.disableIntegrityChecks){
+        } else if(!GTNHMixinsConfig.enableIntegrityChecks){
             LOGGER.warn("Skipping MixinExtras because Mixin version (" + mixinVersion + ") is lower than the required (" + requiredVersion + ")");
             return false;
         } else {

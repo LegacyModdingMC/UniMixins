@@ -33,7 +33,7 @@ public class AllCore implements IFMLLoadingPlugin {
 
     static {
         ConfigUtil.load(AllConfig.class);
-        if(!AllConfig.disableIntegrityChecks) {
+        if(AllConfig.enableIntegrityChecks) {
             doSanityCheck();
         }
 

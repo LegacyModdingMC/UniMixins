@@ -13,7 +13,7 @@ public class GasStationModule {
 
     public static void init() {
         ConfigUtil.load(GasStationConfig.class);
-        if(!GasStationConfig.disableIntegrityChecks) {
+        if(GasStationConfig.enableIntegrityChecks) {
             checkComponentIntegrity();
         }
     }
