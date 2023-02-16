@@ -1,4 +1,4 @@
-package io.github.legacymoddingmc.unimixins.common;
+package io.github.legacymoddingmc.unimixins.common.config;
 
 import net.minecraft.launchwrapper.Launch;
 

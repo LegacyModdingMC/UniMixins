@@ -4,7 +4,7 @@ import java.util.*;
 
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin.MCVersion;
-import io.github.legacymoddingmc.unimixins.common.ConfigUtil;
+import io.github.legacymoddingmc.unimixins.common.config.ConfigUtil;
 import net.minecraft.launchwrapper.Launch;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

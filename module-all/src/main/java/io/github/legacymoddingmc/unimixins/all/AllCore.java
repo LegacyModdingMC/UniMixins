@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin.MCVersion;
-import io.github.legacymoddingmc.unimixins.common.ConfigUtil;
+import io.github.legacymoddingmc.unimixins.common.config.ConfigUtil;
 import net.minecraft.launchwrapper.Launch;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
