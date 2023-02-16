@@ -79,7 +79,7 @@ public class FMLCommonHandlerTransformer implements IClassTransformer {
     public static class Hooks {
 
         public static void postEnhanceCrashReport(CrashReport report, CrashReportCategory category) {
-            CrashReportEnhancer.addMixinErrorsToCrashReport(report, category);
+            CrashReportEnhancer.addMixinsToCrashReport(report, category);
         }
     }
 }
