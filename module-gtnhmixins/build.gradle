@@ -35,8 +35,6 @@ jar {
 	enabled = false
 }
 
-reobf.enabled = false
-
 ext.uniVersion = version
 ext.extraVersion = "2.1.9"
 ext.extraModid = "gtnhmixins"
