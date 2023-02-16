@@ -91,7 +91,7 @@ public class AnnotatedProperties {
                     } else {
                         prop = line;
 
-                        PropertyToken token = new PropertyToken(new ArrayList<>(comment), prop);
+                        PropertyToken token = new PropertyToken(comment, prop);
                         tokens.put(token.key, token);
 
                         comment.clear();
@@ -113,7 +113,7 @@ public class AnnotatedProperties {
         public String defaultValue;
 
         public PropertyToken(List<String> comment, String propertyString) {
-            this.comment = comment;
+            this.comment = new ArrayList<>(comment);
             String[] pair = propertyString.split("=");
             if(pair.length != 2) {
                 throw new RuntimeException();
@@ -124,7 +124,7 @@ public class AnnotatedProperties {
         }
 
         public PropertyToken(List<String> comment, String key, String value) {
-            this.comment = comment;
+            this.comment = new ArrayList<>(comment);
             this.key = key;
             this.value = value;
         }
