@@ -27,6 +27,11 @@ public class AnnotatedProperties {
                         prop = new PropertyToken(comment, key, def);
                     }
 
+                    prop.defaultValue = def;
+
+                    prop.comment.removeIf(s -> s.startsWith("[default:"));
+                    prop.comment.add("[default: " + prop.defaultValue + "]");
+
                     setFieldValue(f, prop.value);
 
                     propertyTokens.put(key, prop);
@@ -105,6 +110,7 @@ public class AnnotatedProperties {
         public List<String> comment;
         public String key;
         public String value;
+        public String defaultValue;
 
         public PropertyToken(List<String> comment, String propertyString) {
             this.comment = comment;
