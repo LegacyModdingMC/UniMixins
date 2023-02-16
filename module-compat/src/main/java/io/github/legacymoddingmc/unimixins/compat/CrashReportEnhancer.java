@@ -3,8 +3,7 @@ package io.github.legacymoddingmc.unimixins.compat;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import static io.github.legacymoddingmc.unimixins.compat.CompatCore.LOGGER;
 
@@ -14,17 +13,32 @@ public class CrashReportEnhancer {
             CrashReport crashReport = (CrashReport) crashReportObj;
             CrashReportCategory category = (CrashReportCategory) categoryObj;
 
-            List<String> classesThatWereNotFound = determineClassesThatWereNotFound(crashReport);
+            Collection<String> classesInStackTrace = getClassesInStackTrace(crashReport);
 
-            List<String> errors = new ArrayList<>();
-            for (String s : classesThatWereNotFound) {
-                errors.addAll(MixinErrorHandler.getErrorsForClass(s));
+            Map<String, List<String>> errors = new HashMap<>();
+            for (String s : classesInStackTrace) {
+                List<String> e = MixinErrorHandler.getErrorsForClass(s);
+                if(!e.isEmpty()) {
+                    errors.put(s, e);
+                }
             }
             if (!errors.isEmpty()) {
+                String msg = "";
+
+                for(Map.Entry<String, List<String>> e : errors.entrySet()) {
+                    String cls = e.getKey();
+                    List<String> clsErrors = e.getValue();
+
+                    msg += "\t\t" + cls + ":\n";
+                    for(String clsError : e.getValue()) {
+                        msg += "\t\t\t" + clsError + "\n";
+                    }
+                }
+
                 String sep = "\n\t\t";
                 category.addCrashSection(
-                        String.format("Mixin Errors in Class%s", classesThatWereNotFound.size() == 1 ? "" : "es"),
-                        sep + String.join(sep, errors));
+                        String.format("Mixin Errors in Stacktrace"),
+                        "\n" + msg);
             }
         } catch (Throwable t) {
             // If an error happens here, the game will silently crash, so we must make sure that does not happen.
@@ -33,8 +47,8 @@ public class CrashReportEnhancer {
         }
     }
 
-    private static List<String> determineClassesThatWereNotFound(CrashReport crashReport) {
-        List<String> classes = new ArrayList<>();
+    private static Collection<String> getClassesInStackTrace(CrashReport crashReport) {
+        Set<String> classes = new HashSet<>();
 
         Throwable th = crashReport.getCrashCause();
 
@@ -44,6 +58,9 @@ public class CrashReportEnhancer {
                 if(msg != null && !msg.isEmpty()) {
                     classes.add(msg);
                 }
+            }
+            for(StackTraceElement elem : th.getStackTrace()) {
+                classes.add(elem.getClassName());
             }
             th = th.getCause();
         }
