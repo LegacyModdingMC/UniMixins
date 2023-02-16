@@ -14,8 +14,8 @@ repositories {
 def unimixinsVersion = "insert version here"
 
 dependencies {
-    annotationProcessor("com.github.LegacyModdingMC.UniMixins:_unimixins-all-1.7.10:$unimixinsVersion")
-    implementation("com.github.LegacyModdingMC.UniMixins:_unimixins-all-1.7.10:$unimixinsVersion")
+    annotationProcessor("com.github.LegacyModdingMC.UniMixins:_unimixins-all-1.7.10:$unimixinsVersion:dev")
+    implementation("com.github.LegacyModdingMC.UniMixins:_unimixins-all-1.7.10:$unimixinsVersion:dev")
 }
 
 // Exclude conflicting transitive dependencies.
@@ -36,7 +36,7 @@ You can also depend on modules individually:
 
 ```gradle
 dependencies {
-    // One of these
+    // One of these (note: this module doesn't have dev jars)
     implementation("com.github.LegacyModdingMC.UniMixins:_unimixins-mixin-1.7.10:$unimixinsVersion+unimix-0.11.5+mixin.0.8.5")
     //implementation("com.github.LegacyModdingMC.UniMixins:_unimixins-mixin-1.7.10:$unimixinsVersion+spongepowered-0.8.5")
     //implementation("com.github.LegacyModdingMC.UniMixins:_unimixins-mixin-1.7.10:$unimixinsVersion+fabric-0.11.4+mixin.0.8.5")
@@ -44,16 +44,16 @@ dependencies {
     //implementation("com.github.LegacyModdingMC.UniMixins:_unimixins-mixin-1.7.10:$unimixinsVersion+gtnh-0.8.5-GTNH-2")
     
     // You don't need all the modules, only the ones your mod requires.
-    implementation("com.github.LegacyModdingMC.UniMixins:_unimixins-compat-1.7.10:$unimixinsVersion")
-    implementation("com.github.LegacyModdingMC.UniMixins:_unimixins-spongemixins-1.7.10:$unimixinsVersion+gtnh-2.0.1")
-    implementation("com.github.LegacyModdingMC.UniMixins:_unimixins-mixinbooterlegacy-1.7.10:$unimixinsVersion+1.2.0")
-    implementation("com.github.LegacyModdingMC.UniMixins:_unimixins-gasstation-1.7.10:$unimixinsVersion+0.5.1")
-    implementation("com.github.LegacyModdingMC.UniMixins:_unimixins-mixinextras-1.7.10:$unimixinsVersion+0.1.1")
-    implementation("com.github.LegacyModdingMC.UniMixins:_unimixins-gtnhmixins-1.7.10:$unimixinsVersion+2.1.9")
-    implementation("com.github.LegacyModdingMC.UniMixins:_unimixins-mixingasm-1.7.10:$unimixinsVersion+0.2.2")
+    implementation("com.github.LegacyModdingMC.UniMixins:_unimixins-compat-1.7.10:$unimixinsVersion:dev")
+    implementation("com.github.LegacyModdingMC.UniMixins:_unimixins-spongemixins-1.7.10:$unimixinsVersion+gtnh-2.0.1:dev")
+    implementation("com.github.LegacyModdingMC.UniMixins:_unimixins-mixinbooterlegacy-1.7.10:$unimixinsVersion+1.2.0:dev")
+    implementation("com.github.LegacyModdingMC.UniMixins:_unimixins-gasstation-1.7.10:$unimixinsVersion+0.5.1:dev")
+    implementation("com.github.LegacyModdingMC.UniMixins:_unimixins-mixinextras-1.7.10:$unimixinsVersion+0.1.1:dev")
+    implementation("com.github.LegacyModdingMC.UniMixins:_unimixins-gtnhmixins-1.7.10:$unimixinsVersion+2.1.9:dev")
+    implementation("com.github.LegacyModdingMC.UniMixins:_unimixins-mixingasm-1.7.10:$unimixinsVersion+0.2.2:dev")
     
     // Needed if not using UniMix or GTNH's Mixin fork
-    //implementation("com.github.LegacyModdingMC.UniMixins:_unimixins-devcompat-1.7.10:$unimixinsVersion")
+    //implementation("com.github.LegacyModdingMC.UniMixins:_unimixins-devcompat-1.7.10:$unimixinsVersion:dev")
 }
 ```
 
