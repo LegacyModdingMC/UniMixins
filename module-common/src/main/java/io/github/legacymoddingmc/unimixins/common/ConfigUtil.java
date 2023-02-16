@@ -7,12 +7,13 @@ import java.io.File;
 public class ConfigUtil {
 
     public static void load(Class<?> cls) {
-        File oldConfigFile = new File("config/unimixins.cfg");
+        File configDir = new File(Launch.minecraftHome, "config");
+        File oldConfigFile = new File(configDir, "unimixins.cfg");
         if(oldConfigFile.exists()) {
-            oldConfigFile.delete();
+            oldConfigFile.renameTo(new File(configDir, "unimixins.old.delete_me.cfg"));
         }
 
-        AnnotatedProperties.load(new File(Launch.minecraftHome, "config/unimixins.properties"), cls);
+        AnnotatedProperties.load(new File(configDir, "unimixins.properties"), cls);
     }
 
 }
