@@ -8,11 +8,8 @@ import java.util.*;
 import static io.github.legacymoddingmc.unimixins.compat.CompatCore.LOGGER;
 
 public class CrashReportEnhancer {
-    public static void addMixinErrorsToCrashReport(Object crashReportObj, Object categoryObj) {
+    public static void addMixinErrorsToCrashReport(CrashReport crashReport, CrashReportCategory category) {
         try {
-            CrashReport crashReport = (CrashReport) crashReportObj;
-            CrashReportCategory category = (CrashReportCategory) categoryObj;
-
             Collection<String> classesInStackTrace = getClassesInStackTrace(crashReport);
 
             Map<String, List<String>> errors = new HashMap<>();
