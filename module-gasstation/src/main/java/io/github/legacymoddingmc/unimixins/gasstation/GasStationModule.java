@@ -15,6 +15,8 @@ public class GasStationModule {
         ConfigUtil.load(GasStationConfig.class);
         if(GasStationConfig.enableIntegrityChecks) {
             checkComponentIntegrity();
+        } else {
+            LOGGER.debug("Skipping integrity checks because they are disabled in the config.");
         }
     }
     

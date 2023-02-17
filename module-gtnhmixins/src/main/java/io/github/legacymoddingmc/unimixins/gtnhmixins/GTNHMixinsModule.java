@@ -17,6 +17,8 @@ public class GTNHMixinsModule {
         ConfigUtil.load(GTNHMixinsConfig.class);
         if(GTNHMixinsConfig.enableIntegrityChecks) {
             checkComponentIntegrity();
+        } else {
+            LOGGER.debug("Skipping integrity checks because they are disabled in the config.");
         }
         registerASMRemapPackage("com.gtnewhorizon.mixinextras");
     }

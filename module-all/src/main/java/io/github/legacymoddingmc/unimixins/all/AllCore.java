@@ -35,6 +35,8 @@ public class AllCore implements IFMLLoadingPlugin {
         ConfigUtil.load(AllConfig.class);
         if(AllConfig.enableIntegrityChecks) {
             doSanityCheck();
+        } else {
+            LOGGER.debug("Skipping sanity check because integrity checks are disabled in the config.");
         }
 
         try {
