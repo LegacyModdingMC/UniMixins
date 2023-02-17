@@ -42,6 +42,10 @@ jobs:
           rm build/tmp/ci/*-sources.jar
           rm build/tmp/ci/*-dev.jar
           rm build/tmp/ci/*-common-*.jar
+      - uses: actions/upload-artifact@v3
+        with:
+          name: Package
+          path: build/tmp/ci
       - name: Read changelog from last draft release
         run: |
           gh api "/repos/${GITHUB_REPOSITORY}/releases?per_page=1" \
