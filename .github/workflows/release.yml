@@ -9,9 +9,9 @@
 name: Release tagged build
 
 on:
-  push:
-    tags:
-      - '*'
+#  push:
+#    tags:
+#      - '*'
   workflow_dispatch
 
 jobs:
