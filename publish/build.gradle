@@ -148,7 +148,7 @@ gameVersions.each {
 				addGameVersion "Forge"
 
 				mainArtifact(mainFile) {
-					displayName = "${buildVersion}"
+					displayName = "$releaseName $buildVersion"
 
 					relations {
 						configs[gameVersion]['curseForgeRelations'].split(';').each {
@@ -188,7 +188,7 @@ gameVersions.each {
 			token = project.modrinthToken
 			projectId = project.modrinthID
 			versionNumber = "$gameVersion-$buildVersion"
-			versionName = "$buildVersion"
+			versionName = "$releaseName $buildVersion"
 			uploadFile = mainFile
 			gameVersions = [gameVersion]
 			additionalFiles = extraFiles
