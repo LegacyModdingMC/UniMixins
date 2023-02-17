@@ -49,7 +49,7 @@ jobs:
             | jq ".[0]" > /tmp/last-release.json
           [ $(cat /tmp/last-release.json | jq '.draft' -r) == true ] || (echo "Error: Last release is not a draft" && false)
           DRAFT_TAG=$(cat /tmp/last-release.json | jq '.tag_name' -r)
-          true || [ $DRAFT_TAG == $RELEASE_VERSION ] || (echo "Error: Last draft's tag does not match pushed tag" && false)
+          [ $DRAFT_TAG == $RELEASE_VERSION ] || (echo "Error: Last draft's tag does not match pushed tag" && false)
           cat /tmp/last-release.json | jq '.body' -r > /tmp/changelog.md
           cat /tmp/last-release.json | jq '.id' > /tmp/draft_id.txt
         env:
