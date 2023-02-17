@@ -1,3 +1,5 @@
+# Manual publishing script
+
 if [ ! -s changelog.md ]; then
     echo "Changelog is empty, refusing to publish."
     exit 3

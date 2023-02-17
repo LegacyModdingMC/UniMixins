@@ -1,41 +1,34 @@
 plugins {
 	id "com.github.breadmoirai.github-release" version "2.2.12"
 	id "com.matthewprenger.cursegradle" version "1.4.0"
-	id "com.modrinth.minotaur" version "1.2.1"
+	id "com.modrinth.minotaur" version "2.7.2"
 }
 
-import com.modrinth.minotaur.TaskModrinthUpload
-import groovy.json.JsonSlurper
 import okhttp3.OkHttpClient
 import java.util.concurrent.TimeUnit
 
-def commitHashProc = cmd.execute(null, file("${projectDir}"))
-commitHashProc.waitFor()
-if(commitHashProc.exitValue() == 0){
-	def commitHash = commitHashProc.text.trim()
+def runCommand(cmd) {
+	def commitHashProc = cmd.execute(null, file("${projectDir}"))
+	commitHashProc.waitFor()
+	if(commitHashProc.exitValue() == 0){
+		def commitHash = commitHashProc.text.trim()
 
-	return commitHash
-} else {
-	println commitHashProc.err.text
-	println(cmd + " exited with non-zero return value")
-	return null
-}
+		return commitHash
+	} else {
+		println commitHashProc.err.text
+		println(cmd + " exited with non-zero return value")
+		return null
+	}
 }
 
 def getCommitVersion() {
 	def ver = null
 
-	def versionPath = publishDir + "/version.txt"
+	def versionPath = "version.txt"
 	if(file(versionPath).isFile()) {
 		ver = file(versionPath).text
 	} else {
-
-		try {
-			ver = runCommand("git describe --tags --dirty") ?: "UNKNOWN-" + runCommand("git describe --always --dirty") ?: "UNKNOWN"
-		} catch(Exception e){
-			println "Failed to run " + cmd + ": " + e.getMessage()
-			ver = "UNKNOWN"
-		}
+		ver = runCommand("git describe --tags --dirty") ?: "UNKNOWN-" + runCommand("git describe --always --dirty") ?: "UNKNOWN"
 	}
 
 	ver = ver.trim()
@@ -49,21 +42,33 @@ def getCommitVersion() {
 def buildVersion = getCommitVersion()
 def changeLogFile = new File("${projectDir}/changelog.md")
 def changeLog = changeLogFile.exists() ? changeLogFile.getText('UTF-8') : ""
-ext.gameVersionsMap = new JsonSlurper().parseText(file("gameVersions.json").getText('UTF-8'))
-ext.gameVersions = gameVersionsMap.keySet()
 
-def githubOK = project.hasProperty("githubToken")
-def curseOK = project.hasProperty("curseToken") && project.hasProperty("gameVersion")
-def modrinthOK = project.hasProperty("modrinthToken") && project.hasProperty("gameVersion")
+def readConfigs() {
+	def configs = [:]
+	file('.').eachFileMatch(groovy.io.FileType.FILES, ~/publish-.*\.properties/, {
+		def props = new Properties()
+		it.withInputStream { props.load(it) }
+		def name = it.name.split("\\.properties")[0].split("-")[1]
+		configs[name] = props
+	})
+	return configs
+}
 
-def debugPublish = project.hasProperty("debugPublish") && project.debugPublish.toBoolean()
+ext.configs = readConfigs()
+ext.gameVersions = configs.keySet()
+
+ext.githubToken = System.getenv("GITHUB_TOKEN")
+ext.curseToken = System.getenv("CURSEFORGE_TOKEN")
+ext.modrinthToken = System.getenv("MODRINTH_TOKEN")
+
+def debugPublish = project.hasProperty("debugPublish")
 
 def useVPrefixForTag = project.hasProperty("useVPrefixForTag") && project.useVPrefixForTag.toBoolean()
 
 task build {}
 task assemble {}
 
-if(githubOK){
+if(githubToken != null){
 	githubRelease {
 		token project.githubToken // This is your personal access token with Repo permissions
 							 // You get this from your user settings > developer settings > Personal Access Tokens
@@ -71,7 +76,7 @@ if(githubOK){
 		repo project.githubRepo // by default this is set to your project name
 		tagName ((useVPrefixForTag ? "v" : "") + "${buildVersion}") // by default this is set to "v${project.version}"
 		targetCommitish "master" // by default this is set to "master"
-		releaseName "${project.releaseName} ${buildVersion}"
+		releaseName "${buildVersion}"
 		body changeLog // by default this is empty
 		draft false // by default this is false
 		prerelease false // by default this is false
@@ -85,23 +90,53 @@ if(githubOK){
 			.readTimeout(5, TimeUnit.MINUTES)
 			.build() // Added because I kept getting SocketTimeoutExceptions
 	}
-} else {
-	println("Not configuring GitHub publish because project arguments are missing.")
 }
 
-if(project.hasProperty("gameVersion")){
-	def gameVersion = project.gameVersion
-	def baseVersion = toBaseVersion(gameVersion)
-	def files = getFiles(baseVersion)
+def getMainFile(files) {
 	def shortest = null
 	files.each {
-		if(shortest == null || it.name.length() < shortest.name.length()){
+		if (shortest == null || it.name.length() < shortest.name.length()) {
 			shortest = it
 		}
 	}
-	def additionalFiles = files - shortest	
+	return shortest
+}
 
-	if(curseOK) {
+task publishCurseForge {}
+task publishModrinth {}
+
+if(curseToken != null) {
+	project.gameVersions.forEach {
+		task("publishCurseForge-$it", type: GradleBuild) {
+			tasks = ["curseforge"]
+			startParameter.projectProperties = gradle.startParameter.projectProperties + [gameVersion: it]
+		}
+		publishCurseForge.dependsOn "publishCurseForge-$it"
+	}
+}
+
+if(modrinthToken != null) {
+	project.gameVersions.forEach {
+		task("publishModrinth-$it", type: GradleBuild) {
+			tasks = ["modrinth"]
+			startParameter.projectProperties = gradle.startParameter.projectProperties + [gameVersion: it]
+		}
+		publishModrinth.dependsOn "publishModrinth-$it"
+	}
+}
+
+gameVersions.each {
+	def gameVersion = it
+	def files = getFiles(gameVersion)
+	def mainFile = getMainFile(files)
+	def extraFiles = files - mainFile
+
+	if(debugPublish) {
+		println("Main file: " + mainFile)
+		println("Additional files: " + extraFiles)
+	}
+
+	if(curseToken != null) {
 		curseforge {
 			apiKey = project.curseToken
 			project {
@@ -112,10 +147,32 @@ if(project.hasProperty("gameVersion")){
 				addGameVersion gameVersion
 				addGameVersion "Forge"
 
-				mainArtifact(file(shortest)) {
-					displayName = "${releaseName} ${buildVersion} for Minecraft ${gameVersion}"
+				mainArtifact(mainFile) {
+					displayName = "${buildVersion}"
+
+					relations {
+						configs[gameVersion]['curseForgeRelations'].split(';').each {
+							def kv = it.split(':')
+							def k = kv[0]
+							def v = kv[1]
+
+							if (k == 'requiredDependency') {
+								requiredDependency v
+							} else if (k == 'embeddedLibrary') {
+								embeddedLibrary v
+							} else if (k == 'optionalDependency') {
+								optionalDependency v
+							} else if (k == 'tool') {
+								tool v
+							} else if (k == 'incompatible') {
+								incompatible v
+							} else {
+								throw new IllegalArgumentException(k)
+							}
+						}
+					}
 				}
-				additionalFiles.each { addArtifact(it) }
+				extraFiles.each { addArtifact(it) }
 			}
 			options {
 				debug = debugPublish
@@ -124,43 +181,31 @@ if(project.hasProperty("gameVersion")){
 				javaVersionAutoDetect = false
 			}
 		}
-	} else {
-		println("Not configuring CurseForge publish because project arguments are missing.")
 	}
 	
-	if(modrinthOK) {
-		task publishModrinth (type: TaskModrinthUpload) {
+	if(modrinthToken != null) {
+		modrinth {
 			token = project.modrinthToken
 			projectId = project.modrinthID
 			versionNumber = "$gameVersion-$buildVersion"
-			versionName = "$gameVersion-$buildVersion" // the doc says this defaults to the versionNumber, but it defaulted to the string "undefined" for me so i'm setting it
-			uploadFile = shortest
-			addGameVersion(gameVersion)
-			additionalFiles.each { addFile(it) }
-			addLoader('forge')
+			versionName = "$buildVersion"
+			uploadFile = mainFile
+			gameVersions = [gameVersion]
+			additionalFiles = extraFiles
+			loaders = ['forge']
 			changelog = changeLog
 			detectLoaders = false
+			debugMode = debugPublish
+			dependencies {
+				// TODO
+			}
 		}
-	} else {
-		println("Not configuring Modrinth publish because project arguments are missing.")
-	}
-}
-
-def toBaseVersion(ver){
-	return String.join(".", ver.tokenize(".").subList(0, 2))
-}
-
-def getVersionProjectPath(ver){
-	if(project.versionedProjectDirectories.toBoolean()){
-		return "${projectDir}/../${ver}"
-	} else {
-		return "${projectDir}/.."
 	}
 }
 
 def getFiles(ver) {
 	def files = []
-	new File("${getVersionProjectPath(ver)}/build/libs").eachFile(groovy.io.FileType.FILES, {
+	new File('.', configs[ver]['buildPath']).eachFile(groovy.io.FileType.FILES, {
 		if(!(it.name.endsWith("-sources.jar") || it.name.endsWith("-dev.jar"))){
 			files << it
 		}
@@ -170,36 +215,8 @@ def getFiles(ver) {
 
 def getFiles() {
 	def files = []
-	project.gameVersions.collect({toBaseVersion(it)}).each {
+	project.gameVersions.each {
 		files += getFiles(it)
 	}
 	return files
-}
-
-// for debug
-task listFiles {
-	doLast {
-		project.gameVersions.collect({toBaseVersion(it)}).each {
-			println("$it: ${getFiles(it)}")
-		}
-	}
-}
-
-def getBuildArgumentSets(ver) {
-	def projectConfig = new Properties()
-	projectConfig.load(file("../gradle.properties").newReader())
-	return projectConfig.enable_mixin ? ["", "-Pnomixin"] : [""]
-}
-
-project.gameVersions.each { ver ->
-	def baseVer = toBaseVersion(ver)
-	def dir = getVersionProjectPath(baseVer)
-	task ("cleanBuild-$baseVer", type: Exec) {
-		workingDir dir
-		commandLine 'sh', '-c', "rm -f build/libs/* && " + String.join(" && ", getBuildArgumentSets(ver).collect({"./gradlew build ${it}"}))
-	}
-}
-
-task cleanBuildAll(dependsOn: project.gameVersions.collect({"cleanBuild-${toBaseVersion(it)}"})) {
-
 }
