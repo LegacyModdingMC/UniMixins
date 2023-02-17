@@ -3,7 +3,7 @@
     "modid": "mixingasm",
     "name": "UniMixins: Mixingasm",
     "description": "UniMixins module that implements Mixingasm (version: ${extraVersion}).",
-    "version": "${extraVersion}+uni-${uniVersion}",
+    "version": "${extraVersion}+uni.${uniVersion}",
     "mcversion": "${minecraft_version}",
     "url": "${project_url}",
     "updateUrl": "",

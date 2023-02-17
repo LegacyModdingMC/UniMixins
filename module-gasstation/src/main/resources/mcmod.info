@@ -3,7 +3,7 @@
     "modid": "gasstation",
     "name": "UniMixins: GasStation",
     "description": "UniMixins module that provides GasStation extras.\nDepends on: SpongeMixins, MixinBooterLegacy, MixinExtras",
-    "version": "${extraVersion}+uni-${uniVersion}",
+    "version": "${extraVersion}+uni.${uniVersion}",
     "mcversion": "${mcversion}",
     "url": "${project_url}",
     "updateUrl": "",

@@ -55,7 +55,7 @@ flavors.each {
 			def mixinDepVersion = uniJitpack ? mixinVersion.replace('+', '_') : mixinVersion
 			def mixinDep = "$mixinGroup:$mixinArtifactId:$mixinDepVersion"
 
-			mixinFlavorClassifier = "$mixinFlavor-$mixinVersion"
+			mixinFlavorClassifier = "$mixinFlavor.${mixinVersion.replace('+', '-')}"
 			
 			dependencies {
 				add("shadow$_flavor", "$mixinDep", {
@@ -76,7 +76,7 @@ flavors.each {
 		} else if(mixinFlavor == "spongepowered") {
 			mixinVersion = "0.8.5"
 			
-			mixinFlavorClassifier = "spongepowered-$mixinVersion"
+			mixinFlavorClassifier = "spongepowered.$mixinVersion"
 			
 			dependencies {
 				add("shadow$_flavor", "org.spongepowered:mixin:$mixinVersion")
@@ -95,7 +95,7 @@ flavors.each {
 			// Adapted from GTNHMixins's build script
 
 			mixinVersion = "0.8.5-GTNH-2"
-			mixinFlavorClassifier = "gtnh-$mixinVersion"
+			mixinFlavorClassifier = "gtnh.$mixinVersion"
 			def asmVersion = "9.4"
 			
 			dependencies {
@@ -187,7 +187,7 @@ flavors.each {
 
 		mixinVersion = "0.8.5-gasstation_7"
 		
-		mixinFlavorClassifier = "gasmix-$mixinVersion"
+		mixinFlavorClassifier = "gasmix.$mixinVersion"
 		
 		dependencies {
 			add("shadow$_flavor", "org.spongepowered:mixin:$mixinVersion")
