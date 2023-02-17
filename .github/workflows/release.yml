@@ -9,10 +9,9 @@
 name: Release tagged build
 
 on:
-#  push:
-#    tags:
-#      - '*'
-  workflow_dispatch
+  push:
+    tags:
+      - '*'
 
 jobs:
   build:
@@ -54,21 +53,21 @@ jobs:
           cat /tmp/last-release.json | jq '.id' > /tmp/draft_id.txt
         env:
           GH_TOKEN: ${{ github.token }}
-#      - name: Release
-#        uses: softprops/action-gh-release@v1
-#        with:
-#          files: build/tmp/ci/*.jar
-#          body_path: /tmp/changelog.md
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: build/tmp/ci/*.jar
+          body_path: /tmp/changelog.md
       - name: Modrinth and CurseForge release
         run: |
           cp /tmp/changelog.md publish/changelog.md
-          (cd publish; ./gradlew publishModrinth -PdebugPublish)
-          (cd publish; ./gradlew publishCurseforge -PdebugPublish)
+          (cd publish; ./gradlew publishModrinth)
+          (cd publish; ./gradlew publishCurseforge)
         env:
           MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
           CURSEFORGE_TOKEN: ${{ secrets.CURSEFORGE_TOKEN }}
-#      - name: Delete last draft release
-#        run: |
-#          gh api -X DELETE "/repos/${GITHUB_REPOSITORY}/releases/$(cat /tmp/draft_id.txt)"
-#        env:
-#          GH_TOKEN: ${{ github.token }}
+      - name: Delete last draft release
+        run: |
+          gh api -X DELETE "/repos/${GITHUB_REPOSITORY}/releases/$(cat /tmp/draft_id.txt)"
+        env:
+          GH_TOKEN: ${{ github.token }}
