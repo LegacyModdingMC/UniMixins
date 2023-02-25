@@ -57,6 +57,7 @@ class PropertyCollection {
         boolean dirty = properties.values().stream().anyMatch(PropertyToken::isDirty);
 
         if(dirty) {
+            file.getParentFile().mkdirs();
             try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
                 for (Map.Entry<String, PropertyToken> e : properties.entrySet()) {
                     PropertyToken token = e.getValue();
