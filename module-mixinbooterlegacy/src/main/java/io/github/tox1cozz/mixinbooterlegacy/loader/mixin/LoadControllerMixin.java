@@ -39,12 +39,12 @@ public class LoadControllerMixin {
 
         MixinBooterLegacyPlugin.LOGGER.info("Instantiating all ILateMixinLoader implemented classes...");
 
-        for (ASMDataTable.ASMData asmData : asmDataTable.getAll(LateMixin.class.getName().replace('.', '/'))) {
+        for (ASMDataTable.ASMData asmData : asmDataTable.getAll(LateMixin.class.getName())) {
             modClassLoader.addFile(asmData.getCandidate().getModContainer()); // Add to path before `newInstance`
             Class<?> clazz = Class.forName(asmData.getClassName().replace('/', '.'));
             MixinBooterLegacyPlugin.LOGGER.info("Instantiating {} for its mixins.", clazz);
 
-            if (!clazz.isAssignableFrom(ILateMixinLoader.class)) {
+            if(!ILateMixinLoader.class.isAssignableFrom(clazz)) {
                 throw new MixinInitialisationError(String.format("The class %s has the LateMixin annotation, but does not implement the ILateMixinLoader interface.", clazz.getName()));
             }
 
