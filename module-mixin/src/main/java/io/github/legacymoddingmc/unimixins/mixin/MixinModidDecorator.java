@@ -7,7 +7,6 @@ import com.google.gson.JsonElement;
 import net.minecraft.launchwrapper.Launch;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mixins;
 import org.spongepowered.asm.mixin.transformer.Config;
 
@@ -66,7 +65,7 @@ public final class MixinModidDecorator {
                     if (!metas.isEmpty()) {
                         String modid = metas.get(0).modid;
                         if (modid != null) {
-                            map.put(fileName, modid);
+                            map.put(fileName, createUniqueModid(modid, map.values()));
                         }
                     }
                 }
@@ -75,6 +74,40 @@ public final class MixinModidDecorator {
             logger.warn("Failed to construct jar name -> modid map, mod names will not be shown in errors.");
         }
         return map;
+    }
+
+    /**
+     * Creates a modid that is unique and is a valid Java identifier. Required because Fabric's Mixin may put the modid
+     * in method names.
+     */
+    private static String createUniqueModid(String modid, Collection<String> registeredModids) {
+        String sanitizedModid = "";
+
+        // Replace invalid characters with a underscore
+        // Valid characters are the same as in Fabric, but we allow capitalized letters too, and we don't allow dashes
+        for(int i = 0; i < modid.length(); i++) {
+            char c = modid.charAt(i);
+            boolean valid = i == 0 ? isValidLetter(c) : isValidLetter(c) || isValidDigit(c);
+            sanitizedModid += valid ? c : '_';
+        }
+        modid = sanitizedModid;
+
+        // Add a numeric suffix in case of a name conflict
+        int discriminator = 1;
+        while(registeredModids.contains(modid)) {
+            discriminator++;
+            modid = sanitizedModid + "_" + discriminator;
+        }
+
+        return modid;
+    }
+
+    private static boolean isValidLetter(char c) {
+        return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
+    }
+
+    private static boolean isValidDigit(char c) {
+        return (c >= '0' && c <= '9') || c == '_';
     }
 
     private static List<ModMetadata> parseMcmodInfo(URL url) {
