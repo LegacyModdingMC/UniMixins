@@ -80,7 +80,7 @@ public final class MixinModidDecorator {
             if (root.isJsonArray()) {
                 return Arrays.asList(new Gson().fromJson(new InputStreamReader(url.openStream()), ModMetadata[].class));
             } else {
-                return Arrays.asList(new Gson().fromJson(new InputStreamReader(url.openStream()), ModMetadata.class));
+                return ((ModMetadataCollection)new Gson().fromJson(new InputStreamReader(url.openStream()), ModMetadataCollection.class)).modList;
             }
         } catch (Exception e) {
             logger.warn("Failed to parse mcmod.info at " + url + ": " + e);
@@ -101,6 +101,10 @@ public final class MixinModidDecorator {
 
     private static class ModMetadata {
         String modid;
+    }
+
+    private static class ModMetadataCollection {
+        List<ModMetadata> modList;
     }
 
 }
