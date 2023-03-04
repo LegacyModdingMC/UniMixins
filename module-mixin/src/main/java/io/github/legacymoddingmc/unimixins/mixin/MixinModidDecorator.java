@@ -30,10 +30,13 @@ public final class MixinModidDecorator {
     private MixinModidDecorator() {}
 
     public static void apply() {
+        // FML has added all mods containing the Mixin tweaker to the class path at this point, so we only need to scan
+        // the class path one time.
         if(jarNameToModid == null) {
             jarNameToModid = createJarNameToModidMap();
 
-            // A method handle that can be used anywhere to trigger a refresh
+            // A method handle that can be used anywhere to trigger a refresh. This should be called whenever mixin
+            // configs are added later.
             Launch.blackboard.put("unimixins.mixinModidDecorator.refresh", (Runnable)MixinModidDecorator::apply);
         }
 
