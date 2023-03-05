@@ -26,7 +26,7 @@ jar {
 }
 
 ext.uniVersion = version
-ext.extraVersion = "1.2.0"
+ext.extraVersion = "1.2.1"
 ext.mcversion = "1.7.10"
 version += "+" + extraVersion
 
