@@ -27,7 +27,7 @@ public class GTNHMixinsModule {
         String requiredVersion = "0.8.5";
         String mixinVersion = (String)Launch.blackboard.get("mixin.initialised");
         if(mixinVersion != null && new ComparableVersion(mixinVersion).compareTo(new ComparableVersion(requiredVersion)) >= 0) {
-            LOGGER.debug("Intializing MixinExtras");
+            LOGGER.debug("Initializing MixinExtras");
             return true;
         } else if(!GTNHMixinsConfig.enableIntegrityChecks){
             LOGGER.warn("Skipping MixinExtras because Mixin version (" + mixinVersion + ") is lower than the required (" + requiredVersion + ")");
