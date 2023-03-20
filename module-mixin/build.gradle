@@ -172,7 +172,14 @@ flavors.each {
 			dependsOn "mixinJar$_flavor"
 			dependsOn "bridgeJar$_flavor"
 
-			from zipTree(tasks."mixinJar$_flavor".archiveFile).matching { exclude 'module-info.class' }
+			from zipTree(tasks."mixinJar$_flavor".archiveFile).matching {
+				exclude 'module-info.class'
+				eachFile {
+					if(it.path.startsWith("META-INF/services/")) {
+						it.filter({l -> !l.startsWith("org.spongepowered.asm.service.modlauncher.") ? l : null})
+					}
+				}
+			}
 			from zipTree(tasks."bridgeJar$_flavor".archiveFile).matching { include 'org/spongepowered/asm/bridge/*' }
 
 			doLast {
