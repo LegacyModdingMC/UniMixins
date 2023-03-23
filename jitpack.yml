@@ -1,2 +1,3 @@
 install:
+   - ./gradlew setupCIWorkspace
    - ./gradlew publishToMavenLocal
