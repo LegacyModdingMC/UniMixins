@@ -38,9 +38,13 @@ jobs:
       - name: Copy artifacts to a single directory
         run: |
           mkdir build/tmp/ci -p
+          mkdir build/tmp/ci-dev -p
           cp module-*/build/libs/* build/tmp/ci
-          rm build/tmp/ci/*-sources.jar
+          mv build/tmp/ci/*-all-*-dev.jar build/tmp/ci-dev
+          mv build/tmp/ci/*-compat-*-dev.jar build/tmp/ci-dev
           rm build/tmp/ci/*-dev.jar
+          mv build/tmp/ci-dev/* build/tmp/ci
+          rm build/tmp/ci/*-sources.jar
           rm build/tmp/ci/*-common-*.jar
       - uses: actions/upload-artifact@v3
         with:
