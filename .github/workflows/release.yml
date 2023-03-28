@@ -69,8 +69,8 @@ jobs:
       - name: Modrinth and CurseForge release
         run: |
           cp /tmp/changelog.md publish/changelog.md
-          (cd publish; ./gradlew publishModrinth)
-          (cd publish; ./gradlew publishCurseforge)
+          (cd publish; ./gradlew publishModrinth --stacktrace)
+          (cd publish; ./gradlew publishCurseforge --stacktrace)
         env:
           MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
           CURSEFORGE_TOKEN: ${{ secrets.CURSEFORGE_TOKEN }}
