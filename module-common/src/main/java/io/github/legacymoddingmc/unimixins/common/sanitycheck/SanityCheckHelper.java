@@ -79,8 +79,7 @@ public class SanityCheckHelper {
                 Matcher matcher = LETTER.matcher(name);
                 if(matcher.find()) {
                     int firstLetterIndex = matcher.start();
-                    name = name.substring(firstLetterIndex);
-                    if (anyPrefixesMatch(name, concerningPrefixes)) {
+                    if (anyPrefixesMatch(name.substring(firstLetterIndex), concerningPrefixes)) {
                         matches.add(name);
                     }
                 }
