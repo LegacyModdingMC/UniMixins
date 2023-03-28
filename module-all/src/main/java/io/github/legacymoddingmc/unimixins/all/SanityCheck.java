@@ -29,6 +29,7 @@ public class SanityCheck {
 
         checkConcerningJars(warnings);
         checkMixinContainer(warnings);
+        checkMixinHasInitialized(warnings);
 
         if(!warnings.isEmpty()) {
             // Any throwables we throw here will get caught, so all we can do is warn.
@@ -41,6 +42,12 @@ public class SanityCheck {
             LOGGER.error("The game will almost certainly crash!");
             LOGGER.fatal("======================================================================================");
             throw new Error(String.join("; ", warnings)); // Attention grabbing stack trace
+        }
+    }
+
+    private static void checkMixinHasInitialized(List<String> warnings) {
+        if(!Launch.blackboard.containsKey("mixin.initialised")) {
+            warnings.add("Mixin has not been initialized! If this is a dev environment, make sure org.spongepowered.asm.launch.MixinTweaker was added via the --tweakClass program argument.");
         }
     }
 
