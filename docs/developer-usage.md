@@ -30,6 +30,12 @@ configurations.compile.dependencies.each {
         it.exclude module: "gtnhmixins"
     }
 }
+
+runClient {
+    arguments += [
+        "--tweakClass", "org.spongepowered.asm.launch.MixinTweaker"
+    ]
+}
 ```
 
 You can also depend on modules individually:
