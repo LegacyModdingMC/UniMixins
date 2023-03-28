@@ -1,10 +1,11 @@
 package io.github.legacymoddingmc.unimixins.gtnhmixins;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import cpw.mods.fml.common.versioning.ComparableVersion;
-import io.github.legacymoddingmc.unimixins.common.config.ConfigUtil;
+import io.github.legacymoddingmc.unimixins.common.sanitycheck.SanityCheckHelper;
 import net.minecraft.launchwrapper.Launch;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,11 +15,9 @@ public class GTNHMixinsModule {
     private static final Logger LOGGER = LogManager.getLogger("unimixin-gtnhmixins");
 
     public static void init() {
-        ConfigUtil.load(GTNHMixinsConfig.class);
-        if(GTNHMixinsConfig.enableIntegrityChecks) {
+        if(SanityCheckHelper.isEnabled()) {
+            SanityCheckHelper.warnIfJarPrefixesExist(Arrays.asList("gasstation-", "mixinbooterlegacy-", "spongemixins-"));
             checkComponentIntegrity();
-        } else {
-            LOGGER.debug("Skipping integrity checks because they are disabled in the config.");
         }
         registerASMRemapPackage("com.gtnewhorizon.mixinextras");
     }
@@ -29,7 +28,7 @@ public class GTNHMixinsModule {
         if(mixinVersion != null && new ComparableVersion(mixinVersion).compareTo(new ComparableVersion(requiredVersion)) >= 0) {
             LOGGER.debug("Initializing MixinExtras");
             return true;
-        } else if(!GTNHMixinsConfig.enableIntegrityChecks){
+        } else if(!SanityCheckHelper.isEnabled()){
             LOGGER.warn("Skipping MixinExtras because Mixin version (" + mixinVersion + ") is lower than the required (" + requiredVersion + ")");
             return false;
         } else {

@@ -1,13 +1,13 @@
 package io.github.tox1cozz.mixinbooterlegacy;
 
 import com.google.common.util.concurrent.Runnables;
-import cpw.mods.fml.common.DummyModContainer;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin.MCVersion;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin.Name;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin.SortingIndex;
 import io.github.tox1cozz.mixinextras.MixinExtrasBootstrap;
+import io.github.legacymoddingmc.unimixins.mixinbooterlegacy.MixinBooterLegacyModule;
 import net.minecraft.launchwrapper.Launch;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -26,6 +26,7 @@ public final class MixinBooterLegacyPlugin implements IFMLLoadingPlugin {
 
     static {
         LOGGER.info("MixinBootstrap Initializing...");
+        MixinBooterLegacyModule.init();
         // Initialize MixinExtras
         MixinExtrasBootstrap.init();
         Mixins.addConfiguration("mixin.mixinbooterlegacy.json");

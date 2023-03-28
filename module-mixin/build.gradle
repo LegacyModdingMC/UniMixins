@@ -16,6 +16,9 @@ configurations.archives.artifacts.clear()
 
 dependencies {
 	compileOnly("org.spongepowered:mixin:0.8.5")
+	compileOnly(project(":module-common")) {
+		transitive = false
+	}
 }
 
 apply plugin: "com.github.johnrengelman.shadow"
@@ -32,6 +35,12 @@ flavors.each {
 	configurations.create("shadow$_flavor")
 	configurations.create("shadowBridge$_flavor")
 	configurations.create("shadowSources$_flavor")
+
+	dependencies {
+		add("shadow$_flavor", project(":module-common"), {
+			transitive = false
+		})
+	}
 
 	if (mixinFlavor == "fabric" || mixinFlavor == "spongepowered" || mixinFlavor == "unimix" || mixinFlavor == "gtnh") {
 		// Fabric / SpongePowered / UniMix / GTNH
@@ -167,6 +176,8 @@ flavors.each {
 				exclude "mcmod.info"
 			}
 
+			relocate 'io.github.legacymoddingmc.unimixins.common', 'io.github.legacymoddingmc.unimixins.mixin.repackage.common'
+
 			dependsOn "mixinJar$_flavor"
 			dependsOn "bridgeJar$_flavor"
 			dependsOn "mixinJar$_flavor"
@@ -209,6 +220,8 @@ flavors.each {
 			version = versionBase + "+" + mixinFlavorClassifier
 			classifier = ''
 			configurations = [project.configurations."shadow$_flavor"]
+
+			relocate 'io.github.legacymoddingmc.unimixins.common', 'io.github.legacymoddingmc.unimixins.mixin.repackage.common'
 		}
 
 		jar.dependsOn("shadowJar$_flavor")

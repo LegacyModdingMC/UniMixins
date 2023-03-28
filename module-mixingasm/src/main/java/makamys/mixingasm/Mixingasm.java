@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import cpw.mods.fml.common.versioning.ComparableVersion;
+import io.github.legacymoddingmc.unimixins.mixingasm.MixingasmModule;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -28,6 +29,7 @@ public class Mixingasm {
     public static final Logger LOGGER = LogManager.getLogger(MODID);
     
     public static void run() {
+        MixingasmModule.init();
         List<String> badTransformers = getBadTransformers();
         LOGGER.debug("Excluding transformers: " + badTransformers);
         for(String badTransformer : badTransformers) {

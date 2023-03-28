@@ -10,11 +10,18 @@ repositories {
 
 dependencies {
 	compileOnly('org.spongepowered:mixin:0.8.5-gasstation_7')
+	shadow(project(":module-common")) {
+		transitive = false
+	}
 }
 
 archivesBaseName = archivesBaseName.replace("-1.7.10", "-mixinbooterlegacy-1.7.10")
 
-jar {
+apply plugin: "com.github.johnrengelman.shadow"
+
+shadowJar {
+	relocate 'io.github.legacymoddingmc.unimixins.common', 'io.github.legacymoddingmc.unimixins.mixinbooterlegacy.repackage.common'
+
 	manifest {
 		attributes (
 			'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',

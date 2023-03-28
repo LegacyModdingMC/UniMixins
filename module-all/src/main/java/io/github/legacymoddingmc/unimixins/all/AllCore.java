@@ -4,7 +4,6 @@ import java.util.*;
 
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin.MCVersion;
-import io.github.legacymoddingmc.unimixins.common.config.ConfigUtil;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,13 +17,6 @@ public class AllCore implements IFMLLoadingPlugin {
     private static List<IFMLLoadingPlugin> embeddedCorePluginInstances = new ArrayList<>();
 
     static {
-        ConfigUtil.load(AllConfig.class);
-        if(AllConfig.enableIntegrityChecks) {
-            SanityCheck.doSanityCheck();
-        } else {
-            LOGGER.debug("Skipping sanity check because integrity checks are disabled in the config.");
-        }
-
         try {
             for(String s : IOUtils.toString(AllCore.class.getResource("/META-INF/unimixins-all.EmbeddedFMLCorePlugins.txt")).split(" ")) {
                 Class<?> cls = Class.forName(s);
