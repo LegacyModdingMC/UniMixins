@@ -1,8 +1,12 @@
 # Developer usage
 
-To migrate a build script to UniMixins, merge the following into your build script.
+## RetroFuturaGradle
 
-> If using old Gradle, replace each occurrence of `implementation` with `compile`, and ignore the `annotationProcessor` line (in old Gradle, `compile` dependencies are automatically put on the annotation processor classpath).
+The easiest way to use UniMixins is to use [GTNH's ExampleMod](https://github.com/GTNewHorizons/ExampleMod1.7.10), which has UniMixins integration built-in.
+
+## ForgeGradle
+
+To migrate a ForgeGradle-based build script to UniMixins, merge the following into your build script.
 
 ```gradle
 repositories {
@@ -14,8 +18,8 @@ repositories {
 def unimixinsVersion = "insert version here"
 
 dependencies {
-    annotationProcessor("com.github.LegacyModdingMC.UniMixins:_unimixins-all-1.7.10:$unimixinsVersion:dev")
-    implementation("com.github.LegacyModdingMC.UniMixins:_unimixins-all-1.7.10:$unimixinsVersion:dev")
+    // with modern Gradle, you'd need to use implementation + annotationProcessor
+    compile("com.github.LegacyModdingMC.UniMixins:_unimixins-all-1.7.10:$unimixinsVersion:dev")
 }
 
 // Exclude conflicting transitive dependencies.
@@ -32,6 +36,12 @@ configurations.compile.dependencies.each {
 }
 
 runClient {
+    arguments += [
+        "--tweakClass", "org.spongepowered.asm.launch.MixinTweaker"
+    ]
+}
+
+runServer {
     arguments += [
         "--tweakClass", "org.spongepowered.asm.launch.MixinTweaker"
     ]
