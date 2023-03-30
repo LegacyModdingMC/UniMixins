@@ -30,7 +30,11 @@ Note: A more detailed version of this table is available [here](https://legacymo
 
 ## Usage
 
-Download the `-all` jar, and put it in your mods directory. Remove any other conflicting Mixin loaders (refer to the above table). It's important to keep the `_` at the beginning of the file name to avoid [an issue](https://github.com/tox1cozZ/mixin-booter-legacy/issues/1) with mods that shade mixin.
+Download the `-all` jar, and put it in your mods directory. Remove any other conflicting Mixin loaders (refer to the above table).
+
+> **Note**: It's important for the jar to be named so that it comes first alphabetically, to avoid [a sorting issue](https://github.com/tox1cozZ/mixin-booter-legacy/issues/1) with mods that embed Mixin. This is why the jar starts with a `_` character. You may need to change this to a `!` character if you encounter issues with renamed jars.
+>
+> For reference, here is the sorting order of some notable characters: `!` < `[` < `0` < `_` < `a`
 
 ### Advanced usage
 
