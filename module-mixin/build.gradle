@@ -45,6 +45,8 @@ flavors.each {
 	if (mixinFlavor == "fabric" || mixinFlavor == "spongepowered" || mixinFlavor == "unimix" || mixinFlavor == "gtnh") {
 		// Fabric / SpongePowered / UniMix / GTNH
 		
+		def asmVersion = "9.5"
+		
 		if (mixinFlavor == "fabric" || mixinFlavor == "unimix") {
 			def uniLocal = mixinFlavor == "unimix" && project.hasProperty("local")
 			def uniJitpack = mixinFlavor == "unimix" && !uniLocal
@@ -70,9 +72,9 @@ flavors.each {
 				add("shadow$_flavor", "$mixinDep", {
 					exclude group: "org.ow2.asm"
 				})
-				add("shadow$_flavor", 'org.ow2.asm:asm-tree:9.4')
-				add("shadow$_flavor", 'org.ow2.asm:asm-commons:9.4')
-				add("shadow$_flavor", 'org.ow2.asm:asm-util:9.4')
+				add("shadow$_flavor", "org.ow2.asm:asm-tree:$asmVersion")
+				add("shadow$_flavor", "org.ow2.asm:asm-commons:$asmVersion")
+				add("shadow$_flavor", "org.ow2.asm:asm-util:$asmVersion")
 
 				add("shadowBridge$_flavor", "$mixinDep", {
 					transitive = false
@@ -92,11 +94,11 @@ flavors.each {
 				add("shadowBridge$_flavor", "org.spongepowered:mixin:$mixinVersion", {
 					transitive = false
 				})
-				add("shadow$_flavor", 'com.google.guava:guava:21.0')
-				add("shadow$_flavor", 'com.google.code.gson:gson:2.2.4')
-				add("shadow$_flavor", 'org.ow2.asm:asm-tree:9.2')
-				add("shadow$_flavor", 'org.ow2.asm:asm-commons:9.2')
-				add("shadow$_flavor", 'org.ow2.asm:asm-util:9.2')
+				add("shadow$_flavor", "com.google.guava:guava:21.0")
+				add("shadow$_flavor", "com.google.code.gson:gson:2.2.4")
+				add("shadow$_flavor", "org.ow2.asm:asm-tree:$asmVersion")
+				add("shadow$_flavor", "org.ow2.asm:asm-commons:$asmVersion")
+				add("shadow$_flavor", "org.ow2.asm:asm-util:$asmVersion")
 
 				add("shadowSources$_flavor", "org.spongepowered:mixin:$mixinVersion:sources")
 			}
@@ -105,7 +107,6 @@ flavors.each {
 
 			mixinVersion = "0.8.5-GTNH-2"
 			mixinFlavorClassifier = "gtnh.$mixinVersion"
-			def asmVersion = "9.4"
 			
 			dependencies {
 				add("shadow$_flavor", "org.spongepowered:mixin:$mixinVersion")
