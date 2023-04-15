@@ -12,4 +12,4 @@ mkdir build -p
 
 OUT_ZIP=build/unimixins-modular-1.7.10-$(git describe --tags --dirty).zip
 rm -f $OUT_ZIP
-zip -j $OUT_ZIP $(find -name "_unimixins-*.jar" | grep "build/libs" | grep -v sources | grep -v "module-all" | xargs)
+zip -j $OUT_ZIP $(find -name "-unimixins-*.jar" | grep "build/libs" | grep -v sources | grep -v "module-all" | xargs)
