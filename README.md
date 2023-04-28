@@ -18,7 +18,7 @@ Since each of these loaders is monolithic, different ones cannot be used at the 
 
 Below is a table comparing the feature sets of known Mixin loaders.
 
-Note: A more detailed version of this table is available [here](https://legacymoddingmc.github.io/wiki/#comparison-of-1.7.10-mixin-loaders/).
+Note: A more detailed version of this table is available [here](https://legacymoddingmc.github.io/wiki/comparison-of-1.7.10-mixin-loaders/).
 
 <picture>
   <source srcset="docs/comparison-chart-dark.png" media="(prefers-color-scheme: dark)">
