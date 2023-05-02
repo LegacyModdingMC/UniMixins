@@ -5,6 +5,7 @@ import java.util.*;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin.MCVersion;
 import io.github.legacymoddingmc.unimixins.common.config.ConfigUtil;
+import io.github.legacymoddingmc.unimixins.compat.asm.ModDiscovererTransformer;
 import net.minecraft.launchwrapper.Launch;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -31,6 +32,9 @@ public class CompatCore implements IFMLLoadingPlugin {
         List<String> classes = new ArrayList<>();
         if(CompatConfig.enhanceCrashReports) {
             classes.add("io.github.legacymoddingmc.unimixins.compat.asm.FMLCommonHandlerTransformer");
+        }
+        if(ModDiscovererTransformer.wantsToRun()) {
+            classes.add("io.github.legacymoddingmc.unimixins.compat.asm.ModDiscovererTransformer");
         }
         return classes.toArray(new String[0]);
     }
