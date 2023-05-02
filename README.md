@@ -72,7 +72,7 @@ All modules depend on the Mixin module. Note that the dependents don't necessari
 
 ### Optional
 
-* **DevCompat**: Compatibility tweaks for dev environments. Not needed if using UniMix or GTNH's Mixin fork.
+* **DevCompat**: Unsafe compatibility tweaks intended to only be used in dev environments. Not needed if using UniMix or GTNH's Mixin fork.
 
 ### Very Optional
 
