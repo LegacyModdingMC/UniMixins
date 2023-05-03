@@ -53,7 +53,7 @@ You can also depend on modules individually:
 ```gradle
 dependencies {
     // One of these (note: this module doesn't have dev jars)
-    implementation("com.github.LegacyModdingMC.UniMixins:-unimixins-mixin-1.7.10:$unimixinsVersion+unimix.0.12.0-mixin.0.8.5")
+    implementation("com.github.LegacyModdingMC.UniMixins:-unimixins-mixin-1.7.10:$unimixinsVersion+unimix.0.12.1-mixin.0.8.5")
     //implementation("com.github.LegacyModdingMC.UniMixins:-unimixins-mixin-1.7.10:$unimixinsVersion+spongepowered.0.8.5")
     //implementation("com.github.LegacyModdingMC.UniMixins:-unimixins-mixin-1.7.10:$unimixinsVersion+fabric.0.12.4-mixin.0.8.5")
     //implementation("com.github.LegacyModdingMC.UniMixins:-unimixins-mixin-1.7.10:$unimixinsVersion+gasmix.0.8.5-gasstation_7")
@@ -70,6 +70,25 @@ dependencies {
     
     // Needed if not using UniMix or GTNH's Mixin fork
     //implementation("com.github.LegacyModdingMC.UniMixins:-unimixins-devcompat-1.7.10:$unimixinsVersion:dev")
+}
+```
+
+## Tricks
+
+### Hot swapping
+
+Mixin hot swapping can be enabled in a similar way to how it works on [Fabric](https://fabricmc.net/wiki/tutorial:mixin_hotswaps). You just have to add the UniMixins jar (or the matching UniMix jar) as a java agent.
+
+Here's a buildscript snippet that will set it up for you (tested with the GTNH ExampleMod):
+
+```gradle
+afterEvaluate {
+    File uni = configurations.compileClasspath.findAll { it.name.contains("unimixins-all-") || it.name.contains("unimixins-mixin-") || it.name.contains("unimixins-0.") }.first()
+    runClient {
+        extraJvmArgs.add(
+                '-javaagent:' + uni.getPath()
+        )
+    }
 }
 ```
 
