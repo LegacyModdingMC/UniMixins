@@ -29,14 +29,19 @@ jobs:
       run: |
         mkdir build/tmp/ci -p
         mkdir build/tmp/ci-dev -p
+        mkdir build/tmp/ci-sources -p
         cp module-*/build/libs/* build/tmp/ci
         mv build/tmp/ci/*-all-*-dev.jar build/tmp/ci-dev
         mv build/tmp/ci/*-compat-*-dev.jar build/tmp/ci-dev
         rm build/tmp/ci/*-dev.jar
         mv build/tmp/ci-dev/* build/tmp/ci
-        rm build/tmp/ci/*-sources.jar
         rm build/tmp/ci/*-common-*.jar
+        mv build/tmp/ci/*-sources.jar build/tmp/ci-sources
     - uses: actions/upload-artifact@v3
       with:
         name: Package
         path: build/tmp/ci
+    - uses: actions/upload-artifact@v3
+      with:
+        name: Package-sources
+        path: build/tmp/ci-sources
