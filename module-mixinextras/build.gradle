@@ -3,10 +3,10 @@ configurations {
 }
 
 ext.uniVersion = version
-ext.extraVersion = "0.1.1"
+ext.extraVersion = "0.2.0-beta.8"
 
 dependencies {
-	shadow("com.github.LlamaLad7:MixinExtras:$extraVersion")
+	shadow("com.github.llamalad7.mixinextras:mixinextras-common:$extraVersion")
 }
 
 archivesBaseName = archivesBaseName.replace("-1.7.10", "-mixinextras-1.7.10")
