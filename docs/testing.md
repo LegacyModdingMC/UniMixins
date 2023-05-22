@@ -38,7 +38,7 @@ All test cases assume default configs for mods.
 
 * [x] GTNHMixins
     * [x] Mod annotation
-        * [x] [Hodgepodge 2.0.27](https://github.com/GTNewHorizons/Hodgepodge/releases/download/2.0.27/hodgepodge-1.7.10-2.0.27.jar) + [GTNHLib 0.1.1](https://github.com/GTNewHorizons/GTNHLib/releases/download/0.0.11/gtnhlib-1.7.10-0.0.11.jar)
+        * [x] [Hodgepodge 2.0.27](https://github.com/GTNewHorizons/Hodgepodge/releases/download/2.0.27/hodgepodge-1.7.10-2.0.27.jar) + [GTNHLib 0.0.11](https://github.com/GTNewHorizons/GTNHLib/releases/download/0.0.11/gtnhlib-1.7.10-0.0.11.jar)
             * [x] Chat background is transparent
                 * The mod hard depends on GTNHMixins in [its mod annotation](https://github.com/GTNewHorizons/Hodgepodge/blob/035015166f138ab56c5d5c5acd8d13dad79f95fc/src/main/java/com/mitchej123/hodgepodge/Hodgepodge.java#L21).
     * [x] Early loader
