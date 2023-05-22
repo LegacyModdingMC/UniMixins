@@ -51,7 +51,7 @@ flavors.each {
 			def uniLocal = mixinFlavor == "unimix" && project.hasProperty("local")
 			def uniJitpack = mixinFlavor == "unimix" && !uniLocal
 
-			mixinVersion = mixinFlavor == "fabric" ? "0.12.4+mixin.0.8.5" : "0.12.1+mixin.0.8.5"
+			mixinVersion = mixinFlavor == "fabric" ? "0.12.4+mixin.0.8.5" : "0.12.2+mixin.0.8.5"
 			if (uniLocal) {
 				mixinVersion += "-local"
 			}
