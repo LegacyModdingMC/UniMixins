@@ -24,6 +24,9 @@ import java.util.Set;
 @IFMLLoadingPlugin.SortingIndex(Integer.MIN_VALUE + 5)
 @IFMLLoadingPlugin.Name(GTNHMixinsCore.PLUGIN_NAME)
 @IFMLLoadingPlugin.TransformerExclusions("com.gtnewhorizon.gtnhmixins.core")
+@net.minecraftforge.fml.relauncher.IFMLLoadingPlugin.SortingIndex(Integer.MIN_VALUE + 5)
+@net.minecraftforge.fml.relauncher.IFMLLoadingPlugin.Name(GTNHMixinsCore.PLUGIN_NAME)
+@net.minecraftforge.fml.relauncher.IFMLLoadingPlugin.TransformerExclusions("com.gtnewhorizon.gtnhmixins.core")
 public class GTNHMixinsCore implements IFMLLoadingPlugin {
     public static final String PLUGIN_NAME = "GTNHMixins Core Plugin";
     public static final Logger LOGGER = LogManager.getLogger(PLUGIN_NAME);

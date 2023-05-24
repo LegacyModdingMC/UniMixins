@@ -7,4 +7,5 @@ import cpw.mods.fml.common.Mod;
  * of the module at the same time.
  */
 @Mod(modid = "unimixins-mixin", version = "@VERSION@")
+@net.minecraftforge.fml.common.Mod(modid = "unimixins-mixin", version = "@VERSION@")
 public class MixinModule {}

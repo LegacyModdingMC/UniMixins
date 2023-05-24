@@ -50,6 +50,11 @@ allprojects {
 	
 	apply from: "${project.rootDir}/buildscript/forge-1.7.gradle"
 
+	dependencies {
+		// TODO only include IFMLLoadingPlugin, Mod and ComparableVersion
+		compileOnly "net.minecraftforge:forge:1.12.2-14.23.5.2860:universal"
+	}
+
 	if(project.name.startsWith("module-") && project.name != "module-mixin" && project.name != "module-common") {
 		if(project.name != "module-all") {
 			task sourcesJar(type: Jar) {

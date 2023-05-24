@@ -27,6 +27,7 @@ import org.apache.logging.log4j.Logger;
 @SuppressWarnings("unused")
 @Deprecated
 @Mod(modid = SpongeMixins.MODID, version = "2.0.1", name = SpongeMixins.NAME, acceptableRemoteVersions = "*")
+@net.minecraftforge.fml.common.Mod(modid = SpongeMixins.MODID, version = "2.0.1", name = SpongeMixins.NAME, acceptableRemoteVersions = "*")
 public class SpongeMixins {
     
     /**

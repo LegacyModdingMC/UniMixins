@@ -20,6 +20,8 @@ import java.util.Map;
 @Name("MixinBooterLegacy")
 @MCVersion("1.7.10")
 @SortingIndex(Integer.MIN_VALUE + 1)
+@net.minecraftforge.fml.relauncher.IFMLLoadingPlugin.Name("MixinBooterLegacy")
+@net.minecraftforge.fml.relauncher.IFMLLoadingPlugin.SortingIndex(Integer.MIN_VALUE + 1)
 public final class MixinBooterLegacyPlugin implements IFMLLoadingPlugin {
 
     public static final Logger LOGGER = LogManager.getLogger("MixinBooter");
@@ -82,6 +84,7 @@ public final class MixinBooterLegacyPlugin implements IFMLLoadingPlugin {
     }
 
     @Mod(modid = "mixinbooterlegacy", name = "MixinBooterLegacy", version = "@VERSION@")
+    @net.minecraftforge.fml.common.Mod(modid = "mixinbooterlegacy", name = "MixinBooterLegacy", version = "@VERSION@")
     public static class Container {
 
     }
