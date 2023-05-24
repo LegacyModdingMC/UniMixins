@@ -26,11 +26,15 @@ allprojects {
 	apply plugin: 'maven-publish'
 	// For some reason this is needed when using Gradle 6.9 (but not if using 4.4.1)
 	repositories {
+		mavenLocal()
 		maven {
 			name 'Overmind forge repo mirror'
 			url 'https://gregtech.overminddl1.com/'
 		}
-		mavenLocal()
+		maven {
+			name = "forge"
+			url = "https://maven.minecraftforge.net/"
+		}
 		maven {
 			name = 'sponge'
 			url = 'https://repo.spongepowered.org/maven/'
