@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import cpw.mods.fml.common.versioning.ComparableVersion;
+import io.github.legacymoddingmc.unimixins.common.abstraction.ComparableVersion;
 import io.github.legacymoddingmc.unimixins.common.sanitycheck.SanityCheckHelper;
 import net.minecraft.launchwrapper.Launch;
 import org.apache.logging.log4j.LogManager;

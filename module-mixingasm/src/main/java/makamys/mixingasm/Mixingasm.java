@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import cpw.mods.fml.common.versioning.ComparableVersion;
+import io.github.legacymoddingmc.unimixins.common.abstraction.ComparableVersion;
 import io.github.legacymoddingmc.unimixins.mixingasm.MixingasmModule;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
