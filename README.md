@@ -6,7 +6,7 @@
 
 # UniMixins
 
-UniMixins is a Mixin loader for Minecraft 1.7.10 designed for maximum compatibility. It aims to combine the features of as many mixin loaders as possible, and its modular nature makes it possible to use along other loaders if desired.
+UniMixins is a Mixin loader for Minecraft 1.7.10 (with partial 1.8.9~1.12.2 support) designed for maximum compatibility. It aims to combine the features of as many mixin loaders as possible, and its modular nature makes it possible to use along other loaders if desired.
 
 ## Background
 
@@ -58,21 +58,24 @@ All modules depend on the Mixin module. Note that the dependents don't necessari
 ### Included in `all`-jar
 
 * **Mixin (UniMix)**: Provides [a Mixin fork](https://github.com/LegacyModdingMC/UniMix) maintained by the UniMixins developers, based on [the Fabric fork](https://github.com/FabricMC/Mixin).
-* **SpongeMixins**: Provides an emulation of [SpongeMixins](https://github.com/GTNewHorizons/SpongeMixins)'s extras.
-* **MixinBooterLegacy**: Provides an emulation of [MixinBooterLegacy](https://github.com/tox1cozZ/mixin-booter-legacy)'s extras, and a relocated MixinExtras.
+* **SpongeMixins** <sup>[1.7.10 only]</sup>: Provides an emulation of [SpongeMixins](https://github.com/GTNewHorizons/SpongeMixins)'s extras.
+* **MixinBooterLegacy** <sup>[1.7.10 only]</sup>: Provides an emulation of [MixinBooterLegacy](https://github.com/tox1cozZ/mixin-booter-legacy)'s extras, and a relocated MixinExtras.
 * **MixinExtras**: Provides [MixinExtras](https://github.com/LlamaLad7/MixinExtras).
-* **GasStation**: Provides an emulation of [GasStation](https://github.com/FalsePattern/GasStation)'s extras.
+* **GasStation** <sup>[1.7.10 only]</sup>: Provides an emulation of [GasStation](https://github.com/FalsePattern/GasStation)'s extras.
     * Depends on SpongeMixins.
     * Depends on MixinBooterLegacy.
     * Depends on MixinExtras
-* **GTNHMixins**: Provides an emulation of [GTNHMixins](https://github.com/GTNewHorizons/GTNHMixins)'s extras, and a relocated MixinExtras.
+* **GTNHMixins** <sup>[1.7.10 only]</sup>: Provides an emulation of [GTNHMixins](https://github.com/GTNewHorizons/GTNHMixins)'s extras, and a relocated MixinExtras.
     * Depends on SpongeMixins.
-* **Compat**: Improves compatibility by fixing incorrect references to Mixin classes (specifically the shaded ASM) in mods, and adds information about mixins to crash reports.
+* **Compat**: Various compatibility tweaks:
+    * Remaps invalid references to Mixin classes (specifically the shaded ASM) in mods.
+    * Adds information about mixins to crash reports. <sup>[1.7.10 only]</sup>
+    * Adds a stub that allows loading 1.7.10 FML plugins on 1.8+. **Needed to run the mod on 1.8+.**
 * **Mixingasm**: Improves Mixin's compatibility with ASM transformers.
 
 ### Optional
 
-* **DevCompat**: Unsafe compatibility tweaks intended to only be used in dev environments. Not needed if using UniMix or GTNH's Mixin fork.
+* **DevCompat** <sup>[1.7.10 only]</sup>: Unsafe compatibility tweaks intended to only be used in dev environments. Not needed if using UniMix or GTNH's Mixin fork.
 
 ### Very Optional
 
