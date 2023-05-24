@@ -9,5 +9,6 @@ Modifications:
 - Changed shaded ASM package name to legacy one
 - Changed mixin config to use PREINIT phase
 - Added call to "unimixins.mixinModidDecorator.refresh" after loading early mixins in MixinBooterLegacyPlugin and late mixins in LoadControllerMixin
+- Added 1.8+ @Mod and @IFMLPlugin annotations
 
 License: LGPL 2.1 (see LICENSE)

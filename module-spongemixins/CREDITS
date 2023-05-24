@@ -12,6 +12,6 @@ Source: https://github.com/GTNewHorizons/SpongeMixins/tree/c372c9010f9854dc80415
 
 Classes used:
 
-ru.timeconqueror.spongemixins.core.SpongeMixinsCore (removed Mixin bootstrap)
+ru.timeconqueror.spongemixins.core.SpongeMixinsCore (removed Mixin bootstrap, added 1.8+ @Mod and @IFMLPlugin annotations)
 
 License: MIT (see LICENSE.SpongeMixins)

@@ -5,6 +5,8 @@ Classes used:
 *
 
 Modifications:
-- removed update check in MixingasmMod
+- Removed update check in MixingasmMod
+- Made new addTransformerExclusion method get called in Mixin 0.8.5+
+- Added 1.8+ @Mod and @IFMLPlugin annotations
 
 License: Unlicense (see LICENSE)
