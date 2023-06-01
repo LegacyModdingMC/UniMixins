@@ -83,8 +83,8 @@ public final class MixinBooterLegacyPlugin implements IFMLLoadingPlugin {
         return null;
     }
 
-    @Mod(modid = "mixinbooterlegacy", name = "MixinBooterLegacy", version = "@VERSION@")
-    @net.minecraftforge.fml.common.Mod(modid = "mixinbooterlegacy", name = "MixinBooterLegacy", version = "@VERSION@")
+    @Mod(modid = "mixinbooterlegacy", name = "MixinBooterLegacy", version = "@VERSION@", acceptableRemoteVersions = "*")
+    @net.minecraftforge.fml.common.Mod(modid = "mixinbooterlegacy", name = "MixinBooterLegacy", version = "@VERSION@", acceptableRemoteVersions = "*")
     public static class Container {
 
     }
