@@ -139,5 +139,5 @@ if not foundUpdates:
     print("All modules up to date.")
 else:
     print()
-    print(foundUpdates, "repositories are out of sync.")
+    print(foundUpdates, f"repositor{'y is' if foundUpdates == 1 else 'ies are'} out of sync.")
     sys.exit(1)
