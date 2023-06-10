@@ -45,13 +45,11 @@ flavors.each {
 	if (mixinFlavor == "fabric" || mixinFlavor == "spongepowered" || mixinFlavor == "unimix" || mixinFlavor == "gtnh") {
 		// Fabric / SpongePowered / UniMix / GTNH
 		
-		def asmVersion = "9.5"
-		
 		if (mixinFlavor == "fabric" || mixinFlavor == "unimix") {
 			def uniLocal = mixinFlavor == "unimix" && project.hasProperty("local")
 			def uniJitpack = mixinFlavor == "unimix" && !uniLocal
 
-			mixinVersion = mixinFlavor == "fabric" ? "0.12.5+mixin.0.8.5" : "0.12.2+mixin.0.8.5"
+			mixinVersion = mixinFlavor == "fabric" ? fabricMixinVersion : unimixMixinVersion
 			if (uniLocal) {
 				mixinVersion += "-local"
 			}
@@ -85,7 +83,7 @@ flavors.each {
 				})
 			}
 		} else if(mixinFlavor == "spongepowered") {
-			mixinVersion = "0.8.5"
+			mixinVersion = spongepoweredMixinVersion
 			
 			mixinFlavorClassifier = "spongepowered.$mixinVersion"
 			
@@ -105,7 +103,7 @@ flavors.each {
 		} else if(mixinFlavor == "gtnh") {
 			// Adapted from GTNHMixins's build script
 
-			mixinVersion = "0.8.5-GTNH-2"
+			mixinVersion = gtnhMixinVersion
 			mixinFlavorClassifier = "gtnh.$mixinVersion"
 			
 			dependencies {
@@ -204,7 +202,7 @@ flavors.each {
 	} else if (mixinFlavor == "gasmix") {
 		// GasMix
 
-		mixinVersion = "0.8.5-gasstation_7"
+		mixinVersion = gasmixMixinVersion
 		
 		mixinFlavorClassifier = "gasmix.$mixinVersion"
 		

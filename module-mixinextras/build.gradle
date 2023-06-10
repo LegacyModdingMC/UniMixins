@@ -3,7 +3,7 @@ configurations {
 }
 
 ext.uniVersion = version
-ext.extraVersion = "0.2.0-beta.8"
+ext.extraVersion = mixinExtrasVersion
 
 dependencies {
 	shadow("com.github.llamalad7.mixinextras:mixinextras-common:$extraVersion")
