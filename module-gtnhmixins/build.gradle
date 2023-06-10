@@ -1,7 +1,7 @@
 dependencies {
 	compileOnly('org.spongepowered:mixin:0.8.5')
-	compileOnly('com.github.LlamaLad7:MixinExtras:0.1.1')
-	shadow('com.github.LlamaLad7:MixinExtras:0.1.1')
+	compileOnly("com.github.LlamaLad7:MixinExtras:$mixinExtrasVersion")
+	shadow("com.github.LlamaLad7:MixinExtras:$mixinExtrasVersion")
 	shadow(project(":module-common")) {
 		transitive = false
 	}
@@ -36,7 +36,6 @@ jar {
 }
 
 ext.uniVersion = version
-ext.extraVersion = "2.1.13"
 ext.extraModid = "gtnhmixins"
 ext.mcversion = "1.7.10"
 version += "+" + ext.extraVersion

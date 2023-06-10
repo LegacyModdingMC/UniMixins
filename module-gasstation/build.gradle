@@ -1,5 +1,5 @@
 dependencies {
-	compileOnly('org.spongepowered:mixin:0.8.5-gasstation_7')
+	compileOnly("org.spongepowered:mixin:$gasMixVersion")
 	compileOnly project(':module-mixinbooterlegacy')
 	shadow(project(":module-common")) {
 		transitive = false
@@ -30,7 +30,6 @@ jar {
 }
 
 ext.uniVersion = version
-ext.extraVersion = "0.5.1"
 ext.mcversion = "1.7.10"
 version += "+" + ext.extraVersion
 

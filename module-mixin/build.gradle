@@ -15,7 +15,7 @@ archivesBaseName = archivesBaseName.replace("-1.7.10", "-mixin-1.7.10")
 configurations.archives.artifacts.clear()
 
 dependencies {
-	compileOnly("org.spongepowered:mixin:0.8.5")
+	compileOnly("org.spongepowered:mixin:$spongepoweredMixinVersion")
 	compileOnly(project(":module-common")) {
 		transitive = false
 	}
@@ -112,8 +112,8 @@ flavors.each {
 				add("shadow$_flavor", "org.ow2.asm:asm-commons:$asmVersion")
 				add("shadow$_flavor", "org.ow2.asm:asm-util:$asmVersion")
 				add("shadow$_flavor", "com.google.guava:guava:21.0")
-				add("shadowBridge$_flavor", 'org.spongepowered:mixin:0.8.5')
-				add("shadowSources$_flavor", 'org.spongepowered:mixin:0.8.5:sources')
+				add("shadowBridge$_flavor", "org.spongepowered:mixin:$spongepoweredMixinVersion")
+				add("shadowSources$_flavor", "org.spongepowered:mixin:$spongepoweredMixinVersion:sources")
 			}
 
 		}
