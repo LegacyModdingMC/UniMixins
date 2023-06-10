@@ -11,6 +11,7 @@ from pathlib import Path
 import sys
 
 cachedGithubToken = None
+foundUpdates = 0
 
 if not Path("module-mixin").is_dir():
     sys.exit('''
@@ -24,11 +25,14 @@ def compareVersions(rootName, comparisons):
         compareVersion(f"{rootName} ({name})", a, b)
 
 def compareVersion(name, a, b):
+    global foundUpdates
+    
     upToDate = a == b
     judgement = "Up to date" if upToDate else "Out of sync!"
     details = f"({a} << {b})" 
     if not upToDate:
         print(f"{name}: {judgement} {details}")
+        foundUpdates += 1
 
 def property(text, propName):
     props = dict([line.split("=") for line in text.splitlines() if line])
@@ -130,3 +134,10 @@ compareVersions("Mixingasm",
 
 compareVersions("SpongeMixins",
     creditsSources("module-spongemixins"))
+
+if not foundUpdates:
+    print("All modules up to date.")
+else:
+    print()
+    print(foundUpdates, "repositories are out of sync.")
+    sys.exit(1)
