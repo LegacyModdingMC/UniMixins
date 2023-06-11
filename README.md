@@ -34,7 +34,7 @@ Download the `-all` jar, and put it in your mods directory. Remove any other con
 
 > **Note**: It's important for the jar to be named so that it comes first alphabetically, to avoid [a sorting issue](https://github.com/tox1cozZ/mixin-booter-legacy/issues/1) with mods that embed Mixin. This is why the jar starts with a `-` character. You may need to change this to a `!` character if you encounter issues with renamed jars.
 >
-> For reference, here is the sorting order of some notable characters: `!` < `-` < `0` < `[` < `_` < `a`
+> For reference, here is the sorting order of some notable characters: `!` < `+` < `0` < `[` < `_` < `a`
 
 ### Advanced usage
 
