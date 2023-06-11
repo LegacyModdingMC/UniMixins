@@ -90,7 +90,7 @@ allprojects {
 						artifact jar.enabled ? jar : shadowJar
 						artifact source: tasks."sourcesJar", classifier: 'sources'
 						artifact source: tasks."devJar", classifier: 'dev'
-						artifactId = archivesBaseName
+						artifactId = archivesBaseName.substring(1)
 						version = jar.version
 					}
 				}
