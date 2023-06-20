@@ -20,6 +20,9 @@ archivesBaseName = archivesBaseName.replace("-1.7.10", "-mixinbooterlegacy-1.7.1
 apply plugin: "com.github.johnrengelman.shadow"
 
 shadowJar {
+	classifier = ''
+	configurations = [project.configurations.shadow]
+
 	relocate 'io.github.legacymoddingmc.unimixins.common', 'io.github.legacymoddingmc.unimixins.mixinbooterlegacy.repackage.common'
 
 	manifest {
@@ -30,6 +33,11 @@ shadowJar {
 			'FMLCorePlugin': 'io.github.tox1cozz.mixinbooterlegacy.MixinBooterLegacyPlugin',
 		)
 	}
+}
+
+jar {
+	dependsOn shadowJar
+	enabled = false
 }
 
 ext.uniVersion = version
