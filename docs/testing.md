@@ -15,8 +15,9 @@ All test cases assume default configs for mods.
                 * Witchery is not a coremod, so if this mixin works, that means [adding it to the classpath early](https://github.com/jss2a98aj/BugTorch/blob/95480e11c5ea922f4cc2a7540ca944ef4a9aeaec/src/main/java/jss/bugtorch/core/BugTorchMixinPlugin.java#L149-L166) was successful.
 
 * [x] MixinBooterLegacy
-    * ❔ Early loader
-        * No mods are known to use this.
+    * [x] Early loader
+        * [x] [forge-network-fix @ 340585e](https://github.com/tox1cozZ/forge-network-fix/tree/340585e66937fc14df0cf9ac22b19f5b1263c4b7)
+            * [x] `Mixing MixinFMLIndexedMessageToMessageCodec from mixin.forgenetworkfix.json` appears in `fml-server-latest.log`
     * ❔ Late loader
         * No mods are known to use this.
     * ❔ MixinExtras (MixinBooterLegacy package name)
