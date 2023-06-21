@@ -25,7 +25,7 @@ All test cases assume default configs for mods.
 
 * [x] GasStation
     * [x] Mod annotation
-        * [x] [RightProperGUIScale 2.0.2](https://github.com/basdxz/RightProperGUIScale/releases/download/2.0.2/rightproperguiscale-mc1.7.10-2.0.2.jar) + [FalsePatternLib 0.10.14](https://github.com/FalsePattern/FalsePatternLib/releases/download/0.10.14/falsepatternlib-mc1.7.10-0.10.14.jar)
+        * [x] [RightProperGUIScale 2.1.0](https://github.com/basdxz/RightProperGUIScale/releases/download/2.1.0/RightProperGUIScale-mc1.7.10-2.1.0.jar) + [FalsePatternLib 0.11.4](https://github.com/FalsePattern/FalsePatternLib/releases/download/0.11.4/falsepatternlib-mc1.7.10-0.11.4.jar)
             * [x] GUI Scale slider can be set to fractional values.
                 * The mod hard depends on GasStation in [its mod annotation](https://github.com/basdxz/RightProperGUIScale/blob/a14814a00f7f360491f72367c40fcb31341abf7e/src/main/java/com/github/basdxz/rightproperguiscale/Tags.java#L17).
     * ❔ Early loader
@@ -40,19 +40,19 @@ All test cases assume default configs for mods.
 * [x] GTNHMixins
     * [x] Mod annotation
         * [x] [Hodgepodge 2.0.27](https://github.com/GTNewHorizons/Hodgepodge/releases/download/2.0.27/hodgepodge-1.7.10-2.0.27.jar) + [GTNHLib 0.0.11](https://github.com/GTNewHorizons/GTNHLib/releases/download/0.0.11/gtnhlib-1.7.10-0.0.11.jar)
-            * [x] Chat background is transparent
+            * [x] Chat background is transparent when unfocused
                 * The mod hard depends on GTNHMixins in [its mod annotation](https://github.com/GTNewHorizons/Hodgepodge/blob/035015166f138ab56c5d5c5acd8d13dad79f95fc/src/main/java/com/mitchej123/hodgepodge/Hodgepodge.java#L21).
     * [x] Early loader
-        * [x] [Hodgepodge 2.0.27](https://github.com/GTNewHorizons/Hodgepodge/releases/download/2.0.27/hodgepodge-1.7.10-2.0.27.jar) + [GTNHLib 0.1.1](https://github.com/GTNewHorizons/GTNHLib/releases/download/0.0.11/gtnhlib-1.7.10-0.0.11.jar)
-            * [x] Chat background is transparent
+        * [x] [Hodgepodge 2.0.27](https://github.com/GTNewHorizons/Hodgepodge/releases/download/2.0.27/hodgepodge-1.7.10-2.0.27.jar) + [GTNHLib 0.0.11](https://github.com/GTNewHorizons/GTNHLib/releases/download/0.0.11/gtnhlib-1.7.10-0.0.11.jar)
+            * [x] Chat background is transparent when unfocused
                 * An early loader is used to [load all early mixins](https://github.com/GTNewHorizons/Hodgepodge/blob/035015166f138ab56c5d5c5acd8d13dad79f95fc/src/main/java/com/mitchej123/hodgepodge/core/HodgepodgeCore.java#L35-L50), [including this one](https://github.com/GTNewHorizons/Hodgepodge/blob/2.0.27/src/main/java/com/mitchej123/hodgepodge/mixins/Mixins.java#L98-L103).
     * [x] Late loader
-        * [x] [Hodgepodge 2.0.27](https://github.com/GTNewHorizons/Hodgepodge/releases/download/2.0.27/hodgepodge-1.7.10-2.0.27.jar) + [GTNHLib 0.1.1](https://github.com/GTNewHorizons/GTNHLib/releases/download/0.0.11/gtnhlib-1.7.10-0.0.11.jar) + [Baubles 1.0.1.16](https://github.com/GTNewHorizons/Baubles/releases/download/1.0.1.16/Baubles-1.0.1.16.jar)
+        * [x] [Hodgepodge 2.0.27](https://github.com/GTNewHorizons/Hodgepodge/releases/download/2.0.27/hodgepodge-1.7.10-2.0.27.jar) + [GTNHLib 0.0.11](https://github.com/GTNewHorizons/GTNHLib/releases/download/0.0.11/gtnhlib-1.7.10-0.0.11.jar) + [Baubles 1.0.1.16](https://github.com/GTNewHorizons/Baubles/releases/download/1.0.1.16/Baubles-1.0.1.16.jar)
             * [x] When the inventory is opened while a potion effect is active, the inventory GUI stays centered.
                 * A late loader is used to [load all late mixins](https://github.com/GTNewHorizons/Hodgepodge/blob/2.0.27/src/main/java/com/mitchej123/hodgepodge/HodgepodgeLateMixins.java), [including this one](https://github.com/GTNewHorizons/Hodgepodge/blob/2.0.27/src/main/java/com/mitchej123/hodgepodge/mixins/Mixins.java#L489-L494).
     * [x] MixinExtras (GTNHMixins package name)
-        * [x] [Hodgepodge 2.0.27](https://github.com/GTNewHorizons/Hodgepodge/releases/download/2.0.27/hodgepodge-1.7.10-2.0.27.jar) + [GTNHLib 0.1.1](https://github.com/GTNewHorizons/GTNHLib/releases/download/0.0.11/gtnhlib-1.7.10-0.0.11.jar)
-            * [x] Chat background is transparent
+        * [x] [Hodgepodge 2.0.27](https://github.com/GTNewHorizons/Hodgepodge/releases/download/2.0.27/hodgepodge-1.7.10-2.0.27.jar) + [GTNHLib 0.0.11](https://github.com/GTNewHorizons/GTNHLib/releases/download/0.0.11/gtnhlib-1.7.10-0.0.11.jar)
+            * [x] Chat background is transparent when unfocused
                 * The [mixin](https://github.com/GTNewHorizons/Hodgepodge/blob/2.0.27/src/main/java/com/mitchej123/hodgepodge/mixins/early/minecraft/MixinGuiNewChat_TransparentChat.java) implementing this feature uses `@WrapWithCondition`.
 
 * [x] Mixingasm
