@@ -1,7 +1,7 @@
 dependencies {
 	compileOnly('org.spongepowered:mixin:0.8.5')
-	compileOnly("com.github.LlamaLad7:MixinExtras:$mixinExtrasVersion")
-	shadow("com.github.LlamaLad7:MixinExtras:$mixinExtrasVersion")
+	compileOnly("io.github.llamalad7:mixinextras-common:$mixinExtrasVersion")
+	shadow("io.github.llamalad7:mixinextras-common:$mixinExtrasVersion")
 	shadow(project(":module-common")) {
 		transitive = false
 	}
