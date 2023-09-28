@@ -75,7 +75,7 @@ task createMergedAnnotationProcessorConfig() {
 	doLast {
 		// MixinExtras's APs have to be registered before Mixin's,
 		// so we manually merge the APs to ensure this is the case.
-		file(path).text = """com.llamalad7.mixinextras.MixinExtrasAP
+		file(path).text = """com.llamalad7.mixinextras.ap.MixinExtrasAP
 io.github.tox1cozz.mixinextras.MixinExtrasAnnotationProcessor
 com.gtnewhorizon.mixinextras.MixinExtrasAP
 org.spongepowered.tools.obfuscation.MixinObfuscationProcessorInjection
