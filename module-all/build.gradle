@@ -77,7 +77,7 @@ task createMergedAnnotationProcessorConfig() {
 		// so we manually merge the APs to ensure this is the case.
 		file(path).text = """com.llamalad7.mixinextras.ap.MixinExtrasAP
 io.github.tox1cozz.mixinextras.MixinExtrasAnnotationProcessor
-com.gtnewhorizon.mixinextras.MixinExtrasAP
+com.gtnewhorizon.mixinextras.ap.MixinExtrasAP
 org.spongepowered.tools.obfuscation.MixinObfuscationProcessorInjection
 org.spongepowered.tools.obfuscation.MixinObfuscationProcessorTargets
 """
