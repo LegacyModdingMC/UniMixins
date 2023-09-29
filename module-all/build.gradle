@@ -3,7 +3,7 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 archivesBaseName = archivesBaseName.replace("-1.7.10", "-all-1.7.10")
 
 // The order of these determines the order embedded core plugins get initialized in
-ext.moduleNames = ["module-mixin", "module-compat", "module-mixingasm", "module-spongemixins", "module-mixinbooterlegacy", "module-gasstation", "module-gtnhmixins", "module-mixinextras"]
+ext.moduleNames = ["module-mixin", "module-mixingasm", "module-spongemixins", "module-mixinbooterlegacy", "module-gasstation", "module-gtnhmixins", "module-mixinextras"]
 
 def getModuleJar(name, source = false) {
 	def jarTaskName = name == "module-mixin" ? ":module-mixin:shadow${source ? 'Sources' : ''}JarUnimix" : ":$name:${source ? 'sourcesJar' : 'devJar'}"
