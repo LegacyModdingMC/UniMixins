@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import io.github.legacymoddingmc.unimixins.common.abstraction.ComparableVersion;
 import io.github.legacymoddingmc.unimixins.common.sanitycheck.SanityCheckHelper;
-import net.minecraft.launchwrapper.Launch;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -20,20 +18,6 @@ public class GTNHMixinsModule {
             checkComponentIntegrity();
         }
         registerASMRemapPackage("com.gtnewhorizon.mixinextras");
-    }
-    
-    public static boolean isMixinExtrasEnabled() {
-        String requiredVersion = "0.8.5";
-        String mixinVersion = (String)Launch.blackboard.get("mixin.initialised");
-        if(mixinVersion != null && new ComparableVersion(mixinVersion).compareTo(new ComparableVersion(requiredVersion)) >= 0) {
-            LOGGER.debug("Initializing MixinExtras");
-            return true;
-        } else if(!SanityCheckHelper.isEnabled()){
-            LOGGER.warn("Skipping MixinExtras because Mixin version (" + mixinVersion + ") is lower than the required (" + requiredVersion + ")");
-            return false;
-        } else {
-            throw new RuntimeException("Cannot load MixinExtras because Mixin version (" + mixinVersion + ") is lower than the required (" + requiredVersion + ")");
-        }
     }
 
     private static void registerASMRemapPackage(String pkg) {
