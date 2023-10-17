@@ -11,6 +11,7 @@ import java.util.stream.Stream;
 
 import io.github.legacymoddingmc.unimixins.common.abstraction.ComparableVersion;
 import io.github.legacymoddingmc.unimixins.mixingasm.MixingasmModule;
+import makamys.mixingasm.api.MixinSafeTransformer;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -75,7 +76,9 @@ public class Mixingasm {
         for(IClassTransformer trans : Launch.classLoader.getTransformers()) {
             String name = trans.getClass().getCanonicalName();
             boolean included = false;
-            if((included = (transformerInclusionPatterns.stream().anyMatch(p -> patternMatches(name, p)) || trans instanceof IMixinSafeTransformer))
+            if((included = (transformerInclusionPatterns.stream().anyMatch(p -> patternMatches(name, p))
+                    || trans instanceof IMixinSafeTransformer
+                    || trans.getClass().isAnnotationPresent(MixinSafeTransformer.class)))
                     && transformerExclusionPatterns.stream().noneMatch(p -> patternMatches(name, p))) {
                 LOGGER.debug("      Trusting transformer " + name);
             } else {
@@ -85,7 +88,7 @@ public class Mixingasm {
         }
         return badTransformers;
     }
-    
+
     private static boolean patternMatches(String str, String patternStr) {
         Pattern pattern = Pattern.compile(patternStr.replace(".", "\\.").replace("*", ".*"));
         return pattern.matcher(str).matches();
