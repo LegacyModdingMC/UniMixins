@@ -7,6 +7,9 @@ dependencies {
 	shadow(project(":module-common")) {
 		transitive = false
 	}
+	compileOnly(project(":module-mixingasm")) {
+		transitive = false
+	}
 	compileOnly("com.github.LlamaLad7:MixinExtras:$mixinExtrasVersion")
 	shadowMixinExtras("com.github.LlamaLad7:MixinExtras:$mixinExtrasVersion")
 }
