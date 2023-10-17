@@ -7,9 +7,9 @@ com.gtnewhorizon.gtnhmixins.*
 Modifications:
 - Removed Mixin environment initialization in GTNHMixinsCore
 - Added Mixin 0.7 support
-	- Made MixinExtras initialization get suppressed if Mixin version is below 0.8.5
 	- Made reflection support Mixin 0.7.11
 - Added call to "unimixins.mixinModidDecorator.refresh" after loading early mixins in GTNHMixinsCore and late mixins in LateMixinOrchestrationMixin
 - Added 1.8+ @Mod and @IFMLPlugin annotations
+- Removed MixinExtras
 
 License: LGPL3 (see LICENSE)
