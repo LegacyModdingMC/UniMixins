@@ -70,6 +70,7 @@ All modules depend on the Mixin module. Note that the dependents don't necessari
 * **Compat**: Various compatibility tweaks:
     * Remaps invalid references to Mixin classes (specifically the shaded ASM) in mods.
     * Adds information about mixins to crash reports. <sup>[1.7.10 only]</sup>
+    * Provides the deprecated `com.gtnewhorizons.mixinextras` relocation of MixinExtras 0.1.1.
     * Adds a stub that allows loading 1.7.10 FML plugins on 1.8+. **Needed to run the mod on 1.8+.**
 * **Mixingasm**: Improves Mixin's compatibility with ASM transformers.
 
