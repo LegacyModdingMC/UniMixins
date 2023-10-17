@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.util.concurrent.Runnables;
 import com.gtnewhorizon.gtnhmixins.IEarlyMixinLoader;
 import com.gtnewhorizon.gtnhmixins.Reflection;
-import com.llamalad7.mixinextras.MixinExtrasBootstrap;
 
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 import net.minecraft.launchwrapper.Launch;
@@ -45,9 +44,6 @@ public class GTNHMixinsCore implements IFMLLoadingPlugin {
         LOGGER.info("Initializing GTNHMixins Core");
         
         GTNHMixinsModule.init();
-        if(GTNHMixinsModule.isMixinExtrasEnabled()) {
-            MixinExtrasBootstrap.init();
-        }
     }
     
     @Override
