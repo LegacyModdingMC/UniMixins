@@ -4,7 +4,9 @@ import java.util.*;
 
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin.MCVersion;
+import io.github.legacymoddingmc.unimixins.common.abstraction.ComparableVersion;
 import io.github.legacymoddingmc.unimixins.common.config.ConfigUtil;
+import io.github.legacymoddingmc.unimixins.common.sanitycheck.SanityCheckHelper;
 import io.github.legacymoddingmc.unimixins.compat.asm.ModDiscovererTransformer;
 import net.minecraft.launchwrapper.Launch;
 import org.apache.logging.log4j.LogManager;
@@ -21,6 +23,14 @@ public class CompatCore implements IFMLLoadingPlugin {
 
         ConfigUtil.load(CompatConfig.class);
 
+        if(isLegacyGTNHMixinExtrasEnabled()) {
+            Launch.classLoader.registerTransformer(relativeClassName("asm.LegacyGTNHMixinExtrasGenerator"));
+            try {
+                Class.forName("com.gtnewhorizon.mixinextras.MixinExtrasBootstrap").getMethod("init").invoke(null);
+            } catch (Exception e) {
+                throw new RuntimeException("Failed to initialize MixinExtrasBootstrap");
+            }
+        }
         if(CompatConfig.enableRemapper) {
             // We register the transformer this way to register it as early as possible.
             Launch.classLoader.registerTransformer(relativeClassName("asm.ASMRemapperTransformer"));
@@ -37,6 +47,22 @@ public class CompatCore implements IFMLLoadingPlugin {
             classes.add("io.github.legacymoddingmc.unimixins.compat.asm.ModDiscovererTransformer");
         }
         return classes.toArray(new String[0]);
+    }
+
+    public static boolean isLegacyGTNHMixinExtrasEnabled() {
+        if(!CompatConfig.enableLegacyGTNHMixinExtrasPackage) return false;
+
+        String requiredVersion = "0.8.5";
+        String mixinVersion = (String)Launch.blackboard.get("mixin.initialised");
+        if(mixinVersion != null && new ComparableVersion(mixinVersion).compareTo(new ComparableVersion(requiredVersion)) >= 0) {
+            LOGGER.debug("Initializing MixinExtras");
+            return true;
+        } else if(!SanityCheckHelper.isEnabled()){
+            LOGGER.warn("Skipping MixinExtras because Mixin version (" + mixinVersion + ") is lower than the required (" + requiredVersion + ")");
+            return false;
+        } else {
+            throw new RuntimeException("Cannot load MixinExtras because Mixin version (" + mixinVersion + ") is lower than the required (" + requiredVersion + ")");
+        }
     }
 
     private static String relativeClassName(String relName) {
