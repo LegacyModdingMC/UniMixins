@@ -17,7 +17,6 @@ public class GTNHMixinsModule {
             SanityCheckHelper.warnIfJarPrefixesExist(Arrays.asList("gasstation-", "mixinbooterlegacy-", "spongemixins-"));
             checkComponentIntegrity();
         }
-        registerASMRemapPackage("com.gtnewhorizon.mixinextras");
     }
 
     private static void registerASMRemapPackage(String pkg) {
