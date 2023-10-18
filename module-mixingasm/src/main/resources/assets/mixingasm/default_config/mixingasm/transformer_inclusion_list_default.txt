@@ -12,6 +12,7 @@
 # * It's matched by a pattern in transformer_inclusion_list.txt
 # * It was added to Mixingasm's dynamic inclusion list by a mod using the API at startup
 # * The transformer implements IMixinSafeTransformer
+# * The transformer is decorated with @MixinSafeTransformer
 # AND the transformer is not matched by a pattern in transformer_exclusion_list.txt
 
 # '*' can be used as a wildcard character.
