@@ -24,9 +24,9 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Set up Gradle build
-      run: ./gradlew setupCIWorkspace
+      run: ./gradlew setupCIWorkspace -Dorg.gradle.jvmargs=-Xmx2048M
     - name: Build with Gradle
-      run: ./gradlew build
+      run: ./gradlew build -Dorg.gradle.jvmargs=-Xmx2048M
     - name: Copy artifacts to a single directory
       run: |
         mkdir build/tmp/ci -p
