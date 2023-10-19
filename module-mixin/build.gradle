@@ -274,7 +274,7 @@ flavors.each {
 				artifact tasks."shadowSourcesJar$_flavor"
 
 				artifactId = archivesBaseName.substring(1)
-				version = tasks."shadowJar$_flavor".archiveVersion
+				version = tasks."shadowJar$_flavor".archiveVersion.get()
 			}
 		}
 	}

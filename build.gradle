@@ -60,50 +60,24 @@ allprojects {
 	minecraft.injectedTags.put("VERSION", project.version)
 
 	if(project.name.startsWith("module-") && project.name != "module-mixin" && project.name != "module-common") {
-		// TODO rfg: figure out source and dev jars
-		/*
-		if(project.name != "module-all") {
-			task sourcesJar(type: Jar) {
-				from sourceSets.main.allSource
-				classifier = 'sources'
-			}
-		}
-		
 		afterEvaluate {
-			task devJar(type: Jar) {
-				classifier = 'dev'
-				def jarTask = (jar.enabled ? jar : shadowJar)
-				from zipTree(jarTask.getOutputs().getFiles().getSingleFile())
-				manifest = jarTask.manifest
-
-				dependsOn jarTask
-			}
-
-			reobf.dependsOn devJar
-
 			artifacts {
 				archives tasks."sourcesJar"
-				archives tasks."devJar"
+				archives jar.enabled ? jar : shadowJar
 			}
 
 			publishing {
 				publications {
 					create("maven", MavenPublication) {
-						artifact jar.enabled ? jar : shadowJar
+						artifact reobfJar
 						artifact source: tasks."sourcesJar", classifier: 'sources'
-						artifact source: tasks."devJar", classifier: 'dev'
+						artifact source: jar.enabled ? jar : shadowJar, classifier: 'dev'
 						artifactId = archivesBaseName.substring(1)
-						version = jar.version
+						version = jar.archiveVersion.get()
 					}
 				}
 			}
-
-			project.tasks.forEach {
-				if(it.name.startsWith("publish") && it.name.contains("PublicationTo")) {
-					it.dependsOn reobf
-				}
-			}
-		}*/
+		}
 	}
 
 	// Put license, credits and readme in jar
