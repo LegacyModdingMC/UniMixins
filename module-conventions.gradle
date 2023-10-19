@@ -1,0 +1,15 @@
+// Stuff that should get set in every module. Because putting it in allprojects
+// doesn't work for some reason!
+
+// Set the toolchain version to decouple the Java we run Gradle with from the Java used to compile and run the mod
+java {
+  toolchain {
+    languageVersion.set(JavaLanguageVersion.of(8))
+    // Azul covers the most platforms for Java 8 toolchains, crucially including MacOS arm64
+    vendor.set(org.gradle.jvm.toolchain.JvmVendorSpec.AZUL)
+  }
+  // TODO rfg: figure out source and dev jars
+  // Generate sources and javadocs jars when building and publishing
+  //withSourcesJar()
+  //withJavadocJar()
+}

@@ -1,11 +1,10 @@
+apply from: "${rootDir}/module-conventions.gradle"
+
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
 buildscript {
 	repositories {
 		gradlePluginPortal()
-	}
-	dependencies {
-		classpath 'com.github.jengelman.gradle.plugins:shadow:6.1.0'
 	}
 }
 
@@ -120,11 +119,11 @@ flavors.each {
 
 		// We want to *not* relocate ASM in the bridge classes. So we use a multi-step
 		// build procedure:
-
+		
 		// 1. Create relocated Mixin jar, without the bridge classes
 		task("mixinJar$_flavor", type: ShadowJar) {
 			destinationDirectory = file("build/tmp")
-			classifier = "tmpMixin$_flavor"
+			archiveClassifier = "tmpMixin$_flavor"
 			configurations = [project.configurations."shadow$_flavor"]
 
 			relocate 'org.objectweb.asm', 'org.spongepowered.asm.lib'
@@ -161,7 +160,7 @@ flavors.each {
 		// 2. Create Mixin jar without relocation, with *only* the bridge classes
 		task("bridgeJar$_flavor", type: ShadowJar) {
 			destinationDirectory = file("build/tmp")
-			classifier = "tmpBridge$_flavor"
+			archiveClassifier = "tmpBridge$_flavor"
 			configurations = [project.configurations."shadowBridge$_flavor"]
 
 			include '*.jar'
@@ -170,7 +169,7 @@ flavors.each {
 
 		// 3. Combine the two jars
 		task("shadowJar$_flavor", type: ShadowJar) {
-			version = versionBase + "+" + mixinFlavorClassifier
+			archiveVersion = versionBase + "+" + mixinFlavorClassifier
 			from(sourceSets.main.output) {
 				exclude "mcmod.info"
 			}
@@ -216,8 +215,8 @@ flavors.each {
 				exclude "mcmod.info"
 			}
 
-			version = versionBase + "+" + mixinFlavorClassifier
-			classifier = ''
+			archiveVersion = versionBase + "+" + mixinFlavorClassifier
+			archiveClassifier = ''
 			configurations = [project.configurations."shadow$_flavor"]
 
 			relocate 'io.github.legacymoddingmc.unimixins.common', 'io.github.legacymoddingmc.unimixins.mixin.repackage.common'
@@ -259,8 +258,8 @@ flavors.each {
 	task("shadowSourcesJar$_flavor", type: ShadowJar) {
 		from sourceSets.main.allSource
 		
-		version = versionBase + "+" + mixinFlavorClassifier
-		classifier = "sources"
+		archiveVersion = versionBase + "+" + mixinFlavorClassifier
+		archiveClassifier = "sources"
 		configurations = [project.configurations."shadowSources$_flavor"]
 	}
 
@@ -273,13 +272,13 @@ flavors.each {
 				artifact tasks."shadowSourcesJar$_flavor"
 
 				artifactId = archivesBaseName.substring(1)
-				version = tasks."shadowJar$_flavor".version
+				version = tasks."shadowJar$_flavor".archiveVersion
 			}
 		}
 	}
 }
 
 // Obfuscation is useless because we're not compiling code referencing Minecraft classes
-reobf.enabled = false
+reobfJar.enabled = false
 
 jar.enabled = false
