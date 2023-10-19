@@ -1,6 +1,7 @@
+apply from: "${rootDir}/module-conventions.gradle"
+
 dependencies {
-	compile project(":module-mixin")
-	compile files(tasks.getByPath(":module-mixin:shadowJarUnimix").getOutputs().getFiles().getSingleFile())
+	implementation project(path: ":module-mixin", configuration: 'unimix')
 	shadow(project(":module-common")) {
 		transitive = false
 	}
@@ -11,7 +12,7 @@ archivesBaseName = archivesBaseName.replace("-1.7.10", "-mixingasm-1.7.10")
 apply plugin: "com.github.johnrengelman.shadow"
 
 shadowJar {
-	classifier = ''
+	archiveClassifier = ''
 	configurations = [project.configurations.shadow]
 
 	relocate 'io.github.legacymoddingmc.unimixins.common', 'io.github.legacymoddingmc.unimixins.mixingasm.repackage.common'
@@ -32,9 +33,11 @@ jar {
 	enabled = false
 }
 
+reobfJar.enabled = false
+
 ext.uniVersion = version
 version += "+" + ext.extraVersion
 
-minecraft {
-    replace("@VERSION@", extraVersion)
+tasks.injectTags.configure {
+	outputClassName.set("io.github.legacymoddingmc.unimixins.mixingasm.Tags")
 }

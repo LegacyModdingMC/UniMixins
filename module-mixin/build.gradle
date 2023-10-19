@@ -282,6 +282,23 @@ flavors.each {
 	}
 }
 
+// Set outgoing artifact so Mixingasm module can depend on it
+configurations {
+	unimix {
+		canBeConsumed = true
+		canBeResolved = false
+
+		attributes {
+			// Needed to avoid an error
+			attribute(Attribute.of("unique.thingy", String), "unimix jar")
+		}
+	}
+}
+
+artifacts {
+	unimix(tasks."shadowJarUnimix")
+}
+
 // Obfuscation is useless because we're not compiling code referencing Minecraft classes
 reobfJar.enabled = false
 

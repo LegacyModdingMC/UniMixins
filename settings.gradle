@@ -19,7 +19,7 @@ pluginManagement {
 include 'module-mixin'
 // include 'module-compat'
 // include 'module-devcompat'
-// include 'module-mixingasm'
+include 'module-mixingasm'
 // include 'module-spongemixins'
 // include 'module-mixinbooterlegacy'
 // include 'module-gasstation'
