@@ -60,6 +60,8 @@ allprojects {
 		// TODO only include IFMLLoadingPlugin, Mod and ComparableVersion
 		compileOnly "net.minecraftforge:forge:1.12.2-14.23.5.2860:universal"
 	}
+	
+	minecraft.injectedTags.put("VERSION", project.version)
 
 	if(project.name.startsWith("module-") && project.name != "module-mixin" && project.name != "module-common") {
 		// TODO rfg: figure out source and dev jars

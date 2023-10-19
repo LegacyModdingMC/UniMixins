@@ -1,5 +1,9 @@
 apply from: "${rootDir}/module-conventions.gradle"
 
+tasks.injectTags.configure {
+	outputClassName.set("io.github.legacymoddingmc.unimixins.mixin.Tags")
+}
+
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
 buildscript {
