@@ -34,7 +34,7 @@ jobs:
       - name: Set up Gradle build
         run: ./gradlew setupCIWorkspace
       - name: Build with Gradle
-        run: ./gradlew build -PnoAltMixin
+        run: ./gradlew build
       - name: Copy artifacts to a single directory
         run: |
           mkdir build/tmp/ci -p

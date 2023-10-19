@@ -26,7 +26,7 @@ dependencies {
 
 apply plugin: "com.github.johnrengelman.shadow"
 
-def flavors = (project.hasProperty("noAltMixin") ? [] : ["spongepowered", "fabric", "gasmix", "gtnh"]) + ["unimix"]
+def flavors = (!project.hasProperty("enableAltMixin") ? [] : ["spongepowered", "fabric", "gasmix", "gtnh"]) + ["unimix"]
 
 flavors.each {
 	def mixinFlavor = it

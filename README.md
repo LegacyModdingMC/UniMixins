@@ -121,7 +121,7 @@ When editing the source code of modules, please document your changes in the mod
 ### Build flags
 * `-Plocal`: use the locally built version of `unimix` when building the Mixin module.
     * Invoke `./gradlew publishToMavenLocal` in the UniMix repo first to install a local build.
-* `-PnoAltMixin`: do not build alternate flavors of the Mixin module, only UniMix. Used by the release workflow.
+* `-PenableAltMixin`: build alternate flavors of the Mixin module, not just UniMix.
 
 ### Roadmap
 
