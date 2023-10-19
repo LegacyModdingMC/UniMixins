@@ -182,8 +182,6 @@ flavors.each {
 
 			dependsOn "mixinJar$_flavor"
 			dependsOn "bridgeJar$_flavor"
-			dependsOn "mixinJar$_flavor"
-			dependsOn "bridgeJar$_flavor"
 
 			from zipTree(tasks."mixinJar$_flavor".archiveFile).matching {
 				exclude 'module-info.class'
