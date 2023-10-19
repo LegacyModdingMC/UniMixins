@@ -51,14 +51,6 @@ minecraft {
     mcVersion.set("1.7.10")
 }
 
-if(project.enable_mixin.toBoolean()) {
-	apply from: "buildscript/forge-1.7-mixin.gradle"
-}
-
-if(file("project.gradle").exists()){
-	apply from: "project.gradle"
-}
-
 processResources {
     // This will ensure that this task is redone when the versions or any
 	// user-defined properties change.
