@@ -1,10 +1,15 @@
+apply from: "${rootDir}/module-conventions.gradle"
+
 dependencies {
 	compileOnly('org.spongepowered:mixin:0.8.5')
 }
 
 archivesBaseName = archivesBaseName.replace("-1.7.10", "-spongemixins-1.7.10")
 
-jar {
+shadowJar {
+	archiveClassifier = ''
+	configurations = []
+	relocate 'com.gtnewhorizon', 'ru.timeconqueror.spongemixins.repackage.com.gtnewhorizon'
 	manifest {
 		attributes (
 			'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
@@ -14,10 +19,10 @@ jar {
 	}
 }
 
-minecraft {
-	srgExtra "PK: com/gtnewhorizon ru/timeconqueror/spongemixins/repackage/com/gtnewhorizon"
-}
-
 ext.uniVersion = version
 ext.mcversion = "1.7.10"
 version += "+gtnh." + ext.extraVersion
+
+reobfJar.enabled = false
+jar.dependsOn shadowJar
+jar.enabled = false

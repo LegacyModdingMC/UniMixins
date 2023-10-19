@@ -1,3 +1,5 @@
+apply from: "${rootDir}/module-conventions.gradle"
+
 dependencies {
 	compileOnly('org.spongepowered:mixin:0.8.5')
 }
@@ -5,6 +7,7 @@ dependencies {
 archivesBaseName = archivesBaseName.replace("-1.7.10", "-devcompat-1.7.10")
 
 jar {
+	archiveClassifier = ''
 	manifest {
 		attributes (
 			'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
@@ -14,3 +17,9 @@ jar {
 		)
 	}
 }
+
+tasks.injectTags.configure {
+	outputClassName.set("io.github.legacymoddingmc.unimixins.devcompat.Tags")
+}
+
+reobfJar.enabled = false

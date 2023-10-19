@@ -1,3 +1,5 @@
+apply from: "${rootDir}/module-conventions.gradle"
+
 dependencies {
 	compileOnly("org.spongepowered:mixin:$gasMixVersion")
 	compileOnly project(':module-mixinbooterlegacy')
@@ -10,7 +12,7 @@ archivesBaseName = archivesBaseName.replace("-1.7.10", "-gasstation-1.7.10")
 
 shadowJar {
 	configurations = [project.configurations.shadow]
-	classifier = ''
+	archiveClassifier = ''
 	relocate 'io.github.legacymoddingmc.unimixins.common', 'io.github.legacymoddingmc.unimixins.gasstation.repackage.common'
 
 	manifest {
@@ -29,13 +31,19 @@ jar {
 	dependsOn shadowJar
 }
 
+reobfJar.enabled = false
+
 ext.uniVersion = version
 ext.mcversion = "1.7.10"
 version += "+" + ext.extraVersion
 
 minecraft {
-	replace("GRADLETOKEN_MODID", "gasstation")
-	replace("GRADLETOKEN_MODNAME", "GasStation")
-	replace("GRADLETOKEN_VERSION", extraVersion)
-	replace("GRADLETOKEN_GROUPNAME", "com.falsepattern.gasstation")
+	injectedTags.put("MODID", "gasstation")
+	injectedTags.put("MODNAME", "GasStation")
+	injectedTags.put("VERSION", extraVersion)
+	injectedTags.put("GROUPNAME", "com.falsepattern.gasstation")
+}
+
+tasks.injectTags.configure {
+	outputClassName.set("com.falsepattern.gasstation.Tags")
 }
