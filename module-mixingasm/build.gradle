@@ -12,7 +12,7 @@ archivesBaseName = archivesBaseName.replace("-1.7.10", "-mixingasm-1.7.10")
 apply plugin: "com.github.johnrengelman.shadow"
 
 shadowJar {
-	archiveClassifier = ''
+	archiveClassifier = 'dev'
 	configurations = [project.configurations.shadow]
 
 	relocate 'io.github.legacymoddingmc.unimixins.common', 'io.github.legacymoddingmc.unimixins.mixingasm.repackage.common'
@@ -32,8 +32,6 @@ jar {
 	dependsOn shadowJar
 	enabled = false
 }
-
-reobfJar.enabled = false
 
 ext.uniVersion = version
 version += "+" + ext.extraVersion

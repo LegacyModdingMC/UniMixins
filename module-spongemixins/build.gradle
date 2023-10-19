@@ -7,7 +7,7 @@ dependencies {
 archivesBaseName = archivesBaseName.replace("-1.7.10", "-spongemixins-1.7.10")
 
 shadowJar {
-	archiveClassifier = ''
+	archiveClassifier = 'dev'
 	configurations = []
 	relocate 'com.gtnewhorizon', 'ru.timeconqueror.spongemixins.repackage.com.gtnewhorizon'
 	manifest {
@@ -23,6 +23,5 @@ ext.uniVersion = version
 ext.mcversion = "1.7.10"
 version += "+gtnh." + ext.extraVersion
 
-reobfJar.enabled = false
 jar.dependsOn shadowJar
 jar.enabled = false

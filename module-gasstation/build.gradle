@@ -12,7 +12,7 @@ archivesBaseName = archivesBaseName.replace("-1.7.10", "-gasstation-1.7.10")
 
 shadowJar {
 	configurations = [project.configurations.shadow]
-	archiveClassifier = ''
+	archiveClassifier = 'dev'
 	relocate 'io.github.legacymoddingmc.unimixins.common', 'io.github.legacymoddingmc.unimixins.gasstation.repackage.common'
 
 	manifest {
@@ -30,8 +30,6 @@ jar {
 	enabled = false
 	dependsOn shadowJar
 }
-
-reobfJar.enabled = false
 
 ext.uniVersion = version
 ext.mcversion = "1.7.10"
