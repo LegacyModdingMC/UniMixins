@@ -36,6 +36,8 @@ jar {
 ext.uniVersion = version
 version += "+" + ext.extraVersion
 
+minecraft.injectedTags.put("VERSION", extraVersion)
+
 tasks.injectTags.configure {
 	outputClassName.set("io.github.legacymoddingmc.unimixins.mixingasm.Tags")
 }

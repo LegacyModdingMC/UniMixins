@@ -177,3 +177,7 @@ jar.dependsOn sourcesJar
 clean {
 	moduleNames.each { dependsOn tasks.getByPath(":$it:clean") }
 }
+
+tasks.injectTags.configure {
+	outputClassName.set("io.github.legacymoddingmc.unimixins.all.Tags")
+}
