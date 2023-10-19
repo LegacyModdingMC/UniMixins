@@ -23,6 +23,7 @@ apply plugin: "com.github.johnrengelman.shadow"
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
 task mixinExtrasJar(type: ShadowJar) {
+	destinationDirectory = file("build/tmp")
 	archiveClassifier.set("mixinExtras")
 	configurations = [project.configurations.shadowMixinExtras]
 	relocate 'com.llamalad7.mixinextras', 'com.gtnewhorizon.mixinextras'
