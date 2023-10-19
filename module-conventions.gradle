@@ -8,8 +8,6 @@ java {
     // Azul covers the most platforms for Java 8 toolchains, crucially including MacOS arm64
     vendor.set(org.gradle.jvm.toolchain.JvmVendorSpec.AZUL)
   }
-  // TODO rfg: figure out source and dev jars
   // Generate sources and javadocs jars when building and publishing
-  //withSourcesJar()
-  //withJavadocJar()
+  withSourcesJar()
 }

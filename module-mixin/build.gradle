@@ -303,3 +303,4 @@ artifacts {
 reobfJar.enabled = false
 
 jar.enabled = false
+sourcesJar.enabled = false
