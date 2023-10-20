@@ -5,14 +5,25 @@ archivesBaseName = archivesBaseName.replace("-1.7.10", "-all-1.7.10")
 // The order of these determines the order embedded core plugins get initialized in
 ext.moduleNames = ["module-mixin", "module-compat", "module-mixingasm", "module-spongemixins", "module-mixinbooterlegacy", "module-gasstation", "module-gtnhmixins", "module-mixinextras"]
 
-def getModuleJar(name, source = false) {
-	def jarTaskName = name == "module-mixin" ? ":module-mixin:shadow${source ? 'Sources' : ''}JarUnimix" : ":$name:${source ? 'sourcesJar' : 'devJar'}"
-	
-	return tasks.getByPath(jarTaskName).getOutputs().getFiles().getSingleFile()
+def getJarTaskName(name, classifier) {
+	if(name == "module-mixin") {
+		return ":module-mixin:shadow${classifier == 'sources' ? 'Sources' : ''}JarUnimix"
+	} else {
+		def candidate = ":" + name + ":" + (classifier + "Jar").uncapitalize()
+		if(classifier == 'dev' && (tasks.findByPath(candidate) == null)) {
+			return getJarTaskName(name, '')
+		} else {
+			return candidate
+		}
+	}
 }
 
-def getModuleJars(source = false) {
-	return moduleNames.collect { getModuleJar(it, source) }
+def getModuleJar(name, classifier = '') {
+	return tasks.getByPath(getJarTaskName(name, classifier)).getOutputs().getFiles().getSingleFile()
+}
+
+def getModuleJars(classifier = '') {
+	return moduleNames.collect { getModuleJar(it, classifier) }
 }
 
 import java.util.jar.Manifest;
@@ -85,79 +96,87 @@ org.spongepowered.tools.obfuscation.MixinObfuscationProcessorTargets
 	}
 }
 
-dependencies {
-	shadow(project(":module-common")) {
-		transitive = false
-	}
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+
+task shadowJarObf(type: ShadowJar) {
+	classifier = ''
 }
 
-shadowJar {
-	dependsOn tasks.createMergedMcmodInfo
-	dependsOn tasks.createEmbeddedCorePluginsFile
-	dependsOn tasks.createMergedAnnotationProcessorConfig
+task devJar(type: ShadowJar) {
+	classifier = 'dev'
+}
 
-	configurations = [project.configurations.shadow]
-	classifier = ''
-	relocate 'io.github.legacymoddingmc.unimixins.common', 'io.github.legacymoddingmc.unimixins.all.repackage.common'
-	
-	moduleNames.each {
-		def name = it
-		def j = getModuleJar(it)
-		into ""
-		from(zipTree(j)){
-			exclude 'mcmod.info'
-			exclude 'META-INF/MANIFEST.MF'
-			exclude 'CREDITS', 'LICENSE*', 'README*'
-			exclude 'META-INF/services/javax.annotation.processing.Processor'
-			into("")
-		}
-		from(zipTree(j)){
-			include 'CREDITS', 'LICENSE*', 'README*'
-			into("META-INF/licenses/$name")
-		}
-	}
-	
-	from tasks.createMergedMcmodInfo.getOutputs().getFiles().getSingleFile()
-	from(tasks.createEmbeddedCorePluginsFile.getOutputs().getFiles().getSingleFile()) {
-		into 'META-INF'
-	}
-	from(tasks.createMergedAnnotationProcessorConfig.getOutputs().getFiles().getSingleFile()) {
-		into 'META-INF/services'
-	}
-	
-	manifest {
-		attributes (
-			'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
-			'FMLCorePluginContainsFMLMod': true,
-			'ForceLoadAsMod': true,
-			'FMLCorePlugin': 'io.github.legacymoddingmc.unimixins.all.AllCore',
-			'MixinConfigs': 'mixins.gtnhmixins.json,mixins.gasstation.json,mixins.gtnhmixins.json,mixingasm.mixin.json',
-			'Premain-Class': 'org.spongepowered.tools.agent.MixinAgent',
-			'Agent-Class': 'org.spongepowered.tools.agent.MixinAgent',
-			'Can-Redefine-Classes': true,
-			'Can-Retransform-Classes': true,
-		)
-	}
+tasks.withType(ShadowJar) {
+	if(name == "shadowJarObf" || name == "devJar") {
+		dependsOn tasks.createMergedMcmodInfo
+		dependsOn tasks.createEmbeddedCorePluginsFile
+		dependsOn tasks.createMergedAnnotationProcessorConfig
 
-	doFirst {
-		manifest.attributes (
-			'Implementation-Version': getManifest(getModuleJar("module-mixin")).getValue("Implementation-Version")
-		)
+		from sourceSets.main.output
+		configurations = [project.configurations.shadow]
+		relocate 'io.github.legacymoddingmc.unimixins.common', 'io.github.legacymoddingmc.unimixins.all.repackage.common'
+		
+		(["module-common"] + moduleNames).each {
+			def name = it
+			def j = getModuleJar(it, classifier)
+			into ""
+			from(zipTree(j)){
+				exclude 'mcmod.info'
+				exclude 'META-INF/MANIFEST.MF'
+				exclude 'CREDITS', 'LICENSE*', 'README*'
+				exclude 'META-INF/services/javax.annotation.processing.Processor'
+				into("")
+			}
+			from(zipTree(j)){
+				include 'CREDITS', 'LICENSE*', 'README*'
+				into("META-INF/licenses/$name")
+			}
+		}
+		
+		from tasks.createMergedMcmodInfo.getOutputs().getFiles().getSingleFile()
+		from(tasks.createEmbeddedCorePluginsFile.getOutputs().getFiles().getSingleFile()) {
+			into 'META-INF'
+		}
+		from(tasks.createMergedAnnotationProcessorConfig.getOutputs().getFiles().getSingleFile()) {
+			into 'META-INF/services'
+		}
+		
+		manifest {
+			attributes (
+				'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
+				'FMLCorePluginContainsFMLMod': true,
+				'ForceLoadAsMod': true,
+				'FMLCorePlugin': 'io.github.legacymoddingmc.unimixins.all.AllCore',
+				'MixinConfigs': 'mixins.gtnhmixins.json,mixins.gasstation.json,mixins.gtnhmixins.json,mixingasm.mixin.json',
+				'Premain-Class': 'org.spongepowered.tools.agent.MixinAgent',
+				'Agent-Class': 'org.spongepowered.tools.agent.MixinAgent',
+				'Can-Redefine-Classes': true,
+				'Can-Retransform-Classes': true,
+			)
+		}
+
+		doFirst {
+			manifest.attributes (
+				'Implementation-Version': getManifest(getModuleJar("module-mixin")).getValue("Implementation-Version")
+			)
+		}
 	}
 }
 
 jar {
 	enabled = false
-	dependsOn shadowJar
+	dependsOn shadowJarObf, devJar
 }
 
+shadowJar.enabled = false
+
 task sourcesJar(type: ShadowJar) {
-	dependsOn shadowJar
+	dependsOn devJar
 
 	classifier = 'sources'
 
 	moduleNames.each {
-		def j = getModuleJar(it, true)
+		def j = getModuleJar(it, 'sources')
 		from(zipTree(j)){
 			exclude 'mcmod.info'
 			exclude 'META-INF/MANIFEST.MF'
@@ -166,7 +185,7 @@ task sourcesJar(type: ShadowJar) {
 		}
 	}
 
-	from(zipTree(tasks.shadowJar.getOutputs().getFiles().getSingleFile())) {
+	from(zipTree(tasks.devJar.getOutputs().getFiles().getSingleFile())) {
 		include "CREDITS"
 		include "META-INF/licenses/**"
 	}
@@ -175,3 +194,5 @@ task sourcesJar(type: ShadowJar) {
 clean {
 	moduleNames.each { dependsOn tasks.getByPath(":$it:clean") }
 }
+
+reobf.enabled = false

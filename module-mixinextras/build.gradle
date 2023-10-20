@@ -34,3 +34,6 @@ jar {
 	enabled = false
 	dependsOn shadowJar
 }
+
+// ForgeGradle's reobfuscator breaks classes containing CONSTANT_InterfaceMethodRefs, which MixinExtras happens to contain
+reobf.enabled = false

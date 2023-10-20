@@ -68,15 +68,17 @@ allprojects {
 		}
 		
 		afterEvaluate {
-			task devJar(type: Jar) {
-				classifier = 'dev'
-				def jarTask = (jar.enabled ? jar : shadowJar)
-				from zipTree(jarTask.getOutputs().getFiles().getSingleFile())
-				manifest = jarTask.manifest
+			if(project.name != "module-all") {
+				task devJar(type: Jar) {
+					classifier = 'dev'
+					def jarTask = (jar.enabled ? jar : shadowJar)
+					from zipTree(jarTask.getOutputs().getFiles().getSingleFile())
+					manifest = jarTask.manifest
 
-				dependsOn jarTask
+					dependsOn jarTask
+				}
 			}
-
+			
 			reobf.dependsOn devJar
 
 			artifacts {
