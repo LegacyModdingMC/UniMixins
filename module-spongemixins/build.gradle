@@ -4,7 +4,10 @@ dependencies {
 
 archivesBaseName = archivesBaseName.replace("-1.7.10", "-spongemixins-1.7.10")
 
-jar {
+shadowJar {
+	archiveClassifier = ''
+	configurations = []
+	relocate 'com.gtnewhorizon', 'ru.timeconqueror.spongemixins.repackage.com.gtnewhorizon'
 	manifest {
 		attributes (
 			'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
@@ -14,10 +17,12 @@ jar {
 	}
 }
 
-minecraft {
-	srgExtra "PK: com/gtnewhorizon ru/timeconqueror/spongemixins/repackage/com/gtnewhorizon"
-}
+// Obfuscation is unnecessary since this module does not reference Minecraft classes
+reobf.enabled = false
 
 ext.uniVersion = version
 ext.mcversion = "1.7.10"
 version += "+gtnh." + ext.extraVersion
+
+jar.dependsOn shadowJar
+jar.enabled = false

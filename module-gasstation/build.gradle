@@ -29,6 +29,9 @@ jar {
 	dependsOn shadowJar
 }
 
+// Obfuscation is unnecessary since this module does not reference Minecraft classes
+reobf.enabled = false
+
 ext.uniVersion = version
 ext.mcversion = "1.7.10"
 version += "+" + ext.extraVersion

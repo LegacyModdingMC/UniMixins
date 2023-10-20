@@ -32,6 +32,9 @@ jar {
 	enabled = false
 }
 
+// Obfuscation is unnecessary since this module does not reference Minecraft classes
+reobf.enabled = false
+
 ext.uniVersion = version
 version += "+" + ext.extraVersion
 

@@ -14,3 +14,6 @@ jar {
 		)
 	}
 }
+
+// Obfuscation is unnecessary since this module does not reference Minecraft classes
+reobf.enabled = false

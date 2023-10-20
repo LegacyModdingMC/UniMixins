@@ -279,7 +279,7 @@ flavors.each {
 	}
 }
 
-// Obfuscation is useless because we're not compiling code referencing Minecraft classes
+// Obfuscation is unnecessary since this module does not reference Minecraft classes
 reobf.enabled = false
 
 jar.enabled = false

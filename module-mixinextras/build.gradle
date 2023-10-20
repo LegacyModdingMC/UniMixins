@@ -36,4 +36,5 @@ jar {
 }
 
 // ForgeGradle's reobfuscator breaks classes containing CONSTANT_InterfaceMethodRefs, which MixinExtras happens to contain
+// Also obfuscation is unnecessary anyway since this module does not reference Minecraft classes
 reobf.enabled = false
