@@ -1,14 +1,11 @@
-apply from: "${rootDir}/module-conventions.gradle"
-
-tasks.injectTags.configure {
-	outputClassName.set("io.github.legacymoddingmc.unimixins.mixin.Tags")
-}
-
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
 buildscript {
 	repositories {
 		gradlePluginPortal()
+	}
+	dependencies {
+		classpath 'com.github.jengelman.gradle.plugins:shadow:6.1.0'
 	}
 }
 
@@ -123,11 +120,11 @@ flavors.each {
 
 		// We want to *not* relocate ASM in the bridge classes. So we use a multi-step
 		// build procedure:
-		
+
 		// 1. Create relocated Mixin jar, without the bridge classes
 		task("mixinJar$_flavor", type: ShadowJar) {
 			destinationDirectory = file("build/tmp")
-			archiveClassifier = "tmpMixin$_flavor"
+			classifier = "tmpMixin$_flavor"
 			configurations = [project.configurations."shadow$_flavor"]
 
 			relocate 'org.objectweb.asm', 'org.spongepowered.asm.lib'
@@ -164,7 +161,7 @@ flavors.each {
 		// 2. Create Mixin jar without relocation, with *only* the bridge classes
 		task("bridgeJar$_flavor", type: ShadowJar) {
 			destinationDirectory = file("build/tmp")
-			archiveClassifier = "tmpBridge$_flavor"
+			classifier = "tmpBridge$_flavor"
 			configurations = [project.configurations."shadowBridge$_flavor"]
 
 			include '*.jar'
@@ -173,13 +170,15 @@ flavors.each {
 
 		// 3. Combine the two jars
 		task("shadowJar$_flavor", type: ShadowJar) {
-			archiveVersion = versionBase + "+" + mixinFlavorClassifier
+			version = versionBase + "+" + mixinFlavorClassifier
 			from(sourceSets.main.output) {
 				exclude "mcmod.info"
 			}
 
 			relocate 'io.github.legacymoddingmc.unimixins.common', 'io.github.legacymoddingmc.unimixins.mixin.repackage.common'
 
+			dependsOn "mixinJar$_flavor"
+			dependsOn "bridgeJar$_flavor"
 			dependsOn "mixinJar$_flavor"
 			dependsOn "bridgeJar$_flavor"
 
@@ -217,8 +216,8 @@ flavors.each {
 				exclude "mcmod.info"
 			}
 
-			archiveVersion = versionBase + "+" + mixinFlavorClassifier
-			archiveClassifier = ''
+			version = versionBase + "+" + mixinFlavorClassifier
+			classifier = ''
 			configurations = [project.configurations."shadow$_flavor"]
 
 			relocate 'io.github.legacymoddingmc.unimixins.common', 'io.github.legacymoddingmc.unimixins.mixin.repackage.common'
@@ -260,8 +259,8 @@ flavors.each {
 	task("shadowSourcesJar$_flavor", type: ShadowJar) {
 		from sourceSets.main.allSource
 		
-		archiveVersion = versionBase + "+" + mixinFlavorClassifier
-		archiveClassifier = "sources"
+		version = versionBase + "+" + mixinFlavorClassifier
+		classifier = "sources"
 		configurations = [project.configurations."shadowSources$_flavor"]
 	}
 
@@ -274,31 +273,13 @@ flavors.each {
 				artifact tasks."shadowSourcesJar$_flavor"
 
 				artifactId = archivesBaseName.substring(1)
-				version = tasks."shadowJar$_flavor".archiveVersion.get()
+				version = tasks."shadowJar$_flavor".version
 			}
 		}
 	}
 }
 
-// Set outgoing artifact so Mixingasm module can depend on it
-configurations {
-	unimix {
-		canBeConsumed = true
-		canBeResolved = false
-
-		attributes {
-			// Needed to avoid an error
-			attribute(Attribute.of("unique.thingy", String), "unimix jar")
-		}
-	}
-}
-
-artifacts {
-	unimix(tasks."shadowJarUnimix")
-}
-
 // Obfuscation is useless because we're not compiling code referencing Minecraft classes
-reobfJar.enabled = false
+reobf.enabled = false
 
 jar.enabled = false
-sourcesJar.enabled = false

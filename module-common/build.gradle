@@ -1,12 +1,1 @@
-apply from: "${rootDir}/module-conventions.gradle"
-
 archivesBaseName = archivesBaseName.replace("-1.7.10", "-common-1.7.10" )
-
-// Shadow considers the shadow jar the output of this subproject when it gets
-// shadowed elsewhere, so we have to set it up
-shadowJar {
-    archiveClassifier = ''
-    configurations = []
-}
-
-reobfJar.enabled = false

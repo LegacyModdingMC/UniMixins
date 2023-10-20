@@ -1,5 +1,3 @@
-apply from: "${rootDir}/module-conventions.gradle"
-
 configurations {
 	shadowBridge
 }
@@ -17,7 +15,7 @@ version += "+${extraVersion}"
 apply plugin: "com.github.johnrengelman.shadow"
 
 shadowJar {
-	archiveClassifier = 'dev'
+	classifier = ''
 	configurations = [project.configurations.shadow]
 	
 	relocate 'org.objectweb.asm', 'org.spongepowered.asm.lib'
@@ -35,8 +33,4 @@ shadowJar {
 jar {
 	enabled = false
 	dependsOn shadowJar
-}
-
-tasks.injectTags.configure {
-	outputClassName.set("io.github.legacymoddingmc.unimixins.mixinextras.Tags")
 }

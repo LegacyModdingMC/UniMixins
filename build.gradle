@@ -12,15 +12,13 @@ buildscript {
 			url = "https://jitpack.io"
 		}
 	}
+	dependencies {
+		classpath 'com.github.GTNewHorizons:ForgeGradle:1.2.11'
+	}
 }
 
 plugins {
-	id 'com.github.johnrengelman.shadow' version '8.1.1' apply false
-	id("java-library")
-	id("maven-publish")
-	id("org.jetbrains.gradle.plugin.idea-ext") version "1.1.7"
-	id("eclipse")
-	id("com.gtnewhorizons.retrofuturagradle") version "1.3.19"
+	id 'com.github.johnrengelman.shadow' version '6.1.0' apply false
 }
 
 allprojects {
@@ -29,6 +27,10 @@ allprojects {
 	// For some reason this is needed when using Gradle 6.9 (but not if using 4.4.1)
 	repositories {
 		mavenLocal()
+		maven {
+			name 'Overmind forge repo mirror'
+			url 'https://gregtech.overminddl1.com/'
+		}
 		maven {
 			name = "forge"
 			url = "https://maven.minecraftforge.net/"
@@ -56,25 +58,47 @@ allprojects {
 		// TODO only include IFMLLoadingPlugin, Mod and ComparableVersion
 		compileOnly "net.minecraftforge:forge:1.12.2-14.23.5.2860:universal"
 	}
-	
-	minecraft.injectedTags.put("VERSION", project.version)
 
 	if(project.name.startsWith("module-") && project.name != "module-mixin" && project.name != "module-common") {
+		if(project.name != "module-all") {
+			task sourcesJar(type: Jar) {
+				from sourceSets.main.allSource
+				classifier = 'sources'
+			}
+		}
+		
 		afterEvaluate {
+			task devJar(type: Jar) {
+				classifier = 'dev'
+				def jarTask = (jar.enabled ? jar : shadowJar)
+				from zipTree(jarTask.getOutputs().getFiles().getSingleFile())
+				manifest = jarTask.manifest
+
+				dependsOn jarTask
+			}
+
+			reobf.dependsOn devJar
+
 			artifacts {
 				archives tasks."sourcesJar"
-				archives jar.enabled ? jar : shadowJar
+				archives tasks."devJar"
 			}
 
 			publishing {
 				publications {
 					create("maven", MavenPublication) {
-						artifact reobfJar
+						artifact jar.enabled ? jar : shadowJar
 						artifact source: tasks."sourcesJar", classifier: 'sources'
-						artifact source: jar.enabled ? jar : shadowJar, classifier: 'dev'
+						artifact source: tasks."devJar", classifier: 'dev'
 						artifactId = archivesBaseName.substring(1)
-						version = jar.archiveVersion.get()
+						version = jar.version
 					}
+				}
+			}
+
+			project.tasks.forEach {
+				if(it.name.startsWith("publish") && it.name.contains("PublicationTo")) {
+					it.dependsOn reobf
 				}
 			}
 		}

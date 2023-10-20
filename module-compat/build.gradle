@@ -1,5 +1,3 @@
-apply from: "${rootDir}/module-conventions.gradle"
-
 def mixinExtrasVersion = "0.1.1"
 
 configurations.create("shadowMixinExtras")
@@ -32,7 +30,7 @@ task mixinExtrasJar(type: ShadowJar) {
 
 shadowJar {
 	configurations = [project.configurations.shadow]
-	archiveClassifier = 'dev'
+	classifier = ''
 	relocate 'io.github.legacymoddingmc.unimixins.common', 'io.github.legacymoddingmc.unimixins.compat.repackage.common'
 	relocate 'io.github.legacymoddingmc.unimixins.compat.stub.cpw', 'cpw'
 
@@ -54,7 +52,3 @@ shadowJar.dependsOn mixinExtrasJar
 
 jar.dependsOn shadowJar
 jar.enabled = false
-
-tasks.injectTags.configure {
-	outputClassName.set("io.github.legacymoddingmc.unimixins.compat.Tags")
-}

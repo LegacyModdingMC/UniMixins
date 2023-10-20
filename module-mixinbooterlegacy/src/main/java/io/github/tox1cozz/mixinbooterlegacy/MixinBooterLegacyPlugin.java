@@ -8,7 +8,6 @@ import cpw.mods.fml.relauncher.IFMLLoadingPlugin.Name;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin.SortingIndex;
 import io.github.tox1cozz.mixinextras.MixinExtrasBootstrap;
 import io.github.legacymoddingmc.unimixins.mixinbooterlegacy.MixinBooterLegacyModule;
-import io.github.legacymoddingmc.unimixins.mixinbooterlegacy.Tags;
 import net.minecraft.launchwrapper.Launch;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -84,8 +83,8 @@ public final class MixinBooterLegacyPlugin implements IFMLLoadingPlugin {
         return null;
     }
 
-    @Mod(modid = "mixinbooterlegacy", name = "MixinBooterLegacy", version = Tags.VERSION, acceptableRemoteVersions = "*")
-    @net.minecraftforge.fml.common.Mod(modid = "mixinbooterlegacy", name = "MixinBooterLegacy", version = Tags.VERSION, acceptableRemoteVersions = "*")
+    @Mod(modid = "mixinbooterlegacy", name = "MixinBooterLegacy", version = "@VERSION@", acceptableRemoteVersions = "*")
+    @net.minecraftforge.fml.common.Mod(modid = "mixinbooterlegacy", name = "MixinBooterLegacy", version = "@VERSION@", acceptableRemoteVersions = "*")
     public static class Container {
 
     }
