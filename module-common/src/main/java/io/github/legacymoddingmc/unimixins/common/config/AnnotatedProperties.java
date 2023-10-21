@@ -1,7 +1,5 @@
 package io.github.legacymoddingmc.unimixins.common.config;
 
-import net.minecraft.launchwrapper.Launch;
-
 import java.io.*;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -11,8 +9,6 @@ import java.lang.reflect.Field;
 import java.util.*;
 
 public class AnnotatedProperties {
-    public static final boolean DEV_ENVIRONMENT = (Boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
-
     public static void load(File file, Class<?> cls) {
         PropertyCollection properties = PropertyCollection.fromFile(file);
 
@@ -23,9 +19,6 @@ public class AnnotatedProperties {
                     List<String> comment = new ArrayList<>(Arrays.asList(ann.com().split("\n")));
                     String def = ann.def();
                     String cat = ann.cat();
-                    boolean devOnly = ann.devOnly();
-
-                    if(devOnly && !DEV_ENVIRONMENT) continue;
 
                     comment.removeIf(s -> s.startsWith("[default:"));
                     comment.add("[default: " + def + "]");
@@ -40,12 +33,7 @@ public class AnnotatedProperties {
                         prop.setComment(comment);
                     }
 
-                    String configFileValue = prop.getValue();
-                    String jvmFlagValue = System.getProperty("unimixins.config." + key);
-
-                    String value = jvmFlagValue != null ? jvmFlagValue : configFileValue;
-
-                    setFieldValue(f, value);
+                    setFieldValue(f, prop.getValue());
 
                     properties.put(key, prop);
                 }
@@ -75,8 +63,6 @@ public class AnnotatedProperties {
         String com() default "";
         /** Category (the property name gets prefixed with this) */
         String cat();
-        /** If true, the config will only appear in dev environments */
-        boolean devOnly() default false;
 
     }
 }
