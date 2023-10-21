@@ -75,7 +75,7 @@ All modules depend on the Mixin module. Note that the dependents don't necessari
 
 ### Optional
 
-* **DevCompat** <sup>[1.7.10 only]</sup>: Unsafe compatibility tweaks intended to only be used in dev environments. Not needed if using UniMix or GTNH's Mixin fork.
+* **Future Compat** <sup>[1.8.9+ only]</sup>: Makes many of the modules usable on 1.8.9+. (Not needed for Mixingasm.)
 
 ### Very Optional
 
