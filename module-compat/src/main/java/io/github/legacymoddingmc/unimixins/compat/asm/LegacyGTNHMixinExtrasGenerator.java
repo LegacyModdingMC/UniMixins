@@ -2,6 +2,7 @@ package io.github.legacymoddingmc.unimixins.compat.asm;
 
 import static io.github.legacymoddingmc.unimixins.compat.CompatCore.LOGGER;
 
+import io.github.legacymoddingmc.unimixins.compat.util.LaunchClassLoaderUtils;
 import makamys.mixingasm.api.MixinSafeTransformer;
 import makamys.mixingasm.api.TransformerInclusions;
 import net.minecraft.launchwrapper.IClassTransformer;
@@ -24,12 +25,21 @@ public class LegacyGTNHMixinExtrasGenerator implements IClassTransformer {
         if(name.startsWith("com.gtnewhorizon.mixinextras")) {
             try {
                 LOGGER.trace("Generating class " + name);
-                return Launch.classLoader.getClassBytes("data.gtnhmixinextras." + name);
+                byte[] bytes = Launch.classLoader.getClassBytes("data.gtnhmixinextras." + name);
+
+                if(bytes != null) {
+                    // If NEI is on the class path before CCL (which would cause the game to crash immediately in
+                    // production, but is possible in a dev env), ClassHeirachyTransformer will try to call getClassBytes,
+                    // and if it fails, it will call Class.forName for the class being loaded, causing a
+                    // ClassCircularityError.
+                    // So we need to populate the cache to avoid that from happening.
+                    LaunchClassLoaderUtils.putInResourceCache(name, bytes);
+                    return bytes;
+                }
             } catch (IOException e) {
                 throw new RuntimeException("Failed to generate class " + name);
             }
-        } else {
-            return basicClass;
         }
+        return basicClass;
     }
 }

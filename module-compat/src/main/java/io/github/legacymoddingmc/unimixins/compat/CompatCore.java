@@ -28,6 +28,7 @@ public class CompatCore implements IFMLLoadingPlugin {
             try {
                 Class.forName("com.gtnewhorizon.mixinextras.MixinExtrasBootstrap").getMethod("init").invoke(null);
             } catch (Exception e) {
+                e.printStackTrace();
                 throw new RuntimeException("Failed to initialize MixinExtrasBootstrap");
             }
         }
