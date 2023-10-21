@@ -1,6 +1,6 @@
-package io.github.legacymoddingmc.unimixins.devcompat.asm;
+package io.github.legacymoddingmc.unimixins.compat.asm;
 
-import static io.github.legacymoddingmc.unimixins.devcompat.DevCompatCore.LOGGER;
+import static io.github.legacymoddingmc.unimixins.compat.CompatCore.LOGGER;
 import static org.objectweb.asm.Opcodes.INVOKESTATIC;
 
 import net.minecraft.launchwrapper.IClassTransformer;
@@ -17,7 +17,7 @@ import java.util.*;
  * <p>Fixes classpath mods not getting loaded in dev env when running via the runClient Gradle task.</p>
  */
 
-public class ClasspathModDiscoveryFixerTransformer implements IClassTransformer {
+public class FixClasspathModDiscoveryTransformer implements IClassTransformer {
 
     @Override
     public byte[] transform(String name, String transformedName, byte[] basicClass) {
@@ -33,7 +33,7 @@ public class ClasspathModDiscoveryFixerTransformer implements IClassTransformer 
     }
 
     private byte[] doTransformModDiscoverer(byte[] bytes) {
-        LOGGER.info("ClasspathModDiscoveryFixerTransformer: Transforming ModDiscoverer#findClasspathMods to ignore reparseable coremods.");
+        LOGGER.info("FixClasspathModDiscoveryTransformer: Transforming ModDiscoverer#findClasspathMods to ignore reparseable coremods.");
 
         try {
             ClassNode classNode = new ClassNode();
@@ -48,7 +48,7 @@ public class ClasspathModDiscoveryFixerTransformer implements IClassTransformer 
                         if(i.getOpcode() == INVOKESTATIC) {
                             MethodInsnNode mi = (MethodInsnNode)i;
                             if(mi.owner.equals("cpw/mods/fml/relauncher/CoreModManager") && mi.name.equals("getReparseableCoremods") && mi.desc.equals("()Ljava/util/List;")) {
-                                m.instructions.insertBefore(mi, new MethodInsnNode(INVOKESTATIC, "io/github/legacymoddingmc/unimixins/devcompat/asm/ClasspathModDiscoveryFixerTransformer$Hooks", "redirectGetReparseableCoremods", mi.desc));
+                                m.instructions.insertBefore(mi, new MethodInsnNode(INVOKESTATIC, "io/github/legacymoddingmc/unimixins/compat/asm/FixClasspathModDiscoveryTransformer$Hooks", "redirectGetReparseableCoremods", mi.desc));
                                 it.remove();
                                 break;
                             }
