@@ -1,8 +1,9 @@
-package io.github.legacymoddingmc.unimixins.compat.asm;
+package io.github.legacymoddingmc.unimixins.gtnhmixins.asm;
 
-import static io.github.legacymoddingmc.unimixins.compat.CompatCore.LOGGER;
+import static io.github.legacymoddingmc.unimixins.gtnhmixins.GTNHMixinsModule.LOGGER;
 
-import io.github.legacymoddingmc.unimixins.compat.util.LaunchClassLoaderUtils;
+import io.github.legacymoddingmc.unimixins.gtnhmixins.GTNHMixinsModule;
+import io.github.legacymoddingmc.unimixins.gtnhmixins.util.LaunchClassLoaderUtils;
 import makamys.mixingasm.api.MixinSafeTransformer;
 import makamys.mixingasm.api.TransformerInclusions;
 import net.minecraft.launchwrapper.IClassTransformer;

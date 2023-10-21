@@ -4,18 +4,49 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import io.github.legacymoddingmc.unimixins.common.abstraction.ComparableVersion;
+import io.github.legacymoddingmc.unimixins.common.config.ConfigUtil;
 import io.github.legacymoddingmc.unimixins.common.sanitycheck.SanityCheckHelper;
+import net.minecraft.launchwrapper.Launch;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class GTNHMixinsModule {
 
-    private static final Logger LOGGER = LogManager.getLogger("unimixin-gtnhmixins");
+    public static final Logger LOGGER = LogManager.getLogger("unimixin-gtnhmixins");
 
     public static void init() {
         if(SanityCheckHelper.isEnabled()) {
             SanityCheckHelper.warnIfJarPrefixesExist(Arrays.asList("gasstation-", "mixinbooterlegacy-", "spongemixins-"));
             checkComponentIntegrity();
+        }
+
+        ConfigUtil.load(GTNHMixinsConfig.class);
+
+        if(isLegacyGTNHMixinExtrasEnabled()) {
+            Launch.classLoader.registerTransformer("io.github.legacymoddingmc.unimixins.gtnhmixins.asm.LegacyGTNHMixinExtrasGenerator");
+            try {
+                Class.forName("com.gtnewhorizon.mixinextras.MixinExtrasBootstrap").getMethod("init").invoke(null);
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new RuntimeException("Failed to initialize MixinExtrasBootstrap");
+            }
+        }
+    }
+
+    public static boolean isLegacyGTNHMixinExtrasEnabled() {
+        if(!GTNHMixinsConfig.enableLegacyGTNHMixinExtrasPackage) return false;
+
+        String requiredVersion = "0.8.5";
+        String mixinVersion = (String)Launch.blackboard.get("mixin.initialised");
+        if(mixinVersion != null && new ComparableVersion(mixinVersion).compareTo(new ComparableVersion(requiredVersion)) >= 0) {
+            LOGGER.debug("Initializing MixinExtras");
+            return true;
+        } else if(!SanityCheckHelper.isEnabled()){
+            LOGGER.warn("Skipping MixinExtras because Mixin version (" + mixinVersion + ") is lower than the required (" + requiredVersion + ")");
+            return false;
+        } else {
+            throw new RuntimeException("Cannot load MixinExtras because Mixin version (" + mixinVersion + ") is lower than the required (" + requiredVersion + ")");
         }
     }
 

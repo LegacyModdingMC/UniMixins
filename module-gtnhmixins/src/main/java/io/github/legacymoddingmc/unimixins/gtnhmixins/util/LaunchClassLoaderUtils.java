@@ -1,4 +1,4 @@
-package io.github.legacymoddingmc.unimixins.compat.util;
+package io.github.legacymoddingmc.unimixins.gtnhmixins.util;
 
 import net.minecraft.launchwrapper.Launch;
 import net.minecraft.launchwrapper.LaunchClassLoader;

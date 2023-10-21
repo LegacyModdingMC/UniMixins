@@ -1,13 +1,33 @@
+def mixinExtrasVersion = "0.1.1"
+
+configurations.create("shadowMixinExtras")
+
 dependencies {
 	compileOnly('org.spongepowered:mixin:0.8.5')
 	shadow(project(":module-common")) {
 		transitive = false
 	}
+	compileOnly(project(":module-mixingasm")) {
+		transitive = false
+	}
+	compileOnly("com.github.LlamaLad7:MixinExtras:$mixinExtrasVersion")
+	shadowMixinExtras("com.github.LlamaLad7:MixinExtras:$mixinExtrasVersion")
 }
 
 archivesBaseName = archivesBaseName.replace("-1.7.10", "-gtnhmixins-1.7.10")
 
 apply plugin: "com.github.johnrengelman.shadow"
+
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+
+task mixinExtrasJar(type: ShadowJar) {
+	destinationDirectory = file("build/tmp")
+	archiveClassifier.set("mixinExtras")
+	archiveVersion = mixinExtrasVersion
+	configurations = [project.configurations.shadowMixinExtras]
+	relocate 'com.llamalad7.mixinextras', 'com.gtnewhorizon.mixinextras'
+	relocate 'org.objectweb.asm', 'org.spongepowered.asm.lib'
+}
 
 shadowJar {
 	classifier = ''
@@ -15,6 +35,10 @@ shadowJar {
 	
 	relocate 'org.objectweb.asm', 'org.spongepowered.asm.lib'
 	relocate 'io.github.legacymoddingmc.unimixins.common', 'io.github.legacymoddingmc.unimixins.gtnhmixins.repackage.common'
+	
+	from(zipTree(tasks.mixinExtrasJar.archiveFile)) {
+		into "data/gtnhmixinextras"
+	}
 	
 	manifest {
 		attributes (
@@ -31,6 +55,8 @@ jar {
 	dependsOn shadowJar
 	enabled = false
 }
+
+shadowJar.dependsOn mixinExtrasJar
 
 // Obfuscation is unnecessary since this module does not reference Minecraft classes
 reobf.enabled = false
