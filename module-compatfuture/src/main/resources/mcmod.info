@@ -1,0 +1,17 @@
+[
+  {
+    "modid": "unimixins-compatfuture",
+    "name": "UniMixins: Future Compatibility",
+    "description": "UniMixins module that makes the mod usable on 1.8.9 ~ 1.12.2.",
+    "version": "${version}",
+    "mcversion": "${minecraft_version}",
+    "url": "${project_url}",
+    "updateUrl": "",
+    "authorList": [
+      "makamys"
+    ],
+    "credits": "",
+    "logoFile": "",
+    "screenshots": []
+  }
+]

@@ -32,7 +32,6 @@ shadowJar {
 	configurations = [project.configurations.shadow]
 	classifier = ''
 	relocate 'io.github.legacymoddingmc.unimixins.common', 'io.github.legacymoddingmc.unimixins.compat.repackage.common'
-	relocate 'io.github.legacymoddingmc.unimixins.compat.stub.cpw', 'cpw'
 
 	from(zipTree(tasks.mixinExtrasJar.archiveFile)) {
 		into "data/gtnhmixinextras"

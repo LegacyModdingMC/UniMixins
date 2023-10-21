@@ -1,0 +1,21 @@
+archivesBaseName = archivesBaseName.replace("-1.7.10", "-compatfuture-1.7.10")
+
+// Obfuscation is unnecessary since this module does not reference Minecraft classes
+reobf.enabled = false
+
+shadowJar {
+	archiveClassifier = ""
+	configurations = []
+	relocate 'io.github.legacymoddingmc.unimixins.compat.stub.cpw', 'cpw'
+
+	manifest {
+		attributes (
+				'FMLCorePluginContainsFMLMod': true,
+				'ForceLoadAsMod': true,
+				'FMLCorePlugin': 'io.github.legacymoddingmc.unimixins.compatfuture.CompatFutureCore'
+		)
+	}
+}
+
+jar.dependsOn shadowJar
+jar.enabled = false

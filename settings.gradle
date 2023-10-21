@@ -1,5 +1,6 @@
 include 'module-mixin'
 include 'module-compat'
+include 'module-compatfuture'
 include 'module-mixingasm'
 include 'module-spongemixins'
 include 'module-mixinbooterlegacy'
