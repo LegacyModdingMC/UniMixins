@@ -114,6 +114,8 @@ The Fabric fork of Mixin is more actively maintained than the upstream fork, and
 
 When editing the source code of modules, please document your changes in the module's CREDITS file. This allows people to easily see what we have changed, and lets other developers know what changes they have to keep in mind when syncing with upstream.
 
+The project needs to be compiled using Java 8. For example: `JAVA_HOME=/path/to/jdk8 ./gradlew build`
+
 ### Useful commands
 
 * `./gradlew module-XXX:build`: builds the module named XXX
