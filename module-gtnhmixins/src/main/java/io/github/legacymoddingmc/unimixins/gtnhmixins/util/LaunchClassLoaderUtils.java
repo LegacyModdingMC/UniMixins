@@ -26,7 +26,9 @@ public class LaunchClassLoaderUtils {
         }
     }
 
-    /** Use with care, ArchaicFix weakens the resource cache once it receives the LoadComplete event. */
+    /** Use with care, ArchaicFix weakens the resource cache once it receives the LoadComplete event, making
+     * this method cease to function! But it's fine for our purposes since all mixins load before that.
+     * It's either this or reflecting every time. */
     public static void putInResourceCache(String key, byte[] value) {
         resourceCache.put(key, value);
         negativeResourceCache.remove(key);
