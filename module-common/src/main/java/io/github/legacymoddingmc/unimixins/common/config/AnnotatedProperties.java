@@ -33,7 +33,12 @@ public class AnnotatedProperties {
                         prop.setComment(comment);
                     }
 
-                    setFieldValue(f, prop.getValue());
+                    String configFileValue = prop.getValue();
+                    String jvmFlagValue = System.getProperty("unimixins.config." + key);
+
+                    String value = jvmFlagValue != null ? jvmFlagValue : configFileValue;
+
+                    setFieldValue(f, value);
 
                     properties.put(key, prop);
                 }
