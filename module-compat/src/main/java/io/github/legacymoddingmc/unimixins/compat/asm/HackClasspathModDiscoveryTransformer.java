@@ -17,7 +17,7 @@ import java.util.*;
  * <p>Fixes classpath mods not getting loaded in dev env when running via the runClient Gradle task.</p>
  */
 
-public class FixClasspathModDiscoveryTransformer implements IClassTransformer {
+public class HackClasspathModDiscoveryTransformer implements IClassTransformer {
 
     @Override
     public byte[] transform(String name, String transformedName, byte[] basicClass) {
@@ -33,7 +33,7 @@ public class FixClasspathModDiscoveryTransformer implements IClassTransformer {
     }
 
     private byte[] doTransformModDiscoverer(byte[] bytes) {
-        LOGGER.info("FixClasspathModDiscoveryTransformer: Transforming ModDiscoverer#findClasspathMods to ignore reparseable coremods.");
+        LOGGER.info("HackClasspathModDiscoveryTransformer: Transforming ModDiscoverer#findClasspathMods to ignore reparseable coremods.");
 
         try {
             ClassNode classNode = new ClassNode();
@@ -48,7 +48,7 @@ public class FixClasspathModDiscoveryTransformer implements IClassTransformer {
                         if(i.getOpcode() == INVOKESTATIC) {
                             MethodInsnNode mi = (MethodInsnNode)i;
                             if(mi.owner.equals("cpw/mods/fml/relauncher/CoreModManager") && mi.name.equals("getReparseableCoremods") && mi.desc.equals("()Ljava/util/List;")) {
-                                m.instructions.insertBefore(mi, new MethodInsnNode(INVOKESTATIC, "io/github/legacymoddingmc/unimixins/compat/asm/FixClasspathModDiscoveryTransformer$Hooks", "redirectGetReparseableCoremods", mi.desc));
+                                m.instructions.insertBefore(mi, new MethodInsnNode(INVOKESTATIC, "io/github/legacymoddingmc/unimixins/compat/asm/HackClasspathModDiscoveryTransformer$Hooks", "redirectGetReparseableCoremods", mi.desc));
                                 it.remove();
                                 break;
                             }

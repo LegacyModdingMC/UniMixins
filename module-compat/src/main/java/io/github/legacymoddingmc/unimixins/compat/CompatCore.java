@@ -46,8 +46,8 @@ public class CompatCore implements IFMLLoadingPlugin {
         if(IgnoreDuplicateJarsTransformer.wantsToRun()) {
             classes.add("io.github.legacymoddingmc.unimixins.compat.asm.IgnoreDuplicateJarsTransformer");
         }
-        if(Boolean.parseBoolean(System.getProperty("unimixins.compat.fixClasspathModDiscovery", "false"))) {
-            classes.add("io.github.legacymoddingmc.unimixins.compat.asm.FixClasspathModDiscoveryTransformer");
+        if(Boolean.parseBoolean(System.getProperty("unimixins.compat.hackClasspathModDiscovery", "false"))) {
+            classes.add("io.github.legacymoddingmc.unimixins.compat.asm.HackClasspathModDiscoveryTransformer");
         }
         return classes.toArray(new String[0]);
     }

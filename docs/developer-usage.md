@@ -70,7 +70,7 @@ dependencies {
 }
 ```
 
-> If you are *not* using UniMix or GTNH's Mixin fork, you will need to add the compat module and set the `-Dunimixins.compat.fixClasspathModDiscovery=true` JVM flag, or Forge may fail to discover your mod or its dependencies.
+> If you are *not* using UniMix or GTNH's Mixin fork, you will need to add the compat module and set the `-Dunimixins.compat.hackClasspathModDiscovery=true` JVM flag, or Forge may fail to discover your mod or its dependencies.
 
 ## Tricks
 
