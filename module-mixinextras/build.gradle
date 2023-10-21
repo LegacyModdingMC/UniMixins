@@ -1,5 +1,7 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+
 configurations {
-	shadowBridge
+	shadowSources
 }
 
 ext.uniVersion = version
@@ -7,6 +9,7 @@ ext.extraVersion = mixinExtrasVersion
 
 dependencies {
 	shadow("com.github.llamalad7.mixinextras:mixinextras-common:$extraVersion")
+	shadowSources("com.github.llamalad7.mixinextras:mixinextras-common:$extraVersion:sources")
 }
 
 archivesBaseName = archivesBaseName.replace("-1.7.10", "-mixinextras-1.7.10")
@@ -28,6 +31,17 @@ shadowJar {
 			'FMLCorePlugin': 'io.github.legacymoddingmc.unimixins.mixinextras.MixinExtrasCore',
 		)
 	}
+}
+
+task("shadowSources", type: ShadowJar) {
+	from sourceSets.main.allSource
+	classifier = "sources"
+	configurations = [project.configurations."shadowSources"]
+}
+
+sourcesJar {
+	enabled = false
+	dependsOn shadowSources
 }
 
 jar {
