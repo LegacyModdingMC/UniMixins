@@ -22,7 +22,7 @@ public class LegacyGTNHMixinExtrasGenerator implements IClassTransformer {
 
     @Override
     public byte[] transform(String name, String transformedName, byte[] basicClass) {
-        if(name.startsWith("com.gtnewhorizon.mixinextras")) {
+        if(basicClass == null && name.startsWith("com.gtnewhorizon.mixinextras")) {
             try {
                 LOGGER.trace("Generating class " + name);
                 byte[] bytes = Launch.classLoader.getClassBytes("data.gtnhmixinextras." + name);
