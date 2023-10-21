@@ -63,6 +63,7 @@ jobs:
           DRAFT_TAG=$(cat /tmp/last-release.json | jq '.tag_name' -r)
           [ $DRAFT_TAG == $RELEASE_VERSION ] || (echo "Error: Last draft's tag does not match pushed tag" && false)
           cat /tmp/last-release.json | jq '.body' -r > /tmp/changelog.md
+          [ $(cat /tmp/changelog.md | wc -w) -gt 0 ] || (echo "Error: Draft is missing a changelog" && false)
           cat /tmp/last-release.json | jq '.id' > /tmp/draft_id.txt
         env:
           GH_TOKEN: ${{ github.token }}
