@@ -18,7 +18,7 @@ public class DevCompatCore implements IFMLLoadingPlugin {
 
     @Override
     public String[] getASMTransformerClass() {
-        return new String[] {relativeClassName("asm.ModDiscovererTransformer")};
+        return new String[] {relativeClassName("asm.ClasspathModDiscoveryFixerTransformer")};
     }
 
     private static String relativeClassName(String relName) {

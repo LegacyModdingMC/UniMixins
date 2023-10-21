@@ -1,9 +1,5 @@
 package io.github.legacymoddingmc.unimixins.compat.asm;
 
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.HashMultiset;
-import com.google.common.collect.Multiset;
-import com.google.common.collect.SetMultimap;
 import cpw.mods.fml.common.discovery.ModCandidate;
 import cpw.mods.fml.common.discovery.ModDiscoverer;
 import net.minecraft.launchwrapper.IClassTransformer;
@@ -13,10 +9,8 @@ import org.objectweb.asm.tree.*;
 
 import java.io.File;
 import java.lang.management.ManagementFactory;
-import java.lang.management.RuntimeMXBean;
 import java.lang.reflect.Field;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static io.github.legacymoddingmc.unimixins.compat.CompatCore.LOGGER;
 import static org.objectweb.asm.Opcodes.ALOAD;
@@ -26,7 +20,7 @@ import static org.objectweb.asm.Opcodes.INVOKESTATIC;
  * Makes the mod discoverer ignore duplicate UniMixins jars that come from java agents. This allows UniMixins to be
  * safely used as a Java agent instead of having to hunt down the UniMix jar and add that as one.
  */
-public class ModDiscovererTransformer implements IClassTransformer {
+public class IgnoreDuplicateJarsTransformer implements IClassTransformer {
 
     private static Set<File> uniMixinsJavaAgentJars;
 
@@ -70,7 +64,7 @@ public class ModDiscovererTransformer implements IClassTransformer {
     }
 
     private byte[] doTransformModDiscoverer(byte[] bytes) {
-        LOGGER.info("ModDiscovererTransformer: Transforming ModDiscoverer#identifyMods to ignore duplicate UniMixins jars coming from Java agents.");
+        LOGGER.info("IgnoreDuplicateJarsTransformer: Transforming ModDiscoverer#identifyMods to ignore duplicate UniMixins jars coming from Java agents.");
 
         try {
             ClassNode classNode = new ClassNode();
@@ -80,7 +74,7 @@ public class ModDiscovererTransformer implements IClassTransformer {
                 if(m.name.equals("identifyMods")) {
                     InsnList patch = new InsnList();
                     patch.add(new VarInsnNode(ALOAD, 0));
-                    patch.add(new MethodInsnNode(INVOKESTATIC, "io/github/legacymoddingmc/unimixins/compat/asm/ModDiscovererTransformer$Hooks", "preIdentifyMods", "(Lcpw/mods/fml/common/discovery/ModDiscoverer;)V"));
+                    patch.add(new MethodInsnNode(INVOKESTATIC, "io/github/legacymoddingmc/unimixins/compat/asm/IgnoreDuplicateJarsTransformer$Hooks", "preIdentifyMods", "(Lcpw/mods/fml/common/discovery/ModDiscoverer;)V"));
                     m.instructions.insert(patch);
                 }
             }

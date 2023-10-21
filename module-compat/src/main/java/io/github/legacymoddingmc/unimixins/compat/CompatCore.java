@@ -7,7 +7,7 @@ import cpw.mods.fml.relauncher.IFMLLoadingPlugin.MCVersion;
 import io.github.legacymoddingmc.unimixins.common.abstraction.ComparableVersion;
 import io.github.legacymoddingmc.unimixins.common.config.ConfigUtil;
 import io.github.legacymoddingmc.unimixins.common.sanitycheck.SanityCheckHelper;
-import io.github.legacymoddingmc.unimixins.compat.asm.ModDiscovererTransformer;
+import io.github.legacymoddingmc.unimixins.compat.asm.IgnoreDuplicateJarsTransformer;
 import net.minecraft.launchwrapper.Launch;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -41,10 +41,10 @@ public class CompatCore implements IFMLLoadingPlugin {
     public String[] getASMTransformerClass() {
         List<String> classes = new ArrayList<>();
         if(CompatConfig.enhanceCrashReports) {
-            classes.add("io.github.legacymoddingmc.unimixins.compat.asm.FMLCommonHandlerTransformer");
+            classes.add("io.github.legacymoddingmc.unimixins.compat.asm.EnhanceCrashReportsTransformer");
         }
-        if(ModDiscovererTransformer.wantsToRun()) {
-            classes.add("io.github.legacymoddingmc.unimixins.compat.asm.ModDiscovererTransformer");
+        if(IgnoreDuplicateJarsTransformer.wantsToRun()) {
+            classes.add("io.github.legacymoddingmc.unimixins.compat.asm.IgnoreDuplicateJarsTransformer");
         }
         return classes.toArray(new String[0]);
     }

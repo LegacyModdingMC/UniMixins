@@ -15,7 +15,7 @@ import static io.github.legacymoddingmc.unimixins.compat.CompatCore.LOGGER;
  * <p>Inserts a hook at the end of FMLCommonHandler#enhanceCrashReport.
  * <p>We use a transformer instead of a mixin because FML is a minefield for mixin errors.
  */
-public class FMLCommonHandlerTransformer implements IClassTransformer {
+public class EnhanceCrashReportsTransformer implements IClassTransformer {
     @Override
     public byte[] transform(String name, String transformedName, byte[] basicClass) {
         if(basicClass == null) return null;
@@ -34,7 +34,7 @@ public class FMLCommonHandlerTransformer implements IClassTransformer {
      *     {
      *         category.addCrashSectionCallable(call.getLabel(), call);
      *     }
-     * + FMLCommonHandlerTransformer.Hooks.postEnhanceCrashReport();
+     * + EnhanceCrashReportsTransformer.Hooks.postEnhanceCrashReport();
      * }
      * </pre>
      */
@@ -65,7 +65,7 @@ public class FMLCommonHandlerTransformer implements IClassTransformer {
                     //ALOAD category
                     inject.add(new VarInsnNode(ALOAD, 2));
                     //INVOKESTATIC foo/bar.postEnhanceCrashReport(Lnet/minecraft/crash/CrashReport;Lnet/minecraft/crash/CrashReportCategory;)V
-                    inject.add(new MethodInsnNode(INVOKESTATIC, "io/github/legacymoddingmc/unimixins/compat/asm/FMLCommonHandlerTransformer$Hooks", "postEnhanceCrashReport", "(Lnet/minecraft/crash/CrashReport;Lnet/minecraft/crash/CrashReportCategory;)V", false));
+                    inject.add(new MethodInsnNode(INVOKESTATIC, "io/github/legacymoddingmc/unimixins/compat/asm/EnhanceCrashReportsTransformer$Hooks", "postEnhanceCrashReport", "(Lnet/minecraft/crash/CrashReport;Lnet/minecraft/crash/CrashReportCategory;)V", false));
                     m.instructions.insertBefore(injectionTarget, inject);
                 }
             }
