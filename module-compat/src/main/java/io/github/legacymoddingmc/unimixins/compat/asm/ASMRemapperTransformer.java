@@ -13,6 +13,7 @@ import org.objectweb.asm.commons.RemappingClassAdapter;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodNode;
 
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 /**
@@ -35,6 +36,8 @@ public class ASMRemapperTransformer implements IClassTransformer {
             "org/spongepowered/libraries/org/objectweb/asm/",
             "org/spongepowered/asm/lib/"
     );
+
+    private static final byte[] PATTERN = "spongepowered".getBytes(StandardCharsets.UTF_8);
 
     private static String realASMPackagePrefix;
 
@@ -60,6 +63,8 @@ public class ASMRemapperTransformer implements IClassTransformer {
             || transformedName.startsWith("org.apache.")
             || transformedName.startsWith("org.objectweb.asm.")
         ) return basicClass;
+
+        if(Bytes.indexOf(basicClass, PATTERN) == -1) return basicClass;
 
         ClassReader classReader = new ClassReader(basicClass);
 
