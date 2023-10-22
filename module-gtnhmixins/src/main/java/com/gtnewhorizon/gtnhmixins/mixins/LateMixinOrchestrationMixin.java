@@ -78,6 +78,9 @@ public class LateMixinOrchestrationMixin {
             modClassLoader.addFile(container.getSource());
         }
 
+        // Force rebuild of the transformer list
+        Reflection.setDelegatedTransformersField(null);
+
         Field transformerField = Proxy.class.getDeclaredField("transformer");
         transformerField.setAccessible(true);
         
