@@ -97,9 +97,12 @@ The Fabric fork of Mixin is more actively maintained than the upstream fork, and
 
 ### What do the "extras" do anyway?
 
-* SpongeMixins, Grimoire, MixinBooterLegacy, GasStation and GTNHMixins offer various ways to let you mix into the classes of non-coremods (something Mixin does not natively support.)
-* Mixingasm fixes [a Mixin issue](https://github.com/SpongePowered/Mixin/issues/309) that breaks some ASM transformers due to Mixin altering how they are called.
-* MixinExtras adds new Mixin features that mods can use to write less intrusive mixins.
+* SpongeMixins, Grimoire, MixinBooterLegacy, GasStation and GTNHMixins offer various ways to let you mix into the classes of non-coremods. (This is something Mixin does not natively support, since all of its phases occur before Forge discovers non-coremods and puts them on the classpath.)
+    - **MixinBooterLegacy**, **GasStation** and **GTNHMixins** add a "late" mixin phase that is fired right before the first mod construction event is dispatched. At this point all mods have been discovered.
+    - **SpongeMixins** lets you manually add mods to the classpath early using their file names. An old, hacky solution.
+    - We recommend new mods to use **GTNHMixins** as it's the most actively used and maintained option.
+* **Mixingasm** fixes [a Mixin issue](https://github.com/SpongePowered/Mixin/issues/309) that breaks some ASM transformers due to Mixin altering how they are called.
+* **MixinExtras** adds new Mixin features that allow mods to write less intrusive mixins.
 
 ### Mixin? mixin? SpongeMixins? SpongePowered? What's the difference?
 
