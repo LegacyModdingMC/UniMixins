@@ -9,6 +9,7 @@ Modifications:
 - Added Mixin 0.7 support
 	- Made reflection support Mixin 0.7.11
 - Added call to "unimixins.mixinModidDecorator.refresh" after loading early mixins in GTNHMixinsCore and late mixins in LateMixinOrchestrationMixin
+- Made delegated transformer list get set to null before loading late mixins
 - Added 1.8+ @Mod and @IFMLPlugin annotations
 - Removed MixinExtras
 

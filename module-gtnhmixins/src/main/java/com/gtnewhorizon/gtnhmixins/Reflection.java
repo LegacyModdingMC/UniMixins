@@ -1,20 +1,27 @@
 package com.gtnewhorizon.gtnhmixins;
 
+import io.github.legacymoddingmc.unimixins.common.abstraction.ComparableVersion;
+import net.minecraft.launchwrapper.Launch;
 import org.spongepowered.asm.mixin.MixinEnvironment;
 import org.spongepowered.asm.mixin.transformer.Config;
 import org.spongepowered.asm.mixin.transformer.ext.Extensions;
+import org.spongepowered.asm.service.MixinService;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 public class Reflection {
     /* Reflection Fun */
-    public static final Class<?> pluginWrapperClass, mixinsClass, configClass, mixinConfigClass, mixinTransformerClass, mixinProcessorClass;
-    public static final Field coreModInstanceField, configField, mixinClassesField, processorField, extensionsField;
+    public static final Class<?> pluginWrapperClass, mixinsClass, configClass, mixinConfigClass, mixinTransformerClass, mixinProcessorClass, mixinServiceLaunchWrapperClass, mixinEnvironmentClass;
+    public static final Field coreModInstanceField, configField, mixinClassesField, processorField, extensionsField, delegatedTransformersField;
     public static final Method registerConfigurationMethod, selectConfigsMethod, prepareConfigsMethod;
+
+    private static final boolean mixin_0_7;
     
     static {
         try {
+            mixin_0_7 = new ComparableVersion((String)Launch.blackboard.get("mixin.initialised")).compareTo(new ComparableVersion("0.8")) < 0;
+
             /* We're referencing classes here in FML or SpongePowered Mixins, these _should_ be safe to call early */
 
             /* PluginWrapper */
@@ -30,15 +37,17 @@ public class Reflection {
 
             /* MixinTransformer */
             mixinTransformerClass = Class.forName("org.spongepowered.asm.mixin.transformer.MixinTransformer");
-            Field processor = null;
-            try {
-                processor = mixinTransformerClass.getDeclaredField("processor");
-                processor.setAccessible(true);
-            } catch(NoSuchFieldException e){}
-            processorField = processor;
+            if(!mixin_0_7) {
+                // 0.8.5
+                processorField = mixinTransformerClass.getDeclaredField("processor");
+                processorField.setAccessible(true);
+            } else {
+                // 0.7.11
+                processorField = null;
+            }
 
             /* MixinProcessor */
-            if(processorField != null) {
+            if(!mixin_0_7) {
                 // 0.8.5
                 mixinProcessorClass = Class.forName("org.spongepowered.asm.mixin.transformer.MixinProcessor");
                 selectConfigsMethod = mixinProcessorClass.getDeclaredMethod("selectConfigs", MixinEnvironment.class);
@@ -63,6 +72,20 @@ public class Reflection {
                 extensionsField.setAccessible(true);
             }
 
+            /* MixinEnvironment / MixinServiceLaunchWrapper */
+            mixinServiceLaunchWrapperClass = Class.forName("org.spongepowered.asm.service.mojang.MixinServiceLaunchWrapper");
+            mixinEnvironmentClass = Class.forName("org.spongepowered.asm.mixin.MixinEnvironment");
+
+            if(!mixin_0_7) {
+                // 0.8.5
+                delegatedTransformersField = mixinServiceLaunchWrapperClass.getDeclaredField("delegatedTransformers");
+                delegatedTransformersField.setAccessible(true);
+            } else {
+                // 0.7.11
+                delegatedTransformersField = mixinEnvironmentClass.getDeclaredField("transformers");
+                delegatedTransformersField.setAccessible(true);
+            }
+
             /* Config */
             configClass = Class.forName("org.spongepowered.asm.mixin.transformer.Config");
             configField = configClass.getDeclaredField("config");
@@ -80,7 +103,7 @@ public class Reflection {
 
     public static void invokeSelectConfigs(Object transformer, MixinEnvironment env) {
         try {
-            if(processorField != null) {
+            if(!mixin_0_7) {
                 // 0.8.5
                 Object processor = Reflection.processorField.get(transformer);
 
@@ -97,7 +120,7 @@ public class Reflection {
 
     public static void invokePrepareConfigs(Object transformer, MixinEnvironment env) {
         try {
-            if(processorField != null) {
+            if(!mixin_0_7) {
                 // 0.8.5
                 Object processor = Reflection.processorField.get(transformer);
 
@@ -106,6 +129,20 @@ public class Reflection {
             } else {
                 // 0.7.11
                 prepareConfigsMethod.invoke(transformer, env);
+            }
+        } catch(Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void setDelegatedTransformersField(Object newValue) {
+        try {
+            if(!mixin_0_7) {
+                // 0.8.5
+                delegatedTransformersField.set(MixinService.getService(), newValue);
+            } else {
+                // 0.7.11
+                delegatedTransformersField.set(MixinEnvironment.getCurrentEnvironment(), newValue);
             }
         } catch(Exception e) {
             throw new RuntimeException(e);
