@@ -233,7 +233,7 @@ flavors.each {
 		from 'src/main/resources/mcmod.info'
 		into "build/tmp/mcmod.${mixinFlavor}.info"
 		filter {
-			line -> line.replaceAll('@MIXIN_CLASSIFIER@', mixinFlavorClassifier).replaceAll('@MIXIN_SOURCE_CAPITALIZED@', mixinFlavorCapitalized).replaceAll('@VERSION@', "$versionBase+$mixinFlavorClassifier")
+			line -> line.replaceAll('@MIXIN_CLASSIFIER@', mixinFlavorClassifier).replaceAll('@MIXIN_SOURCE_CAPITALIZED@', mixinFlavorCapitalized).replaceAll('@VERSION@', "$versionBase+$mixinFlavorClassifier").replaceAll('@PROJECT_URL@', project.project_url)
 		}
 	}
 
