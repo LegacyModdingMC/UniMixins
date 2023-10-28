@@ -12,7 +12,7 @@ UniMixins is a Mixin loader for Minecraft 1.7.10 (with partial 1.8.9~1.12.2 supp
 
 Numerous Mixin loaders exist for 1.7.10, and each one provides a differing set of extra features we refer to as *"extras"* on top of providing Mixin.
 
-Since each of these loaders is monolithic, different ones cannot be used at the same time due to unavoidable feature overlap. To avoid this problem, UniMixins offers each feature as a separate module (but a combined jar is still provided for convenience.)
+Since each of these loaders is monolithic, different ones cannot be used at the same time due to unavoidable feature overlap. To avoid this problem, UniMixins offers each feature as a separate module (but a combined jar is still provided for convenience).
 
 ## Comparison table
 
@@ -89,7 +89,7 @@ These are not included in releases, they mainly exist for testing purposes. (Not
 
 ### Why another mixin loader? Haven't you seen that one xkcd strip?
 
-There is currently far too much fragmentation among Mixin loaders on 1.7.10, with different mods requiring different incompatible loaders. This is partly due to conflicts between their developers, and partly because of technical reasons (the loaders are designed in a monolithic way, which invites incompatibility.) This project has neither of those issues.
+There is currently far too much fragmentation among Mixin loaders on 1.7.10, with different mods requiring different incompatible loaders. This is partly due to conflicts between their developers, and partly because of technical reasons (the loaders are designed in a monolithic way, which invites incompatibility). This project has neither of those issues.
 
 ### Why are you using the Fabric fork of Mixin? Isn't this a Forge mod?
 
@@ -107,7 +107,7 @@ The Fabric fork of Mixin is more actively maintained than the upstream fork, and
 ### Mixin? mixin? SpongeMixins? SpongePowered? What's the difference?
 
 * [Mixin](https://github.com/SpongePowered/Mixin): a Java library that lets you transform Java classes in a fluent way.
-* [SpongePowered](https://spongepowered.org/): the organization that created Mixin (who also developed a modding API called Sponge.)
+* [SpongePowered](https://spongepowered.org/): the organization that created Mixin (who also developed a modding API called Sponge).
 * [mixin](https://github.com/SpongePowered/Mixin/wiki/Introduction-to-Mixins---Understanding-Mixin-Architecture#4-only-you-mixins-can-save-mankind): a special Java class defining a "change" that should be applied to a class. These get applied by Mixin.
 * [SpongeMixins](https://github.com/TimeConqueror/SpongeMixins): a Mixin loader created by TimeConqueror that has a very generic name.
 

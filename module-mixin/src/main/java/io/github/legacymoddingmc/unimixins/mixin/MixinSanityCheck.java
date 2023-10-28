@@ -28,7 +28,7 @@ public class MixinSanityCheck {
             boolean isSuspectedToBeDueToNaming =
                     mixinCoreJarName != null && mixinTweakerJarName != null
                             && mixinCoreJarName.compareToIgnoreCase(mixinTweakerJarName) > 0;
-            return Arrays.asList("A different version of Mixin (the one inside " + stringOr(mixinTweakerJarName, "unknown") + ") is getting loaded instead of UniMixins's one (inside " + stringOr(mixinCoreJarName, "unknown") + ")!" + (isSuspectedToBeDueToNaming ? " This is probably because because UniMixins's jar name comes later alphabetically. Try renaming it to come first (for example, by adding a '!' character at the beginning of the file name.)" : ""));
+            return Arrays.asList("A different version of Mixin (the one inside " + stringOr(mixinTweakerJarName, "unknown") + ") is getting loaded instead of UniMixins's one (inside " + stringOr(mixinCoreJarName, "unknown") + ")!" + (isSuspectedToBeDueToNaming ? " This is probably because because UniMixins's jar name comes later alphabetically. Try renaming it to come first (for example, by adding a '!' character at the beginning of the file name)." : ""));
         }
         return Arrays.asList();
     }
