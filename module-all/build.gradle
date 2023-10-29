@@ -98,7 +98,7 @@ org.spongepowered.tools.obfuscation.MixinObfuscationProcessorTargets
 
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
-task shadowJarObf(type: ShadowJar) {
+shadowJar {
 	classifier = ''
 }
 
@@ -107,7 +107,7 @@ task devJar(type: ShadowJar) {
 }
 
 tasks.withType(ShadowJar) {
-	if(name == "shadowJarObf" || name == "devJar") {
+	if(name == "shadowJar" || name == "devJar") {
 		dependsOn tasks.createMergedMcmodInfo
 		dependsOn tasks.createEmbeddedCorePluginsFile
 		dependsOn tasks.createMergedAnnotationProcessorConfig
@@ -165,10 +165,8 @@ tasks.withType(ShadowJar) {
 
 jar {
 	enabled = false
-	dependsOn shadowJarObf, devJar
+	dependsOn shadowJar, devJar
 }
-
-shadowJar.enabled = false
 
 task sourcesJar(type: ShadowJar) {
 	dependsOn devJar
