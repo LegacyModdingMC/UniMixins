@@ -2,12 +2,11 @@ package io.github.legacymoddingmc.unimixins.gtnhmixins.asm;
 
 import static io.github.legacymoddingmc.unimixins.gtnhmixins.GTNHMixinsModule.LOGGER;
 
-import io.github.legacymoddingmc.unimixins.gtnhmixins.GTNHMixinsModule;
 import io.github.legacymoddingmc.unimixins.gtnhmixins.util.LaunchClassLoaderUtils;
 import makamys.mixingasm.api.MixinSafeTransformer;
 import makamys.mixingasm.api.TransformerInclusions;
 import net.minecraft.launchwrapper.IClassTransformer;
-import net.minecraft.launchwrapper.Launch;
+import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
 
@@ -23,10 +22,10 @@ public class LegacyGTNHMixinExtrasGenerator implements IClassTransformer {
 
     @Override
     public byte[] transform(String name, String transformedName, byte[] basicClass) {
-        if(basicClass == null && name.startsWith("com.gtnewhorizon.mixinextras")) {
+        if(basicClass == null && name.startsWith("com.gtnewhorizon.mixinextras") && !name.startsWith("org.apache.commons.io.")) {
             try {
                 LOGGER.trace("Generating class " + name);
-                byte[] bytes = Launch.classLoader.getClassBytes("data.gtnhmixinextras." + name);
+                byte[] bytes = getClassBytes(name);
 
                 if(bytes != null) {
                     // If NEI is on the class path before CCL (which would cause the game to crash immediately in
@@ -42,5 +41,10 @@ public class LegacyGTNHMixinExtrasGenerator implements IClassTransformer {
             }
         }
         return basicClass;
+    }
+
+    private byte[] getClassBytes(String name) throws IOException {
+        final String resourcePath = "/data/gtnhmixinextras/" + name.replace('.', '/').concat(".klass");
+        return IOUtils.toByteArray(LegacyGTNHMixinExtrasGenerator.class.getResourceAsStream(resourcePath));
     }
 }

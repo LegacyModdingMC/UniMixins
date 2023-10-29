@@ -37,7 +37,9 @@ shadowJar {
 	relocate 'io.github.legacymoddingmc.unimixins.common', 'io.github.legacymoddingmc.unimixins.gtnhmixins.repackage.common'
 	
 	from(zipTree(tasks.mixinExtrasJar.archiveFile)) {
-		into "data/gtnhmixinextras"
+		eachFile({
+			setPath("data/gtnhmixinextras/" + getPath().replaceAll("\\.class", ".klass"))
+		})
 	}
 	
 	manifest {
