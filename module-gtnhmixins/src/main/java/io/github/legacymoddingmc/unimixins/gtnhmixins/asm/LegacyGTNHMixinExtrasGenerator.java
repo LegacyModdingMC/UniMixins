@@ -44,7 +44,7 @@ public class LegacyGTNHMixinExtrasGenerator implements IClassTransformer {
     }
 
     private byte[] getClassBytes(String name) throws IOException {
-        final String resourcePath = "/data/gtnhmixinextras/" + name.replace('.', '/').concat(".klass");
+        final String resourcePath = "/data/legacy_gtnh_mixinextras/" + name.replace('.', '/').concat(".klass");
         return IOUtils.toByteArray(LegacyGTNHMixinExtrasGenerator.class.getResourceAsStream(resourcePath));
     }
 }

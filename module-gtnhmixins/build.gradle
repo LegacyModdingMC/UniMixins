@@ -38,7 +38,7 @@ shadowJar {
 	
 	from(zipTree(tasks.mixinExtrasJar.archiveFile)) {
 		eachFile({
-			setPath("data/gtnhmixinextras/" + getPath().replaceAll("\\.class", ".klass"))
+			setPath("data/legacy_gtnh_mixinextras/" + getPath().replaceAll("\\.class", ".klass"))
 		})
 	}
 	
