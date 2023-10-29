@@ -13,7 +13,7 @@ import org.apache.logging.log4j.Logger;
 
 public class GTNHMixinsModule {
 
-    public static final Logger LOGGER = LogManager.getLogger("unimixin-gtnhmixins");
+    public static final Logger LOGGER = LogManager.getLogger("unimixins-gtnhmixins");
 
     public static void init() {
         if(SanityCheckHelper.isEnabled()) {

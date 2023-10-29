@@ -10,7 +10,7 @@ import java.util.List;
 
 public class GasStationModule {
 
-    private static final Logger LOGGER = LogManager.getLogger("unimixin-gasstation");
+    private static final Logger LOGGER = LogManager.getLogger("unimixins-gasstation");
 
     public static void init() {
         if(SanityCheckHelper.isEnabled()) {
