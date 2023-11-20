@@ -26,6 +26,7 @@ allprojects {
 	apply plugin: 'maven-publish'
 	// For some reason this is needed when using Gradle 6.9 (but not if using 4.4.1)
 	repositories {
+		mavenCentral()
 		mavenLocal()
 		maven {
 			name 'Overmind forge repo mirror'
