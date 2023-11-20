@@ -8,8 +8,8 @@ ext.uniVersion = version
 ext.extraVersion = mixinExtrasVersion
 
 dependencies {
-	shadow("'io.github.llamalad7:mixinextras-common:$extraVersion")
-	shadowSources("'io.github.llamalad7:mixinextras-common:$extraVersion:sources")
+	shadow("io.github.llamalad7:mixinextras-common:$extraVersion")
+	shadowSources("io.github.llamalad7:mixinextras-common:$extraVersion:sources")
 }
 
 archivesBaseName = archivesBaseName.replace("-1.7.10", "-mixinextras-1.7.10")
