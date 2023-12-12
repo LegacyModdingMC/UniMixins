@@ -1,52 +1,18 @@
 # Developer usage
 
+An example mod showcasing the mod's various features is available in the `example-*` branches of the repo:
+- [`example-fg-g4`](https://github.com/LegacyModdingMC/UniMixins/tree/example-fg-g4) - ForgeGradle-based build script with Gradle 4
+- [`example-fg-g6`](https://github.com/LegacyModdingMC/UniMixins/tree/example-fg-g6) - ForgeGradle-based build script with Gradle 6
+
+Below are instructions for migrating build scripts to use UniMixins.
+
 ## RetroFuturaGradle
 
 The easiest way to use UniMixins is to use [GTNH's ExampleMod](https://github.com/GTNewHorizons/ExampleMod1.7.10), which has UniMixins integration built-in.
 
 ## ForgeGradle
 
-To migrate a ForgeGradle-based build script to UniMixins, merge the following into your build script.
-
-```gradle
-repositories {
-    maven {
-        url 'https://jitpack.io'
-    }
-}
-
-def unimixinsVersion = "insert version here"
-
-dependencies {
-    // with modern Gradle, you'd need to use implementation + annotationProcessor
-    compile("com.github.LegacyModdingMC.UniMixins:unimixins-all-1.7.10:$unimixinsVersion:dev")
-}
-
-// Exclude conflicting transitive dependencies.
-// Only needed if you depend on a mod that depends on one of these.
-// This may need to be at the end of the build script.
-
-configurations.compile.dependencies.each {
-    if (it instanceof ExternalModuleDependency) {
-        it.exclude module: "SpongeMixins"
-        it.exclude module: "SpongePoweredMixin"
-        it.exclude module: "00gasstation-mc1.7.10"
-        it.exclude module: "gtnhmixins"
-    }
-}
-
-runClient {
-    arguments += [
-        "--tweakClass", "org.spongepowered.asm.launch.MixinTweaker"
-    ]
-}
-
-runServer {
-    arguments += [
-        "--tweakClass", "org.spongepowered.asm.launch.MixinTweaker"
-    ]
-}
-```
+Refer to the example mod's build script ([Gradle 4](https://github.com/LegacyModdingMC/UniMixins/blob/example-fg-g4/build.gradle#L79) | [Gradle 6](https://github.com/LegacyModdingMC/UniMixins/blob/example-fg-g6/build.gradle#L91)).
 
 You can also depend on modules individually:
 
