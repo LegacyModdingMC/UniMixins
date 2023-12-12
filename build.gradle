@@ -30,6 +30,14 @@ minecraft {
     runDir = "run"
 }
 
+repositories {
+    maven {
+        // Baubles
+		name = "Overmind forge repo mirror"
+		url = "https://gregtech.overminddl1.com/"
+	}
+}
+
 dependencies {
     // you may put jars on which you depend on in ./libs
     // or you may define them like so..
@@ -43,7 +51,9 @@ dependencies {
     // for more info...
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
-
+    
+    // Baubles is our test subject for late mixins
+    compile "com.azanor.baubles:Baubles:1.7.10-1.0.1.10:deobf"
 }
 
 processResources
@@ -117,6 +127,9 @@ jar {
             // If these two are not set, Forge will not detect the mod, it will only run the mixins
             'FMLCorePluginContainsFMLMod': 'true',
             'ForceLoadAsMod': 'true',
+            
+            // Needed for FML plugin/early mixin loader
+            'FMLCorePlugin': 'io.github.legacymoddingmc.unimixins.example.ExampleCore',
         )
     }
     

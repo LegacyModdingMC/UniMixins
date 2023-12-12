@@ -1,0 +1,7 @@
+{
+    "required": true,
+    "minVersion": "0.7.11",
+    "package": "io.github.legacymoddingmc.unimixins.example.mixin",
+    "refmap": "unimixinsexample.mixin.refmap.json",
+    "compatibilityLevel": "JAVA_8"
+}
