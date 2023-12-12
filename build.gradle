@@ -23,6 +23,7 @@ apply plugin: 'forge'
 version = "1.0"
 group= "io.github.legacymoddingmc.example" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "UniMixinsExample"
+def modid = "unimixinsexample"
 
 minecraft {
     version = "1.7.10-10.13.4.1614-1.7.10"
@@ -63,4 +64,67 @@ processResources
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
     }
+}
+
+// -- Begin UniMixins section --
+
+// -- Add UniMixins dependency --
+
+repositories {
+    maven {
+        url 'https://jitpack.io'
+    }
+}
+
+def unimixinsVersion = "0.1.14"
+
+dependencies {
+    compile("com.github.LegacyModdingMC.UniMixins:unimixins-all-1.7.10:$unimixinsVersion:dev")
+}
+
+// Exclude conflicting transitive dependencies.
+// Only needed if you depend on a mod that depends on one of these.
+// This may need to be at the end of the build script.
+
+configurations.compile.dependencies.each {
+    if (it instanceof ExternalModuleDependency) {
+        it.exclude module: "SpongeMixins"
+        it.exclude module: "SpongePoweredMixin"
+        it.exclude module: "00gasstation-mc1.7.10"
+        it.exclude module: "gtnhmixins"
+    }
+}
+
+// -- Generic Mixin setup --
+
+runClient {
+    args("--tweakClass", "org.spongepowered.asm.launch.MixinTweaker")
+}
+
+runServer {
+    args("--tweakClass", "org.spongepowered.asm.launch.MixinTweaker")
+}
+
+def outSrgFile = "${tasks.compileJava.temporaryDir}/outSrg.srg"
+def outRefMapFile = "${tasks.compileJava.temporaryDir}/mixins.${modid}.refmap.json"
+
+jar {
+    manifest {
+        attributes (
+            'MixinConfigs': "mixins.${modid}.json",
+            'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
+            
+            // If these two are not set, Forge will not detect the mod, it will only run the mixins
+            'FMLCorePluginContainsFMLMod': 'true',
+            'ForceLoadAsMod': 'true',
+        )
+    }
+    
+    from outRefMapFile;
+}
+
+tasks.compileJava.options.compilerArgs += ["-AreobfSrgFile=${tasks.reobf.srg}", "-AoutSrgFile=${outSrgFile}", "-AoutRefMapFile=${outRefMapFile}"];
+
+reobf {
+    addExtraSrgFile outSrgFile
 }
