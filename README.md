@@ -49,7 +49,7 @@ The game will crash if modules are missing dependencies. This can be disabled in
 
 ### Developer usage
 
-See [docs/developer-usage.md](docs/developer-usage.md) to see how to migrate an existing build script to depend on UniMixins.
+See [docs/developer-usage.md](docs/developer-usage.md).
 
 ## List of modules
 
