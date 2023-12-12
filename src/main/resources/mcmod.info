@@ -1,14 +1,14 @@
 [
 {
-  "modid": "examplemod",
-  "name": "Example Mod",
-  "description": "Example placeholder mod.",
+  "modid": "unimixinsexample",
+  "name": "UniMixins Example Mod",
+  "description": "Example mod that shows how to get started with using UniMixins.",
   "version": "${version}",
   "mcversion": "${mcversion}",
   "url": "",
   "updateUrl": "",
-  "authorList": ["ExampleDude"],
-  "credits": "The Forge and FML guys, for making this example",
+  "authorList": ["makamys"],
+  "credits": "",
   "logoFile": "",
   "screenshots": [],
   "dependencies": []
