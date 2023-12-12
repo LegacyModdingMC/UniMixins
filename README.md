@@ -1,6 +1,6 @@
 # UniMixins Example Mod
 
-This is an example mod that shows how to get started with UniMixins. The buildscript uses GTNH's fork of ForgeGradle, and "legacy" Gradle (4.4.1).
+This is an example mod that shows how to get started with UniMixins. The buildscript uses GTNH's fork of ForgeGradle, and "modern" Gradle (6.9.1).
 
 The following features are demonstrated:
 

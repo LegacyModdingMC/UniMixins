@@ -14,7 +14,11 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.github.GTNewHorizons:ForgeGradle:1.2.11'
+        classpath('com.github.GTNewHorizons:ForgeGradle:1.2.11') {
+            // Exclude transitive dependencies that mess things up
+            exclude group: "org.eclipse.equinox"
+            exclude group: "org.eclipse.jdt"
+        }
     }
 }
 
@@ -31,6 +35,14 @@ minecraft {
 }
 
 repositories {
+    maven {
+        // Fix ForgeGradle on 6+
+        name = "forge"
+        url = "http://files.minecraftforge.net/maven"
+        metadataSources {
+            artifact()
+        }
+    }
     maven {
         // Baubles
 		name = "Overmind forge repo mirror"
@@ -53,7 +65,7 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
     
     // Baubles is our test subject for late mixins
-    compile "com.azanor.baubles:Baubles:1.7.10-1.0.1.10:deobf"
+    implementation "com.azanor.baubles:Baubles:1.7.10-1.0.1.10:deobf"
 }
 
 processResources
@@ -89,7 +101,8 @@ repositories {
 def unimixinsVersion = "0.1.14"
 
 dependencies {
-    compile("com.github.LegacyModdingMC.UniMixins:unimixins-all-1.7.10:$unimixinsVersion:dev")
+    implementation("com.github.LegacyModdingMC.UniMixins:unimixins-all-1.7.10:$unimixinsVersion:dev")
+    annotationProcessor("com.github.LegacyModdingMC.UniMixins:unimixins-all-1.7.10:$unimixinsVersion:dev")
 }
 
 // Exclude conflicting transitive dependencies.
