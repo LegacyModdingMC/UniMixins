@@ -89,7 +89,9 @@ These are not included in releases, they mainly exist for testing purposes. (Not
 
 ### Why another mixin loader? Haven't you seen that one xkcd strip?
 
-There is currently far too much fragmentation among Mixin loaders on 1.7.10, with different mods requiring different incompatible loaders. This is partly due to conflicts between their developers, and partly because of technical reasons (the loaders are designed in a monolithic way, which invites incompatibility). This project has neither of those issues.
+Before UniMixins was created, there was far too much fragmentation among Mixin loaders on 1.7.10, with different mods requiring different incompatible loaders. This was partly due to conflicts between their developers, and partly because of technical reasons (the loaders were designed in a monolithic way, which invites incompatibility). This project has neither of those issues.
+
+<img title="Ah yes, just as I remember it." src="docs/images/modularity.png">
 
 ### Why are you using the Fabric fork of Mixin? Isn't this a Forge mod?
 

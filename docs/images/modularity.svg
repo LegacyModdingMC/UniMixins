@@ -1,0 +1,712 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="272mm"
+   height="98.300003mm"
+   viewBox="0 0 272 98.300003"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.1.2 (b8e25be833, 2022-02-05)"
+   sodipodi:docname="modularity.svg"
+   inkscape:export-filename="modularity.png"
+   inkscape:export-xdpi="300"
+   inkscape:export-ydpi="300"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="1"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="mm"
+     showgrid="false"
+     units="mm"
+     height="9.83cm"
+     inkscape:zoom="1.8116734"
+     inkscape:cx="707.08107"
+     inkscape:cy="100.45961"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1"
+     showguides="false" />
+  <defs
+     id="defs2">
+    <pattern
+       inkscape:collect="always"
+       xlink:href="#Strips1_4"
+       id="pattern73765"
+       patternTransform="matrix(-0.41147911,-0.41147911,2.1055851,-2.1055851,28.02852,-37.612396)" />
+    <pattern
+       inkscape:collect="always"
+       patternUnits="userSpaceOnUse"
+       width="5"
+       height="1"
+       patternTransform="translate(0,0) scale(10,10)"
+       id="Strips1_4"
+       inkscape:stockid="Stripes 1:4"
+       inkscape:isstock="true">
+      <rect
+         style="fill:black;stroke:none"
+         x="0"
+         y="-0.5"
+         width="1"
+         height="2"
+         id="rect2974" />
+    </pattern>
+    <rect
+       x="67.893028"
+       y="19.871132"
+       width="217.25429"
+       height="52.39732"
+       id="rect6184" />
+    <filter
+       style="color-interpolation-filters:sRGB"
+       inkscape:label="Duochrome"
+       id="filter75351"
+       x="0"
+       y="0"
+       width="1"
+       height="1">
+      <feColorMatrix
+         type="luminanceToAlpha"
+         result="colormatrix1"
+         id="feColorMatrix75331" />
+      <feFlood
+         flood-opacity="0.501961"
+         flood-color="rgb(229,229,229)"
+         result="flood1"
+         id="feFlood75333" />
+      <feComposite
+         in2="colormatrix1"
+         operator="out"
+         result="composite1"
+         id="feComposite75335" />
+      <feFlood
+         flood-opacity="1"
+         flood-color="rgb(255,255,0)"
+         result="flood2"
+         id="feFlood75337" />
+      <feComposite
+         in2="colormatrix1"
+         result="composite2"
+         operator="in"
+         id="feComposite75339" />
+      <feComposite
+         in="composite2"
+         in2="composite1"
+         k2="1"
+         k3="1"
+         operator="arithmetic"
+         result="composite3"
+         id="feComposite75341"
+         k1="0"
+         k4="0" />
+      <feColorMatrix
+         in="composite3"
+         type="matrix"
+         values="2 -1 0 0 0 0 2 -1 0 0 -1 0 2 0 0 0 0 0 1 0 "
+         result="colormatrix2"
+         id="feColorMatrix75343" />
+      <feComposite
+         in="colormatrix2"
+         in2="composite3"
+         operator="arithmetic"
+         k2="0"
+         result="composite4"
+         id="feComposite75345"
+         k1="0"
+         k3="0"
+         k4="0" />
+      <feBlend
+         in="composite4"
+         in2="composite3"
+         mode="normal"
+         result="blend"
+         id="feBlend75347" />
+      <feComposite
+         in2="SourceGraphic"
+         operator="in"
+         id="feComposite75349" />
+    </filter>
+    <rect
+       x="67.893028"
+       y="19.871132"
+       width="191.31142"
+       height="45.221634"
+       id="rect6184-8" />
+    <rect
+       x="67.893028"
+       y="19.871132"
+       width="322.4542"
+       height="53.027752"
+       id="rect6184-8-4" />
+  </defs>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="display:inline;fill:none;fill-opacity:1;stroke:#000046;stroke-width:0.4;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000"
+       id="rect1104-0-7"
+       width="63.608315"
+       height="8.1022758"
+       x="13.800014"
+       y="46.707821" />
+    <rect
+       style="display:inline;fill:none;fill-opacity:1;stroke:#000046;stroke-width:0.4;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000"
+       id="rect1104-0-7-8"
+       width="19.243679"
+       height="8.0107975"
+       x="36.178707"
+       y="59.424469" />
+    <rect
+       style="display:inline;fill:url(#pattern73765);fill-opacity:1;stroke:none;stroke-width:1;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter75351);stop-color:#000000"
+       id="rect1104-0-0"
+       width="21.420921"
+       height="8.0959282"
+       x="34.857468"
+       y="46.708447"
+       ry="0" />
+    <rect
+       style="display:inline;fill:none;fill-opacity:1;stroke:#000046;stroke-width:0.4;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000"
+       id="rect1104-0-7-5"
+       width="21.420921"
+       height="8.0959272"
+       x="34.857468"
+       y="46.708447" />
+    <text
+       xml:space="preserve"
+       transform="matrix(0.26458333,0,0,0.26458333,0.12802956,1.2560112)"
+       id="text6182"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:21.3333px;line-height:1.05;font-family:'xkcd Script';-inkscape-font-specification:'xkcd Script';text-align:center;letter-spacing:-0.5px;white-space:pre;shape-inside:url(#rect6184);display:inline;fill:#000000;fill-opacity:1;stroke:none"
+       x="80.298035"
+       y="0"><tspan
+         x="73.532947"
+         y="35.357673"
+         id="tspan326524">EXISTING MIXIN LOADERS
+</tspan><tspan
+         x="106.52431"
+         y="57.757637"
+         id="tspan326526">ARE MONOLITHIC.</tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(0.26458333,0,0,0.26458333,90.941647,2.4661355)"
+       id="text6182-6"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:21.3333px;line-height:1.25;font-family:'xkcd Script';-inkscape-font-specification:'xkcd Script';text-align:center;letter-spacing:-0.5px;white-space:pre;shape-inside:url(#rect6184-8);display:inline;fill:#000000;fill-opacity:1;stroke:none"
+       x="80.298035"
+       y="0"><tspan
+         x="70.094129"
+         y="37.491004"
+         id="tspan326528">UNIMIXINS IS MODULAR.</tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(0.26458333,0,0,0.26458333,166.16598,1.3341978)"
+       id="text6182-6-7"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:21.3333px;line-height:1.05;font-family:'xkcd Script';-inkscape-font-specification:'xkcd Script Bold';text-align:center;letter-spacing:-0.6px;white-space:pre;shape-inside:url(#rect6184-8-4);display:inline;fill:#000000;fill-opacity:1;stroke:none"
+       x="80.298035"
+       y="0"><tspan
+         x="90.91602"
+         y="35.357673"
+         id="tspan326532"><tspan
+           style="font-weight:normal;-inkscape-font-specification:'xkcd Script'"
+           id="tspan326530">UNIMIXINS MODULES CAN EVEN BE </tspan></tspan><tspan
+         x="72.625018"
+         y="57.757637"
+         id="tspan326536"><tspan
+           style="font-weight:normal;-inkscape-font-specification:'xkcd Script'"
+           id="tspan326534">ADDED ON TOP OF ANOTHER LOADER.</tspan></tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52778px;line-height:1.05;font-family:'xkcd Script';-inkscape-font-specification:'xkcd Script';text-align:center;letter-spacing:-0.185208px;text-anchor:middle;white-space:pre;inline-size:82.321;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="44.71722"
+       y="24.065899"
+       id="text32884"
+       transform="translate(0.52916667,1.5875)"><tspan
+         x="44.71722"
+         y="24.065899"
+         id="tspan326538">THEY CANNOT BE LOADED AT THE SAME TIME DUE TO<tspan
+   y="24.065899"
+   id="tspan326540"> </tspan></tspan><tspan
+         x="44.71722"
+         y="27.770067"
+         id="tspan326542">FEATURE OVERLAP, EVEN THOUGH THEIR INDIVIDUAL FEATURES<tspan
+   y="27.770067"
+   id="tspan326544"> </tspan></tspan><tspan
+         x="44.71722"
+         y="31.474235"
+         id="tspan326546">WOULD BE ABLE TO CO-EXIST.</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52778px;line-height:1.05;font-family:'xkcd Script';-inkscape-font-specification:'xkcd Script';text-align:center;letter-spacing:-0.132292px;text-anchor:middle;white-space:pre;inline-size:89.1681;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="134.89743"
+       y="23.701571"
+       id="text32884-1"
+       transform="translate(0,1.0583333)"><tspan
+         x="134.89743"
+         y="23.701571"
+         id="tspan326548">EACH FEATURE IS IN ITS OWN &quot;BOX&quot;, ALLOWING THEM TO BE<tspan
+   y="23.701571"
+   id="tspan326550"> </tspan></tspan><tspan
+         x="134.89743"
+         y="27.405738"
+         id="tspan326552">COMBINED FREELY WITHOUT ANY ARBITRARY RESTRICTIONS.</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.89278px;line-height:1.25;font-family:'xkcd Script';-inkscape-font-specification:'xkcd Script';text-align:center;letter-spacing:-0.132292px;text-anchor:middle;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="225.63924"
+       y="24.60577"
+       id="text32884-1-9"><tspan
+         sodipodi:role="line"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.89278px;font-family:'xkcd Script';-inkscape-font-specification:'xkcd Script';text-align:center;text-anchor:middle;stroke-width:0.264583"
+         x="225.57309"
+         y="24.60577"
+         id="tspan116154-7">(THIS KIND OF SUPPORT IS NOT FULLY IMPLEMENTED THOUGH.)</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.175px;line-height:1.25;font-family:'xkcd Script';-inkscape-font-specification:'xkcd Script';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;letter-spacing:-0.079375px;display:inline;fill:#3f48cc;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="23.71513"
+       y="42.778732"
+       id="text63580"><tspan
+         sodipodi:role="line"
+         id="tspan63578"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.175px;font-family:'xkcd Script';-inkscape-font-specification:'xkcd Script';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#3f48cc;fill-opacity:1;stroke-width:0.264583"
+         x="23.71513"
+         y="42.778732">GTNHMIXINS</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.57528px;line-height:1.2;font-family:'xkcd Script';-inkscape-font-specification:'xkcd Script';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;letter-spacing:-0.079375px;text-anchor:middle;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="27.273415"
+       y="50.070621"
+       id="text63580-6"><tspan
+         sodipodi:role="line"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.57528px;font-family:'xkcd Script';-inkscape-font-specification:'xkcd Script';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke-width:0.264583"
+         x="27.273415"
+         y="50.070621"
+         id="tspan76477">MIXIN</tspan><tspan
+         sodipodi:role="line"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.57528px;font-family:'xkcd Script';-inkscape-font-specification:'xkcd Script';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke-width:0.264583"
+         x="27.233727"
+         y="53.160957"
+         id="tspan189479">0.8-GTNH</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.57528px;line-height:1.2;font-family:'xkcd Script';-inkscape-font-specification:'xkcd Script';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;letter-spacing:-0.079375px;text-anchor:middle;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="45.815434"
+       y="62.721596"
+       id="text63580-6-89"><tspan
+         sodipodi:role="line"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.57528px;font-family:'xkcd Script';-inkscape-font-specification:'xkcd Script';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke-width:0.264583"
+         x="45.815434"
+         y="62.721596"
+         id="tspan104620">SPONGEMIXINS</tspan><tspan
+         sodipodi:role="line"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.57528px;font-family:'xkcd Script';-inkscape-font-specification:'xkcd Script';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke-width:0.264583"
+         x="45.775745"
+         y="65.811935"
+         id="tspan199017">EXTRAS</tspan></text>
+    <rect
+       style="display:inline;fill:none;fill-opacity:1;stroke:#000046;stroke-width:0.4;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000"
+       id="rect1104-0-7-8-3"
+       width="19.243679"
+       height="8.0107975"
+       x="13.745136"
+       y="72.354515" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.57528px;line-height:1.2;font-family:'xkcd Script';-inkscape-font-specification:'xkcd Script';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;letter-spacing:-0.079375px;text-anchor:middle;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="23.381863"
+       y="75.724663"
+       id="text63580-6-89-5"><tspan
+         sodipodi:role="line"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.57528px;font-family:'xkcd Script';-inkscape-font-specification:'xkcd Script';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke-width:0.264583"
+         x="23.381863"
+         y="75.724663"
+         id="tspan105830">GTNHMIXINS</tspan><tspan
+         sodipodi:role="line"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.57528px;font-family:'xkcd Script';-inkscape-font-specification:'xkcd Script';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke-width:0.264583"
+         x="23.342175"
+         y="78.815002"
+         id="tspan195563">EXTRAS</tspan></text>
+    <rect
+       style="display:inline;fill:none;fill-opacity:1;stroke:#000046;stroke-width:0.4;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000"
+       id="rect1104-0-7-8-3-4"
+       width="19.243679"
+       height="8.0107975"
+       x="58.160408"
+       y="72.281502" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.57528px;line-height:1.2;font-family:'xkcd Script';-inkscape-font-specification:'xkcd Script';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;letter-spacing:-0.079375px;text-anchor:middle;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="67.79715"
+       y="75.72467"
+       id="text63580-6-89-5-1"><tspan
+         sodipodi:role="line"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.57528px;font-family:'xkcd Script';-inkscape-font-specification:'xkcd Script';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke-width:0.264583"
+         x="67.79715"
+         y="75.72467"
+         id="tspan106818">GASSTATION</tspan><tspan
+         sodipodi:role="line"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.57528px;font-family:'xkcd Script';-inkscape-font-specification:'xkcd Script';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke-width:0.264583"
+         x="67.757462"
+         y="78.81501"
+         id="tspan197827">EXTRAS</tspan></text>
+    <rect
+       style="display:inline;fill:none;fill-opacity:1;stroke:#000046;stroke-width:0.4;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000"
+       id="rect1104-0-7-8-3-4-9"
+       width="19.243679"
+       height="8.0107975"
+       x="118.16634"
+       y="38.274223" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.57528px;line-height:1.2;font-family:'xkcd Script';-inkscape-font-specification:'xkcd Script';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;letter-spacing:-0.079375px;text-anchor:middle;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="127.80308"
+       y="41.717392"
+       id="text63580-6-89-5-1-2"><tspan
+         sodipodi:role="line"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.57528px;font-family:'xkcd Script';-inkscape-font-specification:'xkcd Script';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke-width:0.264583"
+         x="127.80308"
+         y="41.717392"
+         id="tspan116603">MIXIN</tspan><tspan
+         sodipodi:role="line"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.57528px;font-family:'xkcd Script';-inkscape-font-specification:'xkcd Script';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke-width:0.264583"
+         x="127.76339"
+         y="44.807728"
+         id="tspan206609">0.8-UNIMIX</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.57528px;line-height:1.2;font-family:'xkcd Script';-inkscape-font-specification:'xkcd Script';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;letter-spacing:-0.079375px;text-anchor:middle;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="63.996986"
+       y="50.144955"
+       id="text63580-6-8"><tspan
+         sodipodi:role="line"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.57528px;font-family:'xkcd Script';-inkscape-font-specification:'xkcd Script';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke-width:0.264583"
+         x="63.996986"
+         y="50.144955"
+         id="tspan76477-8">MIXIN</tspan><tspan
+         sodipodi:role="line"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.57528px;font-family:'xkcd Script';-inkscape-font-specification:'xkcd Script';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke-width:0.264583"
+         x="63.957298"
+         y="53.235291"
+         id="tspan192367">0.8-GASMIX</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.175px;line-height:1.25;font-family:'xkcd Script';-inkscape-font-specification:'xkcd Script';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;letter-spacing:-0.079375px;display:inline;fill:#ed1c24;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="50.883247"
+       y="42.739273"
+       id="text63580-0"><tspan
+         sodipodi:role="line"
+         id="tspan63578-4"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.175px;font-family:'xkcd Script';-inkscape-font-specification:'xkcd Script';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ed1c24;fill-opacity:1;stroke-width:0.264583"
+         x="50.883247"
+         y="42.739273">GASSTATION</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.175px;line-height:1.25;font-family:'xkcd Script';-inkscape-font-specification:'xkcd Script';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;letter-spacing:-0.079375px;display:inline;fill:#ed1c24;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="141.59998"
+       y="43.174267"
+       id="text63580-0-3"><tspan
+         sodipodi:role="line"
+         id="tspan63578-4-0"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.175px;font-family:'xkcd Script';-inkscape-font-specification:'xkcd Script';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#22b14c;fill-opacity:1;stroke-width:0.264583"
+         x="141.59998"
+         y="43.174267">MIXIN MODULE</tspan></text>
+    <rect
+       style="fill:none;fill-opacity:1;stroke:#000046;stroke-width:0.4;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000"
+       id="rect1104-0-7-8-3-4-9-9"
+       width="19.243679"
+       height="8.0107975"
+       x="118.16634"
+       y="51.642021" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.57528px;line-height:1.2;font-family:'xkcd Script';-inkscape-font-specification:'xkcd Script';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;letter-spacing:-0.079375px;text-anchor:middle;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="127.80305"
+       y="55.08519"
+       id="text63580-6-89-5-1-2-1"><tspan
+         sodipodi:role="line"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.57528px;font-family:'xkcd Script';-inkscape-font-specification:'xkcd Script';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke-width:0.264583"
+         x="127.80305"
+         y="55.08519"
+         id="tspan132092">SPONGEMIXINS</tspan><tspan
+         sodipodi:role="line"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.57528px;font-family:'xkcd Script';-inkscape-font-specification:'xkcd Script';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke-width:0.264583"
+         x="127.76336"
+         y="58.175526"
+         id="tspan207303">EXTRAS</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.175px;line-height:1.25;font-family:'xkcd Script';-inkscape-font-specification:'xkcd Script';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;letter-spacing:-0.079375px;display:inline;fill:#ed1c24;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="141.59996"
+       y="56.542065"
+       id="text63580-0-3-3"><tspan
+         sodipodi:role="line"
+         id="tspan63578-4-0-1"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.175px;font-family:'xkcd Script';-inkscape-font-specification:'xkcd Script';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#22b14c;fill-opacity:1;stroke-width:0.264583"
+         x="141.59996"
+         y="56.542065">SPONGEMIXINS MODULE</tspan></text>
+    <rect
+       style="fill:none;fill-opacity:1;stroke:#000046;stroke-width:0.4;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000"
+       id="rect1104-0-7-8-3-4-9-9-3"
+       width="19.243679"
+       height="8.0107975"
+       x="118.16635"
+       y="64.523148" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.57528px;line-height:1.2;font-family:'xkcd Script';-inkscape-font-specification:'xkcd Script';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;letter-spacing:-0.079375px;text-anchor:middle;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="127.80308"
+       y="67.966316"
+       id="text63580-6-89-5-1-2-1-5"><tspan
+         sodipodi:role="line"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.57528px;font-family:'xkcd Script';-inkscape-font-specification:'xkcd Script';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke-width:0.264583"
+         x="127.80308"
+         y="67.966316"
+         id="tspan126306">GTNHMIXINS</tspan><tspan
+         sodipodi:role="line"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.57528px;font-family:'xkcd Script';-inkscape-font-specification:'xkcd Script';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke-width:0.264583"
+         x="127.76339"
+         y="71.056656"
+         id="tspan207993">EXTRAS</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.175px;line-height:1.25;font-family:'xkcd Script';-inkscape-font-specification:'xkcd Script';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;letter-spacing:-0.079375px;display:inline;fill:#ed1c24;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="141.59998"
+       y="69.423195"
+       id="text63580-0-3-3-4"><tspan
+         sodipodi:role="line"
+         id="tspan63578-4-0-1-2"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.175px;font-family:'xkcd Script';-inkscape-font-specification:'xkcd Script';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#22b14c;fill-opacity:1;stroke-width:0.264583"
+         x="141.59998"
+         y="69.423195">GTNHMIXINS MODULE</tspan></text>
+    <rect
+       style="fill:none;fill-opacity:1;stroke:#000046;stroke-width:0.4;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000"
+       id="rect1104-0-7-8-3-4-9-9-3-8"
+       width="19.243679"
+       height="8.0107975"
+       x="118.16635"
+       y="77.124695" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.57528px;line-height:1.2;font-family:'xkcd Script';-inkscape-font-specification:'xkcd Script';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;letter-spacing:-0.079375px;text-anchor:middle;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="127.80308"
+       y="80.567863"
+       id="text63580-6-89-5-1-2-1-5-7"><tspan
+         sodipodi:role="line"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.57528px;font-family:'xkcd Script';-inkscape-font-specification:'xkcd Script';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke-width:0.264583"
+         x="127.80308"
+         y="80.567863"
+         id="tspan128146">GASSTATION</tspan><tspan
+         sodipodi:role="line"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.57528px;font-family:'xkcd Script';-inkscape-font-specification:'xkcd Script';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke-width:0.264583"
+         x="127.76339"
+         y="83.658203"
+         id="tspan208641">EXTRAS</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.175px;line-height:1.25;font-family:'xkcd Script';-inkscape-font-specification:'xkcd Script';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;letter-spacing:-0.079375px;display:inline;fill:#ed1c24;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="141.59998"
+       y="82.024742"
+       id="text63580-0-3-3-4-9"><tspan
+         sodipodi:role="line"
+         id="tspan63578-4-0-1-2-5"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.175px;font-family:'xkcd Script';-inkscape-font-specification:'xkcd Script';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#22b14c;fill-opacity:1;stroke-width:0.264583"
+         x="141.59998"
+         y="82.024742">GASSTATION MODULE</tspan></text>
+    <rect
+       style="fill:none;fill-opacity:1;stroke:#000046;stroke-width:0.4;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000"
+       id="rect1104-0-7-8-3-4-9-0"
+       width="19.243679"
+       height="8.0107975"
+       x="207.60686"
+       y="41.695419" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.57528px;line-height:1.2;font-family:'xkcd Script';-inkscape-font-specification:'xkcd Script';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;letter-spacing:-0.079375px;text-anchor:middle;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="217.24359"
+       y="45.138588"
+       id="text63580-6-89-5-1-2-5"><tspan
+         sodipodi:role="line"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.57528px;font-family:'xkcd Script';-inkscape-font-specification:'xkcd Script';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke-width:0.264583"
+         x="217.24359"
+         y="45.138588"
+         id="tspan116603-60">MIXIN</tspan><tspan
+         sodipodi:role="line"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.57528px;font-family:'xkcd Script';-inkscape-font-specification:'xkcd Script';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke-width:0.264583"
+         x="217.2039"
+         y="48.228924"
+         id="tspan213995">0.7</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.175px;line-height:1.25;font-family:'xkcd Script';-inkscape-font-specification:'xkcd Script';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;letter-spacing:-0.079375px;display:inline;fill:#ed1c24;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="211.10968"
+       y="38.747059"
+       id="text63580-0-3-1"><tspan
+         sodipodi:role="line"
+         id="tspan63578-4-0-2"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.175px;font-family:'xkcd Script';-inkscape-font-specification:'xkcd Script';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#a349a4;fill-opacity:1;stroke-width:0.264583"
+         x="211.10968"
+         y="38.747059">GRIMOIRE</tspan></text>
+    <rect
+       style="fill:none;fill-opacity:1;stroke:#000046;stroke-width:0.4;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000"
+       id="rect1104-0-7-8-3-4-9-9-5"
+       width="19.243679"
+       height="8.0107975"
+       x="207.60686"
+       y="55.063217" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.57528px;line-height:1.2;font-family:'xkcd Script';-inkscape-font-specification:'xkcd Script';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;letter-spacing:-0.079375px;text-anchor:middle;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="217.24358"
+       y="58.506386"
+       id="text63580-6-89-5-1-2-1-2"><tspan
+         sodipodi:role="line"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.57528px;font-family:'xkcd Script';-inkscape-font-specification:'xkcd Script';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke-width:0.264583"
+         x="217.24358"
+         y="58.506386"
+         id="tspan138056">GRIMOIRE</tspan><tspan
+         sodipodi:role="line"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.57528px;font-family:'xkcd Script';-inkscape-font-specification:'xkcd Script';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke-width:0.264583"
+         x="217.20389"
+         y="61.596722"
+         id="tspan214617">EXTRAS</tspan></text>
+    <rect
+       style="fill:none;fill-opacity:1;stroke:#000046;stroke-width:0.4;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000"
+       id="rect1104-0-7-8-3-4-9-9-3-1"
+       width="19.243679"
+       height="8.0107975"
+       x="207.60687"
+       y="67.944344" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.57528px;line-height:1.2;font-family:'xkcd Script';-inkscape-font-specification:'xkcd Script';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;letter-spacing:-0.079375px;text-anchor:middle;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="217.24359"
+       y="71.387512"
+       id="text63580-6-89-5-1-2-1-5-1"><tspan
+         sodipodi:role="line"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.57528px;font-family:'xkcd Script';-inkscape-font-specification:'xkcd Script';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke-width:0.264583"
+         x="217.24359"
+         y="71.387512"
+         id="tspan126306-5">GTNHMIXINS</tspan><tspan
+         sodipodi:role="line"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.57528px;font-family:'xkcd Script';-inkscape-font-specification:'xkcd Script';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke-width:0.264583"
+         x="217.2039"
+         y="74.477852"
+         id="tspan215145">EXTRAS</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.175px;line-height:1.25;font-family:'xkcd Script';-inkscape-font-specification:'xkcd Script';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;letter-spacing:-0.079375px;display:inline;fill:#ed1c24;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="231.0405"
+       y="72.844391"
+       id="text63580-0-3-3-4-1"><tspan
+         sodipodi:role="line"
+         id="tspan63578-4-0-1-2-7"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.175px;font-family:'xkcd Script';-inkscape-font-specification:'xkcd Script';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#22b14c;fill-opacity:1;stroke-width:0.264583"
+         x="231.0405"
+         y="72.844391">GTNHMIXINS MODULE</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="134.45549"
+       y="11.566064"
+       id="text109002"><tspan
+         sodipodi:role="line"
+         id="tspan109000"
+         style="stroke-width:0.264583"
+         x="134.45549"
+         y="11.566064"></tspan></text>
+    <rect
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.4;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000"
+       id="rect261836"
+       width="87.778175"
+       height="94.800415"
+       x="1.5918018"
+       y="1.5918018" />
+    <rect
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.4;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000"
+       id="rect261836-0"
+       width="87.778175"
+       height="94.800415"
+       x="92.015823"
+       y="1.5918018" />
+    <rect
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.4;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000"
+       id="rect261836-0-8"
+       width="87.778175"
+       height="94.800415"
+       x="182.40633"
+       y="1.6533977" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer3"
+     inkscape:label="Layer 2"
+     sodipodi:insensitive="true">
+    <rect
+       style="display:inline;fill:#3f48cc;fill-opacity:0.17;stroke:#3f48cc;stroke-width:0.4;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000"
+       id="rect1104-0"
+       width="45.063374"
+       height="37.911438"
+       x="11.578111"
+       y="44.065044" />
+    <rect
+       style="display:inline;fill:#ed1c24;fill-opacity:0.17;stroke:#ed1c24;stroke-width:0.4;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000"
+       id="rect1104"
+       width="45.040031"
+       height="37.936855"
+       x="34.465179"
+       y="44.840611" />
+    <rect
+       style="display:inline;fill:#2fa755;fill-opacity:0.17;stroke:#22b14c;stroke-width:0.4;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000"
+       id="rect1104-3"
+       width="23.043865"
+       height="11.087069"
+       x="116.1311"
+       y="36.860748" />
+    <rect
+       style="display:inline;fill:#2fa755;fill-opacity:0.17;stroke:#22b14c;stroke-width:0.4;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000"
+       id="rect1104-3-0"
+       width="23.043865"
+       height="11.087069"
+       x="116.1311"
+       y="50.228546" />
+    <rect
+       style="display:inline;fill:#2fa755;fill-opacity:0.17;stroke:#22b14c;stroke-width:0.4;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000"
+       id="rect1104-3-0-9"
+       width="23.043865"
+       height="11.087069"
+       x="116.1311"
+       y="63.109657" />
+    <rect
+       style="display:inline;fill:#2fa755;fill-opacity:0.17;stroke:#22b14c;stroke-width:0.4;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000"
+       id="rect1104-3-0-9-0"
+       width="23.043865"
+       height="11.087069"
+       x="116.1311"
+       y="75.71122" />
+    <rect
+       style="display:inline;fill:#a349a4;fill-opacity:0.17;stroke:#a349a4;stroke-width:0.4;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000"
+       id="rect1104-3-7"
+       width="23.043869"
+       height="24.047258"
+       x="205.57162"
+       y="40.281944" />
+    <rect
+       style="display:inline;fill:#2fa755;fill-opacity:0.17;stroke:#22b14c;stroke-width:0.4;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000"
+       id="rect1104-3-0-9-4"
+       width="23.043865"
+       height="11.087069"
+       x="205.57162"
+       y="66.530869" />
+  </g>
+</svg>
