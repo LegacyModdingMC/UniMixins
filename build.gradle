@@ -134,15 +134,22 @@ def outRefMapFile = "${tasks.compileJava.temporaryDir}/mixins.${modid}.refmap.js
 jar {
     manifest {
         attributes (
-            'MixinConfigs': "mixins.${modid}.json",
+            // This will bootstrap Mixin and make your mod discoverable by it.
             'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
             
-            // If these two are not set, Forge will not detect the mod, it will only run the mixins
-            'FMLCorePluginContainsFMLMod': 'true',
-            'ForceLoadAsMod': 'true',
+            // This is the normal way of registering Mixin configs.
+            // Mixin will automatically add any that are specified here.
+            'MixinConfigs': "mixins.${modid}.json",
             
-            // Needed for FML plugin/early mixin loader
+            // To use the IEarlyMixinLoader interface, an FML plugin needs to be
+            // registered.
             'FMLCorePlugin': 'io.github.legacymoddingmc.unimixins.example.ExampleCore',
+            
+            // If your mod also contains a Forge mod (marked by a @Mod annotation),
+            // these need to be set or it will get ignored.
+            // Note that a Forge mod is required for late mixins to work.
+            'ForceLoadAsMod': 'true',
+            'FMLCorePluginContainsFMLMod': 'true',
         )
     }
     
