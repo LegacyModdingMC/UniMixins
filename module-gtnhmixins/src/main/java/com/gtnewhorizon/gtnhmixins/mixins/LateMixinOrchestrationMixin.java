@@ -5,13 +5,15 @@ import com.gtnewhorizon.gtnhmixins.GTNHMixins;
 import com.gtnewhorizon.gtnhmixins.ILateMixinLoader;
 import com.gtnewhorizon.gtnhmixins.LateMixin;
 import com.gtnewhorizon.gtnhmixins.Reflection;
-import com.gtnewhorizon.gtnhmixins.core.GTNHMixinsCore;
+
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModClassLoader;
 import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.common.discovery.ASMDataTable;
 import cpw.mods.fml.common.event.FMLConstructionEvent;
 import net.minecraft.launchwrapper.Launch;
+
+import org.apache.commons.lang3.reflect.FieldUtils;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.MixinEnvironment;
 import org.spongepowered.asm.mixin.injection.At;
@@ -21,7 +23,11 @@ import org.spongepowered.asm.mixin.transformer.Config;
 import org.spongepowered.asm.mixin.transformer.Proxy;
 
 import java.lang.reflect.Field;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 
@@ -45,8 +51,11 @@ public class LateMixinOrchestrationMixin {
         ASMDataTable asmDataTable = (ASMDataTable)eventData[1];
         final Loader loader = Loader.instance();
 
-        final Set<String> loadedMods = loader.getIndexedModList().keySet();
-        GTNHMixinsCore.LOGGER.info("LoadedMods {}", loadedMods.toString());
+        final Set<String> loadedModsTemp = new HashSet<>();
+        loadedModsTemp.addAll(loader.getIndexedModList().keySet());
+        loadedModsTemp.addAll(getLiteLoaderMods());
+        final Set<String> loadedMods = Collections.unmodifiableSet(loadedModsTemp);
+        GTNHMixins.LOGGER.info("LoadedMods {}", loadedMods.toString());
 
         for (ASMDataTable.ASMData asmData : asmDataTable.getAll(LateMixin.class.getName())) {
             modClassLoader.addFile(asmData.getCandidate().getModContainer()); // Add to path before `newInstance`
@@ -90,5 +99,30 @@ public class LateMixinOrchestrationMixin {
         final MixinEnvironment env = MixinEnvironment.getCurrentEnvironment();
         Reflection.invokeSelectConfigs(transformer, env);
         Reflection.invokePrepareConfigs(transformer, env);
+    }
+
+    @SuppressWarnings("unchecked")
+    private static Set<String> getLiteLoaderMods() {
+        Set<String> mods = new HashSet<>();
+        try {
+            Class<?> LiteLoaderTweaker = Class.forName("com.mumfrey.liteloader.launch.LiteLoaderTweaker");
+            Class<?> LoadableModClassPath = Class.forName("com.mumfrey.liteloader.core.api.LoadableModClassPath");
+            Object instance = FieldUtils.readDeclaredStaticField(LiteLoaderTweaker, "instance", true);
+            Object bootstrap = FieldUtils.readDeclaredField(instance, "bootstrap", true);
+            Object enumerator = FieldUtils.readDeclaredField(bootstrap, "enumerator", true);
+            Map<String, ?> enabledContainers = (Map<String, ?>) FieldUtils.readDeclaredField(enumerator, "enabledContainers", true);
+            GTNHMixins.LOGGER.info("LiteLoader present, adding its mods to the list.");
+            for(Entry<String, ?> e : enabledContainers.entrySet()) {
+                // Classpath mods include e.g. all libraries (lwjgl, guava, etc.) - we don't want those 
+                if(!LoadableModClassPath.isInstance(e.getValue())) {
+                    mods.add(e.getKey());
+                }
+            }
+        } catch (ClassNotFoundException e) {
+            GTNHMixins.LOGGER.info("LiteLoader not present.");
+        } catch (Exception e) {
+            GTNHMixins.LOGGER.error("Failed to get LiteLoader mods.", e);
+        }
+        return mods;
     }
 }
