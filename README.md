@@ -4,21 +4,21 @@ This is an example mod that shows how to get started with UniMixins. The buildsc
 
 The following features are demonstrated:
 
-- Basic mixin
+- Basic mixin - This is all you need to mix into vanilla/Forge/coremod classes.
     - `build.gradle`
     - `mixin/MixinGuiMainMenu.java`
     - `mixins.unimixinsexample.json`
-- Early mixin (GTNHMixins)
+- Early mixin (GTNHMixins) - An alternative interface for "basic mixins" that provides a convenient way to detect coremods.
     - `build.gradle`
     - `mixins.unimixinsexample.early.json`
     - `ExampleCore.java`
     - `mixin/early/MixinGuiMainMenu.java`
-- Late mixin (GTNHMixins)
+- Late mixin (GTNHMixins) - Needed to mix into the classes of non-coremods.
     - `build.gradle`
     - `mixins.unimixinsexample.late.json`
     - `ExampleLateMixins.java`
     - `mixin/late/MixinBaubles.java`
-- MixinExtras
+- MixinExtras - Some extra annotations.
     - `mixin/early/MixinGuiMainMenu.java`
 
 ## Setup
