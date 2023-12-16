@@ -23,6 +23,7 @@ import org.spongepowered.asm.mixin.transformer.Config;
 import org.spongepowered.asm.mixin.transformer.Proxy;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -106,15 +107,14 @@ public class LateMixinOrchestrationMixin {
         Set<String> mods = new HashSet<>();
         try {
             Class<?> LiteLoaderTweaker = Class.forName("com.mumfrey.liteloader.launch.LiteLoaderTweaker");
-            Class<?> LoadableModClassPath = Class.forName("com.mumfrey.liteloader.core.api.LoadableModClassPath");
+            Method hasValidMetaData = Class.forName("com.mumfrey.liteloader.interfaces.LoadableMod").getMethod("hasValidMetaData");
             Object instance = FieldUtils.readDeclaredStaticField(LiteLoaderTweaker, "instance", true);
             Object bootstrap = FieldUtils.readDeclaredField(instance, "bootstrap", true);
             Object enumerator = FieldUtils.readDeclaredField(bootstrap, "enumerator", true);
             Map<String, ?> enabledContainers = (Map<String, ?>) FieldUtils.readDeclaredField(enumerator, "enabledContainers", true);
             GTNHMixins.LOGGER.info("LiteLoader present, adding its mods to the list.");
             for(Entry<String, ?> e : enabledContainers.entrySet()) {
-                // Classpath mods include e.g. all libraries (lwjgl, guava, etc.) - we don't want those 
-                if(!LoadableModClassPath.isInstance(e.getValue())) {
+                if((boolean) hasValidMetaData.invoke(e.getValue())) {
                     mods.add(e.getKey());
                 }
             }
