@@ -57,7 +57,7 @@ All test cases assume default configs for mods.
 
 * [x] Mixingasm
     * [x] Transformer exclusion
-        * [x] [GregTech 6](https://gregtech.overminddl1.com/com/gregoriust/gregtech/gregtech_1.7.10/6.14.20/gregtech_1.7.10-6.14.20.jar) + [CoreTweaks 0.3.0.1+nomixin](https://github.com/makamys/CoreTweaks/releases/download/0.3.0.1/CoreTweaks-1.7.10-0.3.0.1+nomixin.jar) + [BugTorch 1.1.8](https://github.com/jss2a98aj/BugTorch/releases/download/1.1.8/bugtorch-1.7.10-1.1.8.jar)
+        * [x] [GregTech 6.14.20](https://gregtech.overminddl1.com/com/gregoriust/gregtech/gregtech_1.7.10/6.14.20/gregtech_1.7.10-6.14.20.jar) + [CoreTweaks 0.3.0.1+nomixin](https://github.com/makamys/CoreTweaks/releases/download/0.3.0.1/CoreTweaks-1.7.10-0.3.0.1+nomixin.jar) + [BugTorch 1.1.8](https://github.com/jss2a98aj/BugTorch/releases/download/1.1.8/bugtorch-1.7.10-1.1.8.jar)
             * [x] Game reaches title screen
                 * Without Mixingasm, this mod combination causes an early crash.
 
