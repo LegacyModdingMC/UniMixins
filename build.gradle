@@ -88,7 +88,7 @@ allprojects {
 				archives tasks."sourcesJar"
 				archives tasks."devJar"
 			}
-
+			
 			publishing {
 				publications {
 					create("maven", MavenPublication) {
@@ -108,7 +108,22 @@ allprojects {
 			}
 		}
 	}
-
+	
+	publishing {
+		repositories {
+			if (System.getenv("MAVEN_USER") != null) {
+				maven {
+					url = System.getenv("MAVEN_URL")
+					allowInsecureProtocol = System.getenv("MAVEN_URL").startsWith("http://") // Mostly for the GTNH maven
+					credentials {
+						username = System.getenv("MAVEN_USER") ?: "NONE"
+						password = System.getenv("MAVEN_PASSWORD") ?: "NONE"
+					}
+				}
+			}
+		}
+	}
+	
 	// Put license, credits and readme in jar
 
 	delete "$projectDir/build/tmp/license"
