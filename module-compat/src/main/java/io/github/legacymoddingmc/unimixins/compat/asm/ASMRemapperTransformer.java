@@ -24,14 +24,6 @@ import java.util.*;
 // TODO Measure the performance impact of this and switch to doing it selectively if it would improve things.
 public class ASMRemapperTransformer implements IClassTransformer {
 
-    /** A class will be remapped if it implements one of these interfaces. */
-    private static Set<String> interfaceWhitelist = new HashSet<>();
-
-    /** A class will be remapped if its name starts with one of these strings. */
-    private static Set<String> packageWhitelist = new HashSet<>();
-
-    private static final boolean remapSelectively = Boolean.parseBoolean(System.getProperty("unimixins.compat.remapSelectively", "false"));
-
     private static final List<String> ASM_PACKAGE_PREFIXES = Arrays.asList(
             "org/spongepowered/libraries/org/objectweb/asm/",
             "org/spongepowered/asm/lib/"
@@ -40,18 +32,6 @@ public class ASMRemapperTransformer implements IClassTransformer {
     private static final byte[] PATTERN = "spongepowered".getBytes(StandardCharsets.UTF_8);
 
     private static String realASMPackagePrefix;
-
-    public static void registerInterface(String itf) {
-        interfaceWhitelist.add(itf.replace('.', '/'));
-    }
-
-    public static void registerPackage(String pkg) {
-        packageWhitelist.add(pkg + ".");
-    }
-
-    public ASMRemapperTransformer() {
-        registerInterface("org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin");
-    }
 
     @Override
     public byte[] transform(String name, String transformedName, byte[] basicClass) {
@@ -72,27 +52,7 @@ public class ASMRemapperTransformer implements IClassTransformer {
         ClassReader classReaderForNode = new ClassReader(basicClass);
         classReaderForNode.accept(classNode, 0);
 
-        boolean doRemap = false;
-
-        if(remapSelectively) {
-            if(!doRemap) {
-                for (String itf : classNode.interfaces) {
-                    if (interfaceWhitelist.contains(itf)) {
-                        doRemap = true;
-                    }
-                }
-            }
-
-            if(!doRemap) {
-                for (String pkg : packageWhitelist) {
-                    if(transformedName.startsWith(pkg)) {
-                        doRemap = true;
-                    }
-                }
-            }
-        } else {
-            doRemap = Bytes.indexOf(basicClass, getFakeASMPackagePrefix().getBytes()) != -1;
-        }
+        boolean doRemap = Bytes.indexOf(basicClass, getFakeASMPackagePrefix().getBytes()) != -1;
 
         if(doRemap) {
             LOGGER.info("Transforming class " + transformedName + " to fit current mixin environment.");
