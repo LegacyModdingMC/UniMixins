@@ -18,12 +18,7 @@ You can also depend on modules individually:
 
 ```gradle
 dependencies {
-    // One of these (note: this module doesn't have dev jars)
     implementation("com.github.LegacyModdingMC.UniMixins:unimixins-mixin-1.7.10:$unimixinsVersion")
-    //implementation("com.github.LegacyModdingMC.UniMixins:unimixins-mixin-1.7.10-spongepowered:$unimixinsVersion")
-    //implementation("com.github.LegacyModdingMC.UniMixins:unimixins-mixin-1.7.10-fabric:$unimixinsVersion")
-    //implementation("com.github.LegacyModdingMC.UniMixins:unimixins-mixin-1.7.10-gasmix:$unimixinsVersion")
-    //implementation("com.github.LegacyModdingMC.UniMixins:unimixins-mixin-1.7.10-gtnh:$unimixinsVersion")
     
     // You don't need all the modules, only the ones your mod requires.
     implementation("com.github.LegacyModdingMC.UniMixins:unimixins-compat-1.7.10:$unimixinsVersion:dev")
@@ -36,7 +31,21 @@ dependencies {
 }
 ```
 
-> If you are *not* using UniMix or GTNH's Mixin fork, you will need to add the compat module and set the `-Dunimixins.compat.hackClasspathModDiscovery=true` JVM flag, or Forge may fail to discover your mod or its dependencies.
+<details>
+<summary>Testing info</summary>
+
+If you want to depend on a local build, you need to use `io.github.legacymoddingmc.unimixins` instead of `com.github.LegacyModdingMC.UniMixins`.
+
+And here's how you depend on the Very Optional modules (not published on Jitpack).
+```gradle
+    //implementation("io.github.legacymoddingmc.unimixins:unimixins-mixin-1.7.10-spongepowered:$unimixinsVersion")
+    //implementation("io.github.legacymoddingmc.unimixins:unimixins-mixin-1.7.10-fabric:$unimixinsVersion")
+    //implementation("io.github.legacymoddingmc.unimixins:unimixins-mixin-1.7.10-gasmix:$unimixinsVersion")
+    //implementation("io.github.legacymoddingmc.unimixins:unimixins-mixin-1.7.10-gtnh:$unimixinsVersion")
+```
+
+Note: If you are *not* using UniMix or GTNH's Mixin fork, you will need to add the compat module and set the `-Dunimixins.compat.hackClasspathModDiscovery=true` JVM flag, or Forge may fail to discover your mod or its dependencies.
+</details>
 
 ## Tricks
 
