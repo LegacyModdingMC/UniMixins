@@ -54,6 +54,8 @@ allprojects {
 	}
 	
 	apply from: "${project.rootDir}/buildscript/forge-1.7.gradle"
+	
+	def projectVersion = version
 
 	dependencies {
 		// TODO only include IFMLLoadingPlugin, Mod and ComparableVersion
@@ -94,7 +96,7 @@ allprojects {
 						artifact source: tasks."sourcesJar", classifier: 'sources'
 						artifact source: tasks."devJar", classifier: 'dev'
 						artifactId = archivesBaseName.substring(1)
-						version = jar.version
+						version = projectVersion
 					}
 				}
 			}

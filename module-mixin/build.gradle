@@ -272,8 +272,7 @@ flavors.each {
 				artifact tasks."shadowJar$_flavor"
 				artifact tasks."shadowSourcesJar$_flavor"
 
-				artifactId = archivesBaseName.substring(1)
-				version = tasks."shadowJar$_flavor".version
+				artifactId = archivesBaseName.substring(1) + (mixinFlavor == "unimix" ? "" : "-" + mixinFlavor)
 			}
 		}
 	}
