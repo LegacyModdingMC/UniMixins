@@ -61,6 +61,13 @@ allprojects {
 		// TODO only include IFMLLoadingPlugin, Mod and ComparableVersion
 		compileOnly "net.minecraftforge:forge:1.12.2-14.23.5.2860:universal"
 	}
+	
+	// When publishing locally, publish every module and use the -1.7.10 suffix.
+	// Otherwise (for GTNH maven) only publish the -all module and don't use the suffix or the -all name or the unimixins group.
+	ext.localPublish = System.getenv("MAVEN_USER") == null;
+	ext.publishModuleToMaven = project.name == "module-all" || localPublish
+	ext.mavenIdSuffix = localPublish ? "-1.7.10" : ""
+	ext.mavenGroupId = localPublish ? project.group : project.group.replace(".unimixins", "")
 
 	if(project.name.startsWith("module-") && project.name != "module-mixin" && project.name != "module-common") {
 		if(project.name != "module-all") {
@@ -89,14 +96,17 @@ allprojects {
 				archives tasks."devJar"
 			}
 			
-			publishing {
-				publications {
-					create("maven", MavenPublication) {
-						artifact jar.enabled ? jar : shadowJar
-						artifact source: tasks."sourcesJar", classifier: 'sources'
-						artifact source: tasks."devJar", classifier: 'dev'
-						artifactId = archivesBaseName.substring(1)
-						version = projectVersion
+			if(publishModuleToMaven) {
+				publishing {
+					publications {
+						create("maven", MavenPublication) {
+							artifact jar.enabled ? jar : shadowJar
+							artifact source: tasks."sourcesJar", classifier: 'sources'
+							artifact source: tasks."devJar", classifier: 'dev'
+							artifactId = archivesBaseName.substring(1).replace("-1.7.10", mavenIdSuffix).replace("-all", localPublish ? "-all" : "")
+							version = projectVersion
+							groupId = mavenGroupId
+						}
 					}
 				}
 			}
