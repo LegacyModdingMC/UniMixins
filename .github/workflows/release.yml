@@ -80,6 +80,12 @@ jobs:
         env:
           MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
           CURSEFORGE_TOKEN: ${{ secrets.CURSEFORGE_TOKEN }}
+      - name: Publish to GTNH maven
+        run: ./gradlew publish
+        env:
+          MAVEN_URL: ${{ secrets.MAVEN_URL }}
+          MAVEN_USER: ${{ secrets.MAVEN_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
       - name: Delete last draft release
         run: |
           gh api -X DELETE "/repos/${GITHUB_REPOSITORY}/releases/$(cat /tmp/draft_id.txt)"
