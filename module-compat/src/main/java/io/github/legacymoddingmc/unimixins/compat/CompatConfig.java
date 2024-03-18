@@ -7,4 +7,6 @@ public class CompatConfig {
     public static boolean enableRemapper;
     @AnnotatedProperties.ConfigString(def = "true", com = "Include mixin errors and list of applied mixins in crash reports.", cat = "compat")
     public static boolean enhanceCrashReports;
+    @AnnotatedProperties.ConfigString(def = "true", com = "Make Mixin's INIT phase listener more reliable. Fixes INIT phase mixins not working with certain launchers with the LiteLoader mod.", cat = "compat")
+    public static boolean improveInitPhaseDetection;
 }

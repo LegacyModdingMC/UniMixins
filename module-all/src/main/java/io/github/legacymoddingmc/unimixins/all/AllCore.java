@@ -4,6 +4,7 @@ import java.util.*;
 
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin.MCVersion;
+import net.minecraft.launchwrapper.IClassTransformer;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -70,7 +71,36 @@ public class AllCore implements IFMLLoadingPlugin {
 
     @Override
     public String getAccessTransformerClass() {
-        return null;
+        return "io.github.legacymoddingmc.unimixins.all.AllCore$CombinedAccessTransformer";
+    }
+
+    public static class CombinedAccessTransformer implements IClassTransformer {
+        private final List<IClassTransformer> delegates = new ArrayList<>();
+        public CombinedAccessTransformer() {
+            for(IFMLLoadingPlugin plugin : embeddedCorePluginInstances) {
+                String atClass = plugin.getAccessTransformerClass();
+                if(atClass != null) {
+                    try {
+                        delegates.add((IClassTransformer) Class.forName(atClass).newInstance());
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        }
+
+        @Override
+        public byte[] transform(String name, String transformedName, byte[] basicClass) {
+            for(IClassTransformer delegate : delegates) {
+                basicClass = delegate.transform(name, transformedName, basicClass);
+            }
+            return basicClass;
+        }
+
+        @Override
+        public String toString() {
+            return delegates.toString();
+        }
     }
 
 }
