@@ -1,8 +1,8 @@
-[![downloads](https://img.shields.io/badge/-⬇%20releases-brightgreen)](https://github.com/LegacyModdingMC/UniMixins/releases)
-[![builds](https://img.shields.io/badge/-🛈%20builds-blue)](https://makamys.github.io/docs/CI-Downloads/CI-Downloads.html)
-[![CurseForge](https://shields.io/badge/CurseForge-555555?logo=curseforge)](https://legacy.curseforge.com/minecraft/mc-mods/unimixins)
-[![modrinth](https://shields.io/badge/modrinth-555555?logo=data:image/svg+xml;base64,PHN2ZyBmaWxsPSJub25lIiBhcmlhLWxhYmVsPSJtb2RyaW50aCIgY2xhc3M9InNtYWxsLWxvZ28iIHZlcnNpb249IjEuMSIgaWQ9InN2ZzkwMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2aWV3Qm94PSIwIDAgNTEyIDUxNCI+PHN0eWxlPnBhdGh7ZmlsbDojZmZmO2ZpbGwtb3BhY2l0eToxfTwvc3R5bGU+PHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik01MDMgMzI0QTI1NiAyNTYgMCAxMDEgMjMxaDQzYTIxMiAyMTIgMCAwMTQwOS01MGwtNDIgMTJjLTE5LTQ3LTU4LTgyLTEwNS05NmwtNyA0NGExMjQgMTI0IDAgMDExMCAyMjhsMTEgNDNjNzAtMjkgMTEyLTEwMiAxMDItMTc3bDQyLTExYzUgMjkgMyA1Ny0zIDg0bDQyIDE2eiIgaWQ9InBhdGg4OTgiLz48cGF0aCBjbGFzcz0ibm9ybWFsIiBkPSJNMzIyIDUwNEEyNTYgMjU2IDAgMDEwIDI3NWg0M2EyMTMgMjEzIDAgMDAyMCA3MmwzOC0yMy04LTI0QTE2OCAxNjggMCAwMTI2MyA4OWwtOCA0NGExMjUgMTI1IDAgMDAtMTE5IDE1Nmw0IDEyIDQ5LTMwLTE1LTM5IDQ3LTQ4IDU5LTEzIDE3IDIxLTI4IDI4LTIzIDctMTcgMTggOCAyMyAxNyAxOCAyNC03IDE3LTE4IDM2LTEyIDExIDI1LTM4IDQ2LTYzIDIxLTI5LTMyLTUwIDMwYzI2IDI5IDY0IDQ1IDEwNCA0MmwxMiA0M2MtNjAgNy0xMTgtMTctMTU0LTYybC0zOCAyM2EyMTIgMjEyIDAgMDAzNTktMzZsNDMgMTZjLTMxIDY2LTkwIDExOS0xNjYgMTM5eiIgaWQ9InBhdGg5MDAiLz48c3R5bGUvPjwvc3ZnPg==)](https://modrinth.com/mod/unimixins)
-[![Discord](https://shields.io/badge/Discord-5865F2?logo=discord&logoColor=white)](https://discord.gg/AJxEFs6YBN)
+[![downloads](https://img.shields.io/badge/-⬇%20releases-brightgreen?style=flat-square)](https://github.com/LegacyModdingMC/UniMixins/releases)
+[![builds](https://img.shields.io/badge/-🛈%20builds-blue?style=flat-square)](https://makamys.github.io/docs/CI-Downloads/CI-Downloads.html)
+[![CurseForge](https://shields.io/badge/CurseForge-555555?logo=curseforge&logoColor=white&style=flat-square)](https://legacy.curseforge.com/minecraft/mc-mods/unimixins)
+[![modrinth](https://shields.io/badge/modrinth-555555?logo=modrinth&logoColor=white&style=flat-square)](https://modrinth.com/mod/unimixins)
+[![Discord](https://shields.io/badge/Discord-5865F2?logo=discord&logoColor=white&style=flat-square)](https://discord.gg/AJxEFs6YBN)
 
 # UniMixins
 
