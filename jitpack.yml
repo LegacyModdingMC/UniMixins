@@ -1,3 +1,5 @@
 install:
    - ./gradlew setupCIWorkspace
    - ./gradlew publishToMavenLocal
+jdk:
+   - openjdk17
