@@ -71,7 +71,7 @@ public class LateMixinOrchestrationMixin {
             final String mixinConfig = lateLoader.getMixinConfig();
             GTNHMixins.LOGGER.info("Adding {} mixin configuration.", mixinConfig);
 
-            final Config config = Config.create(mixinConfig);
+            final Config config = Config.create(mixinConfig, null);
             final List<String> mixins = lateLoader.getMixins(loadedMods);
             for(String mixin : mixins) {
                 GTNHMixins.LOGGER.info("Loading [{}] {}", mixinConfig, mixin);

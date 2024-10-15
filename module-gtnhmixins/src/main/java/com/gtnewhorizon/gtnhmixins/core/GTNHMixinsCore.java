@@ -95,7 +95,7 @@ public class GTNHMixinsCore implements IFMLLoadingPlugin {
     public void injectData(Map<String, Object> data) {
         LOGGER.info("Examining core mod list");
         final Object coremodList = data.get("coremodList");
-        
+
         if (coremodList instanceof List) {
             final Set<String> loadedCoremods = getLoadedCoremods((List<?>) coremodList);
 
@@ -107,7 +107,7 @@ public class GTNHMixinsCore implements IFMLLoadingPlugin {
                     if (theMod instanceof IEarlyMixinLoader) {
                         final IEarlyMixinLoader loader = (IEarlyMixinLoader)theMod;
                         final String mixinConfig = loader.getMixinConfig();
-                        final Config config = Config.create(mixinConfig);
+                        final Config config = Config.create(mixinConfig, null);
                         final List<String> mixins = loader.getMixins(loadedCoremods);
                         for(String mixin : mixins) {
                             LOGGER.info("Loading [{}] {}", mixinConfig, mixin);
