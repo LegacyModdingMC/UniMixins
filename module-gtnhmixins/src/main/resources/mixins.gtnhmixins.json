@@ -2,7 +2,7 @@
   "required": true,
   "minVersion": "0.8.3-GTNH",
   "compatibilityLevel": "JAVA_8",
-  "target": "@env(DEFAULT)",
+  "target": "@env(PREINIT)",
   "package": "com.gtnewhorizon.gtnhmixins.mixins",
   "refmap": "mixins.gtnhmixins.refmap.json",
   "injectors": {

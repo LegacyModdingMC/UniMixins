@@ -6,11 +6,12 @@ import com.gtnewhorizon.gtnhmixins.ILateMixinLoader;
 import com.gtnewhorizon.gtnhmixins.LateMixin;
 import com.gtnewhorizon.gtnhmixins.Reflection;
 
+import cpw.mods.fml.common.LoadController;
 import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.LoaderState;
 import cpw.mods.fml.common.ModClassLoader;
 import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.common.discovery.ASMDataTable;
-import cpw.mods.fml.common.event.FMLConstructionEvent;
 import net.minecraft.launchwrapper.Launch;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
@@ -32,18 +33,14 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 
-@Mixin(value = FMLConstructionEvent.class, remap = false)
+@Mixin(value = LoadController.class, remap = false)
 public class LateMixinOrchestrationMixin {
-    private static boolean finished=false;
-
-    @Inject(method = "<init>", at = @At(value = "RETURN"))
-    private void beforeConstructing(Object[] eventData, CallbackInfo ci) throws Throwable {
-        // We would normally target something in LoadController, but FastCraft causes that class to be loaded too early to mixin,
-        // so we instead hijack the very first FMLConstructionEvent that's constructed and run the logic there.
-        if (finished)
+    @Inject(method = "distributeStateMessage(Lcpw/mods/fml/common/LoaderState;[Ljava/lang/Object;)V", at = @At(value = "HEAD"))
+    private void beforeConstructing(LoaderState state, Object[] eventData, CallbackInfo ci) throws Throwable {
+        // This state is where Forge adds mod files to ModClassLoader
+        if (state != LoaderState.CONSTRUCTING) {
             return;
-
-        finished = true;
+        }
 
         GTNHMixins.LOGGER.info("Instantiating all @LateMixin annotated and ILateMixinLoader implemented classes...");
 
