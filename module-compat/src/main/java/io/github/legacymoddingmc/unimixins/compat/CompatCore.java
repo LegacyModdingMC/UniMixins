@@ -95,10 +95,16 @@ public class CompatCore implements IFMLLoadingPlugin {
          * case. We add an extra check here, in a method that gets called right before that log message.</p>
          */
         private static void setFmlLoggerToVerbose() {
-            Logger fmlLog = FMLRelaunchLog.log.getLogger();
-            if (!(fmlLog instanceof org.apache.logging.log4j.core.Logger)) {
+            Logger fmlLog;
+            try {
+                fmlLog = FMLRelaunchLog.log.getLogger();
+                if (!(fmlLog instanceof org.apache.logging.log4j.core.Logger)) {
+                    return;
+                }
+            } catch (NoClassDefFoundError e) {
                 return;
             }
+
             org.apache.logging.log4j.core.Logger fmlCoreLog = (org.apache.logging.log4j.core.Logger)fmlLog;
 
             if(fmlCoreLog.getLevel() != Level.ALL) {

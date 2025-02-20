@@ -3,7 +3,7 @@ def mixinExtrasVersion = "0.1.1"
 configurations.create("shadowMixinExtras")
 
 dependencies {
-	compileOnly('org.spongepowered:mixin:0.8.5')
+	compileOnly('org.spongepowered:mixin:0.8.7')
 	shadow(project(":module-common")) {
 		transitive = false
 	}
