@@ -93,13 +93,13 @@ public class GTNHMixinsCore implements IFMLLoadingPlugin {
     
     @Override
     public void injectData(Map<String, Object> data) {
-        LOGGER.info("Examining core mod list");
+        LOGGER.debug("Examining core mod list");
         final Object coremodList = data.get("coremodList");
 
         if (coremodList instanceof List) {
             final Set<String> loadedCoremods = getLoadedCoremods((List<?>) coremodList);
 
-            LOGGER.info("LoadedCoreMods {}", loadedCoremods.toString());
+            LOGGER.debug("LoadedCoreMods {}", loadedCoremods.toString());
             for (Object coremod : (List<?>)coremodList) {
                 // Identify any coremods that are `IEarlyMixinLoader`, and inject any relevant mixins 
                 try {
@@ -110,7 +110,7 @@ public class GTNHMixinsCore implements IFMLLoadingPlugin {
                         final Config config = Config.create(mixinConfig, null);
                         final List<String> mixins = loader.getMixins(loadedCoremods);
                         for(String mixin : mixins) {
-                            LOGGER.info("Loading [{}] {}", mixinConfig, mixin);
+                            LOGGER.debug("Loading [{}] {}", mixinConfig, mixin);
                         }
                         Reflection.mixinClassesField.set(Reflection.configField.get(config), mixins);
                         Reflection.registerConfigurationMethod.invoke(null, config);
