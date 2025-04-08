@@ -45,7 +45,7 @@ allprojects {
 		}
 		maven {
 			name = "GTNH Maven"
-			url = "http://jenkins.usrv.eu:8081/nexus/content/groups/public/"
+			url = "https://nexus.gtnewhorizons.com/nexus/content/groups/public/"
 			allowInsecureProtocol = true
 		}
 		maven {
@@ -61,25 +61,25 @@ allprojects {
 		// TODO only include IFMLLoadingPlugin, Mod and ComparableVersion
 		compileOnly "net.minecraftforge:forge:1.12.2-14.23.5.2860:universal"
 	}
-	
-	// When publishing locally, publish every module and use the -1.7.10 suffix.
-	// Otherwise (for GTNH maven) only publish the -all module and don't use the suffix or the -all name or the unimixins group.
-	ext.localPublish = System.getenv("MAVEN_USER") == null;
-	ext.publishModuleToMaven = project.name == "module-all" || localPublish
-	ext.mavenIdSuffix = localPublish ? "-1.7.10" : ""
-	ext.mavenGroupId = localPublish ? project.group : project.group.replace(".unimixins", "")
 
-	if(project.name.startsWith("module-") && project.name != "module-mixin" && project.name != "module-common") {
-		if(project.name != "module-all") {
-			task sourcesJar(type: Jar) {
+	// The all module is published without any suffix, and to the normal group
+	// Other modules are published if publishAll is set, to io.github.legacymoddingmc.unimixins, with a -1.7.10 suffix
+	boolean publishAll = project.hasProperty("publishAll")
+	ext.mainModule = project.name == "module-all"
+	ext.publishModuleToMaven = mainModule || publishAll
+	ext.mavenGroupId = !mainModule ? project.group : project.group.replace(".unimixins", "")
+
+	if (project.name.startsWith("module-") && project.name != "module-mixin" && project.name != "module-common") {
+		if (project.name != "module-all") {
+			tasks.register('sourcesJar', Jar) {
 				from sourceSets.main.allSource
 				classifier = 'sources'
 			}
 		}
 		
 		afterEvaluate {
-			if(project.name != "module-all") {
-				task devJar(type: Jar) {
+			if (!mainModule) {
+				tasks.register('devJar', Jar) {
 					classifier = 'dev'
 					def jarTask = (jar.enabled ? jar : shadowJar)
 					from zipTree(jarTask.getOutputs().getFiles().getSingleFile())
@@ -96,14 +96,17 @@ allprojects {
 				archives tasks."devJar"
 			}
 			
-			if(publishModuleToMaven) {
+			if (publishModuleToMaven) {
 				publishing {
 					publications {
 						create("maven", MavenPublication) {
 							artifact jar.enabled ? jar : shadowJar
 							artifact source: tasks."sourcesJar", classifier: 'sources'
 							artifact source: tasks."devJar", classifier: 'dev'
-							artifactId = archivesBaseName.substring(1).replace("-1.7.10", mavenIdSuffix).replace("-all", localPublish ? "-all" : "")
+							if (mainModule)
+								artifactId = "unimixins"
+							else
+								artifactId = archivesBaseName.substring(1)
 							version = projectVersion
 							groupId = mavenGroupId
 						}
@@ -112,7 +115,7 @@ allprojects {
 			}
 
 			project.tasks.forEach {
-				if(it.name.startsWith("publish") && it.name.contains("PublicationTo")) {
+				if (it.name.startsWith("publish") && it.name.contains("PublicationTo")) {
 					it.dependsOn reobf
 				}
 			}
@@ -124,7 +127,6 @@ allprojects {
 			if (System.getenv("MAVEN_USER") != null) {
 				maven {
 					url = System.getenv("MAVEN_URL")
-					allowInsecureProtocol = System.getenv("MAVEN_URL").startsWith("http://") // Mostly for the GTNH maven
 					credentials {
 						username = System.getenv("MAVEN_USER") ?: "NONE"
 						password = System.getenv("MAVEN_PASSWORD") ?: "NONE"
