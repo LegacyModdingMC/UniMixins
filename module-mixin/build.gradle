@@ -266,14 +266,14 @@ flavors.each {
 
 	jar.dependsOn("shadowSourcesJar$_flavor")
 	
-	if(publishModuleToMaven){
+	if (publishModuleToMaven){
 		publishing {
 			publications {
 				create("maven$_flavor", MavenPublication) {
 					artifact tasks."shadowJar$_flavor"
 					artifact tasks."shadowSourcesJar$_flavor"
 
-					artifactId = archivesBaseName.substring(1).replace("-1.7.10", mavenIdSuffix) + (mixinFlavor == "unimix" ? "" : "-" + mixinFlavor)
+					artifactId = archivesBaseName.substring(1) + (mixinFlavor == "unimix" ? "" : "-" + mixinFlavor)
 					groupId = mavenGroupId
 				}
 			}
