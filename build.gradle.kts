@@ -7,7 +7,17 @@ plugins {
     id("xyz.wagyourtail.unimined") version "1.3.14"
 }
 
-group = rootProject.properties["group"].toString()
+// Mod properties
+val modid = "unimixins"
+val archives_base = "+unimixins"
+// http://maven.apache.org/guides/mini/guide-naming-conventions.html
+group = "io.github.legacymoddingmc"
+
+// Forge properties
+val minecraft_version = "1.7.10"
+val forge_version = "10.13.4.1614-1.7.10"
+
+val project_url = "https://github.com/LegacyModdingMC/UniMixins"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
