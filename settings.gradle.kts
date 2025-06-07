@@ -26,6 +26,7 @@ pluginManagement {
 
 rootProject.name = "UniMixins"
 
+include("common")
 // include("module-mixin")
 // include("module-compat")
 // include("module-compatfuture")
@@ -36,4 +37,3 @@ rootProject.name = "UniMixins"
 // include("module-gtnhmixins")
 // include("module-mixinextras")
 // include("module-all")
-// include("module-common")
