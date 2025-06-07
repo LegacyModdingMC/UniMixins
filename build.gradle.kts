@@ -1,3 +1,6 @@
+import xyz.wagyourtail.unimined.api.UniminedExtension
+import xyz.wagyourtail.unimined.api.unimined
+
 // The previous buildscript was spaghetti
 // Time will tell if I do better.
 
@@ -19,11 +22,25 @@ val forge_version = "10.13.4.1614-1.7.10"
 
 val project_url = "https://github.com/LegacyModdingMC/UniMixins"
 
-allprojects {
-    apply { plugin("java") }
+subprojects {
+    apply(plugin = "java")
+    apply(plugin = "xyz.wagyourtail.unimined")
 
     java {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    unimined.minecraft(sourceSets.main.get(), true) {
+        version = minecraft_version
+
+        mappings {
+            searge()
+            mcp("stable", "12-1.7.10")
+        }
+
+        minecraftForge {
+            loader(forge_version)
+        }
     }
 }
