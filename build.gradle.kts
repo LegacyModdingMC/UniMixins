@@ -30,12 +30,20 @@ lateinit var moduleCommon: SourceSet
 lateinit var moduleMixin: SourceSet
 sourceSets {
     moduleCommon = create("module-common")
-    moduleMixin = create("module-mixin")
+    moduleMixin = create("module-mixin") {
+        compileClasspath += moduleCommon.output
+        runtimeClasspath += moduleCommon.output
+    }
+}
+
+configurations {
+    this[moduleMixin.compileOnlyConfigurationName].extendsFrom(this[moduleCommon.compileOnlyConfigurationName])
 }
 
 dependencies {
     // TODO only include IFMLLoadingPlugin, Mod and ComparableVersion
     moduleCommon.compileOnlyConfigurationName("net.minecraftforge:forge:1.12.2-14.23.5.2860:universal")
+    moduleMixin.implementationConfigurationName(moduleCommon.output)
 }
 
 unimined.minecraft(moduleCommon, moduleMixin) {
