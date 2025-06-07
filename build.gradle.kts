@@ -1,4 +1,3 @@
-import xyz.wagyourtail.unimined.api.UniminedExtension
 import xyz.wagyourtail.unimined.api.unimined
 
 // The previous buildscript was spaghetti
@@ -20,8 +19,6 @@ group = "io.github.legacymoddingmc"
 val minecraft_version = "1.7.10"
 val forge_version = "10.13.4.1614-1.7.10"
 
-val project_url = "https://github.com/LegacyModdingMC/UniMixins"
-
 subprojects {
     apply(plugin = "java")
     apply(plugin = "xyz.wagyourtail.unimined")
@@ -30,6 +27,13 @@ subprojects {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+
+    dependencies {
+        // TODO only include IFMLLoadingPlugin, Mod and ComparableVersion
+        compileOnly("net.minecraftforge:forge:1.12.2-14.23.5.2860:universal")
+    }
+
+    ext.set("project_url", "https://github.com/LegacyModdingMC/UniMixins")
 
     unimined.minecraft(sourceSets.main.get(), true) {
         version = minecraft_version
