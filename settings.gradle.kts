@@ -27,7 +27,7 @@ pluginManagement {
 rootProject.name = "UniMixins"
 
 include("common")
-// include("module-mixin")
+include("mixin")
 // include("module-compat")
 // include("module-compatfuture")
 // include("module-mixingasm")
