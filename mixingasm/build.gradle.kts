@@ -2,6 +2,9 @@ plugins {
     id("com.gradleup.shadow") version "8.3.6"
 }
 
+val mixingasmVersion = "0.3"
+version = "$version+$mixingasmVersion"
+
 dependencies {
     implementation(project(":mixin"))
     //implementation(files(tasks.getByPath(":mixin:shadowJarUnimix").getOutputs().getFiles().getSingleFile()))
@@ -32,8 +35,14 @@ tasks.jar {
     enabled = false
 }
 
-//ext.uniVersion = version
-//version += "+" + ext.extraVersion
+tasks.processResources {
+    files("mcmod.info") {
+        val props = HashMap<String, String>()
+        props["mixingasmVersion"] = mixingasmVersion
+
+        expand(props)
+    }
+}
 
 unimined.minecraft {
 

@@ -1,4 +1,5 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+import org.apache.tools.ant.filters.ReplaceTokens
 import java.util.Properties
 import kotlin.math.exp
 
@@ -58,11 +59,10 @@ dependencies {
 
 tasks.processResources {
     files("mcmod.info") {
-        val props = HashMap<String, String>()
-        props["mixinClassifier"] = mixinFlavorClassifier
-        props["version"] = "$versionBase+$mixinFlavorClassifier"
-
-        expand(props)
+        filter<ReplaceTokens>("tokens" to mapOf(
+            "mixinClassifier" to mixinFlavorClassifier,
+            "version" to "$versionBase+$mixinFlavorClassifier"
+        ))
     }
 }
 

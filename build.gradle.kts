@@ -1,3 +1,5 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+import org.gradle.kotlin.dsl.filter
 import xyz.wagyourtail.unimined.api.unimined
 
 // The previous buildscript was spaghetti
@@ -55,12 +57,11 @@ subprojects {
 
     tasks.processResources {
         files("mcmod.info") {
-            val props = HashMap<String, String>()
-            props["minecraftVersion"] = minecraft_version
-            props["uniMixinsVersion"] = version.toString()
-            props["projectUrl"] = "https://github.com/LegacyModdingMC/UniMixins"
-
-            expand(props)
+            filter<ReplaceTokens>("tokens" to mapOf(
+                "minecraftVersion" to minecraft_version,
+                "uniMixinsVersion" to version.toString(),
+                "projectUrl" to "https://github.com/LegacyModdingMC/UniMixins"
+            ))
         }
     }
 
