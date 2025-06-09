@@ -29,7 +29,7 @@ rootProject.name = "UniMixins"
 include("common")
 include("mixin")
 include("compat")
-// include("module-compatfuture")
+include("compatfuture")
 // include("module-mixingasm")
 // include("module-spongemixins")
 // include("module-mixinbooterlegacy")
