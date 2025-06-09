@@ -135,7 +135,7 @@ tasks.shadowJar {
             }
         }
     })
-    
+
     from(zipTree(bridgeJarTask.get().archiveFile).matching {
         include("org/spongepowered/asm/bridge/*")
     })
