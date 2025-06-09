@@ -4,9 +4,7 @@ plugins {
     id("com.gradleup.shadow") version "8.3.6"
 }
 
-val enableAltMixin = false
 val local = false
-
 val versionBase = version.toString()
 
 val unimixMixinVersion = "0.15.3+mixin.0.8.7"
@@ -25,6 +23,12 @@ val shadowUniMix: Configuration by configurations.creating
 val shadowBridgeUniMix: Configuration by configurations.creating
 val shadowSourcesUniMix: Configuration by configurations.creating
 
+val mixinVersion = "$unimixMixinVersion${if (local) "-local" else ""}"
+
+val mixinDep = "io.github.legacymoddingmc:sponge-mixin:$mixinVersion"
+
+val mixinFlavorClassifier = "unimix.${mixinVersion.replace('+', '-')}"
+
 dependencies {
     compileOnly("org.spongepowered:mixin:$spongepoweredMixinVersion")
     compileOnly(project(":common")) {
@@ -34,17 +38,6 @@ dependencies {
     shadowUniMix(project(":common")) {
         isTransitive = false
     }
-}
-
-var mixinFlavorClassifier = "UNKNOWN"
-val mixinFlavorCapitalized = "UniMix"
-val mixinVersion = "$unimixMixinVersion${if (local) "-local" else ""}"
-
-val mixinDep = "io.github.legacymoddingmc:sponge-mixin:$mixinVersion"
-
-mixinFlavorClassifier = "unimix.${mixinVersion.replace('+', '-')}"
-
-dependencies {
     shadowUniMix(mixinDep) {
         exclude(group = "org.ow2.asm")
     }
@@ -61,13 +54,25 @@ dependencies {
     }
 }
 
+val createMcmodInfoTask = tasks.register("createMcmodInfoUniMix", Copy::class) {
+    outputs.upToDateWhen { false }
+    from("src/main/resources/mcmod.info")
+    into("build/tmp/mcmod.unimix.info")
+    filter { line ->
+        line.replace("@MIXIN_CLASSIFIER@", mixinFlavorClassifier)
+            .replace("@MIXIN_SOURCE_CAPITALIZED@", "UniMix")
+            .replace("@VERSION@", "$versionBase+$mixinFlavorClassifier")
+            .replace("@PROJECT_URL@", ext.get("project_url").toString())
+    }
+}
+
 // We want to *not* relocate ASM in the bridge classes. So we use a multi-step
 // build procedure:
 
 // 1. Create relocated Mixin jar, without the bridge classes
-val mixinJarTask = tasks.register<ShadowJar>("mixinJar$mixinFlavorCapitalized", ShadowJar::class) {
+val mixinJarTask = tasks.register<ShadowJar>("mixinJarUniMix", ShadowJar::class) {
     destinationDirectory = file("build/tmp")
-    archiveClassifier = "tmpMixin$mixinFlavorCapitalized"
+    archiveClassifier = "tmpMixinUniMix"
     configurations = listOf(shadowUniMix)
 
     relocate("org.objectweb.asm", "org.spongepowered.asm.lib")
@@ -95,9 +100,9 @@ val mixinJarTask = tasks.register<ShadowJar>("mixinJar$mixinFlavorCapitalized", 
 }
 
 // 2. Create Mixin jar without relocation, with *only* the bridge classes
-val bridgeJarTask = tasks.register<ShadowJar>("bridgeJar$mixinFlavorCapitalized", ShadowJar::class) {
+val bridgeJarTask = tasks.register<ShadowJar>("bridgeJarUniMix", ShadowJar::class) {
     destinationDirectory = file("build/tmp")
-    archiveClassifier = "tmpBridge$mixinFlavorCapitalized"
+    archiveClassifier = "tmpBridgeUniMix"
     configurations = listOf(shadowBridgeUniMix)
 
     include("*.jar")
@@ -105,8 +110,8 @@ val bridgeJarTask = tasks.register<ShadowJar>("bridgeJar$mixinFlavorCapitalized"
 }
 
 // 3. Combine the two jars
-val shadowJarTask = tasks.register<ShadowJar>("shadowJar$mixinFlavorCapitalized", ShadowJar::class) {
-    version = versionBase + "+" + mixinFlavorClassifier
+tasks.shadowJar {
+    version = "$versionBase+$mixinFlavorClassifier"
     from(sourceSets["main"].output) {
         exclude("mcmod.info")
     }
@@ -129,29 +134,6 @@ val shadowJarTask = tasks.register<ShadowJar>("shadowJar$mixinFlavorCapitalized"
     })
     from(zipTree(bridgeJarTask.get().archiveFile).matching { include("org/spongepowered/asm/bridge/*") })
 
-    doLast {
-        delete(mixinJarTask.get().archiveFile)
-        delete(bridgeJarTask.get().archiveFile)
-    }
-}
-
-tasks["jar"].dependsOn(shadowJarTask)
-
-// Common
-
-val createMcmodInfoTask = tasks.register("createMcmodInfo$mixinFlavorCapitalized", Copy::class) {
-    outputs.upToDateWhen { false }
-    from("src/main/resources/mcmod.info")
-    into("build/tmp/mcmod.unimix.info")
-    filter { line ->
-        line.replace("@MIXIN_CLASSIFIER@", mixinFlavorClassifier)
-            .replace("@MIXIN_SOURCE_CAPITALIZED@", mixinFlavorCapitalized)
-            .replace("@VERSION@", "$versionBase+$mixinFlavorClassifier")
-            .replace("@PROJECT_URL@", ext.get("project_url").toString())
-    }
-}
-
-shadowJarTask {
     dependsOn(createMcmodInfoTask)
     from("build/tmp/mcmod.unimix.info/mcmod.info")
 
@@ -168,9 +150,16 @@ shadowJarTask {
             "Implementation-Version" to mixinVersion
         )
     }
+
+    doLast {
+        delete(mixinJarTask.get().archiveFile)
+        delete(bridgeJarTask.get().archiveFile)
+    }
 }
 
-val shadowSourcesJarTask = tasks.register<ShadowJar>("shadowSourcesJar$mixinFlavorCapitalized", ShadowJar::class) {
+tasks["jar"].dependsOn(tasks.shadowJar)
+
+val shadowSourcesJarTask = tasks.register<ShadowJar>("shadowSourcesJar", ShadowJar::class) {
     from(sourceSets["main"].allSource)
 
     version = "$versionBase+$mixinFlavorClassifier"
@@ -185,7 +174,7 @@ tasks["jar"].dependsOn(shadowSourcesJarTask)
         publications {
             create("maven$_flavor", MavenPublication) {
                 artifact tasks."shadowJar$_flavor"
-                artifact tasks."shadowSourcesJar$_flavor"
+                artifact tasks."shadowSourcesJar"
 
                 artifactId = archivesBaseName.substring(1) + (mixinFlavor == "unimix" ? "" : "-" + mixinFlavor)
                 groupId = mavenGroupId
