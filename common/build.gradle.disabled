@@ -1,4 +1,0 @@
-archivesBaseName = archivesBaseName.replace("-1.7.10", "-common-1.7.10" )
-
-// Obfuscation is unnecessary since this module does not reference Minecraft classes
-reobf.enabled = false
