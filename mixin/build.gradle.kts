@@ -1,4 +1,6 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+import java.util.Properties
+import kotlin.math.exp
 
 plugins {
     id("com.gradleup.shadow") version "8.3.6"
@@ -54,15 +56,14 @@ dependencies {
     }
 }
 
-val createMcmodInfoTask = tasks.register("createMcmodInfoUniMix", Copy::class) {
-    outputs.upToDateWhen { false }
-    from("src/main/resources/mcmod.info")
-    into("build/tmp/mcmod.unimix.info")
-    filter { line ->
-        line.replace("@MIXIN_CLASSIFIER@", mixinFlavorClassifier)
-            .replace("@MIXIN_SOURCE_CAPITALIZED@", "UniMix")
-            .replace("@VERSION@", "$versionBase+$mixinFlavorClassifier")
-            .replace("@PROJECT_URL@", ext.get("project_url").toString())
+tasks.processResources {
+    files("mcmod.info") {
+        val props = HashMap<String, String>()
+        props["mixinClassifier"] = mixinFlavorClassifier
+        props["version"] = "$versionBase+$mixinFlavorClassifier"
+        props["projectUrl"] = ext.get("project_url").toString()
+
+        expand(props)
     }
 }
 
@@ -116,9 +117,7 @@ tasks.shadowJar {
     archiveClassifier = ""
 
     version = "$versionBase+$mixinFlavorClassifier"
-    from(sourceSets["main"].output) {
-        exclude("mcmod.info")
-    }
+    from(sourceSets["main"].output)
 
     relocate(
         "io.github.legacymoddingmc.unimixins.common",
@@ -130,20 +129,16 @@ tasks.shadowJar {
 
     from(zipTree(mixinJarTask.get().archiveFile).matching {
         exclude("module-info.class")
-        exclude("mcmod.info")
         eachFile {
             if (path.startsWith("META-INF/services/")) {
                 filter({ l -> (if (l.startsWith("org.spongepowered.asm.service.modlauncher.")) null else l).toString() })
             }
         }
     })
+    
     from(zipTree(bridgeJarTask.get().archiveFile).matching {
-        exclude("mcmod.info")
         include("org/spongepowered/asm/bridge/*")
     })
-
-    dependsOn(createMcmodInfoTask)
-    from("build/tmp/mcmod.unimix.info/mcmod.info")
 
     manifest {
         attributes(
