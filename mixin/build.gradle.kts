@@ -111,6 +111,7 @@ val bridgeJarTask = tasks.register<ShadowJar>("bridgeJarUniMix", ShadowJar::clas
 
 // 3. Combine the two jars
 tasks.shadowJar {
+    archiveClassifier = ""
     version = "$versionBase+$mixinFlavorClassifier"
     from(sourceSets["main"].output) {
         exclude("mcmod.info")
