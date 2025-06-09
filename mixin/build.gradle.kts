@@ -111,7 +111,10 @@ val bridgeJarTask = tasks.register<ShadowJar>("bridgeJarUniMix", ShadowJar::clas
 
 // 3. Combine the two jars
 tasks.shadowJar {
+    // Clear defaults for the shadow jar
+    configurations = listOf()
     archiveClassifier = ""
+
     version = "$versionBase+$mixinFlavorClassifier"
     from(sourceSets["main"].output) {
         exclude("mcmod.info")
@@ -127,13 +130,17 @@ tasks.shadowJar {
 
     from(zipTree(mixinJarTask.get().archiveFile).matching {
         exclude("module-info.class")
+        exclude("mcmod.info")
         eachFile {
             if (path.startsWith("META-INF/services/")) {
                 filter({ l -> (if (l.startsWith("org.spongepowered.asm.service.modlauncher.")) null else l).toString() })
             }
         }
     })
-    from(zipTree(bridgeJarTask.get().archiveFile).matching { include("org/spongepowered/asm/bridge/*") })
+    from(zipTree(bridgeJarTask.get().archiveFile).matching {
+        exclude("mcmod.info")
+        include("org/spongepowered/asm/bridge/*")
+    })
 
     dependsOn(createMcmodInfoTask)
     from("build/tmp/mcmod.unimix.info/mcmod.info")

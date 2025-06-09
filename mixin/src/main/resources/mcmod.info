@@ -1,8 +1,8 @@
 [
 {
   "modid": "unimixins-mixin",
-  "name": "UniMixins: Mixin (@MIXIN_SOURCE_CAPITALIZED@)",
-  "description": "UniMixins module that provides the @MIXIN_SOURCE_CAPITALIZED@ fork of Mixin (version: @MIXIN_CLASSIFIER@).",
+  "name": "UniMixins: Mixin (UniMix)",
+  "description": "UniMixins module that provides the UniMix fork of Mixin (version: @MIXIN_CLASSIFIER@).",
   "version": "@VERSION@",
   "mcversion": "1.7.10",
   "url": "@PROJECT_URL@",
