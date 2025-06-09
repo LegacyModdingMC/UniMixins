@@ -28,7 +28,7 @@ rootProject.name = "UniMixins"
 
 include("common")
 include("mixin")
-// include("module-compat")
+include("compat")
 // include("module-compatfuture")
 // include("module-mixingasm")
 // include("module-spongemixins")
