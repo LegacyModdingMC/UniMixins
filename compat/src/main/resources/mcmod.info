@@ -3,13 +3,11 @@
     "modid": "unimixins-compat",
     "name": "UniMixins: Compatibility",
     "description": "UniMixins module that improves compatibility and helps debug crashes.",
-    "version": "${version}",
-    "mcversion": "${minecraft_version}",
-    "url": "${project_url}",
+    "version": "${uniMixinsVersion}",
+    "mcversion": "${minecraftVersion}",
+    "url": "${projectUrl}",
     "updateUrl": "",
-    "authorList": [
-      "makamys"
-    ],
+    "authorList": ["makamys"],
     "credits": "",
     "logoFile": "",
     "screenshots": []

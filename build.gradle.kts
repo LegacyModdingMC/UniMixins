@@ -52,7 +52,17 @@ subprojects {
 
     version = getVersion()
     base.archivesName = "+unimixins-${ if (project.name == "all") "" else project.name }-1.7.10"
-    ext.set("project_url", "https://github.com/LegacyModdingMC/UniMixins")
+
+    tasks.processResources {
+        files("mcmod.info") {
+            val props = HashMap<String, String>()
+            props["minecraftVersion"] = minecraft_version
+            props["uniMixinsVersion"] = version.toString()
+            props["projectUrl"] = "https://github.com/LegacyModdingMC/UniMixins"
+
+            expand(props)
+        }
+    }
 
     unimined.minecraft(sourceSets.main.get(), true) {
         version = minecraft_version

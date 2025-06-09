@@ -18,9 +18,9 @@ import static io.github.legacymoddingmc.unimixins.compat.CompatCore.LOGGER;
 public class EnhanceCrashReportsTransformer implements IClassTransformer {
     @Override
     public byte[] transform(String name, String transformedName, byte[] basicClass) {
-        if(basicClass == null) return null;
+        if (basicClass == null) return null;
 
-        if(name.equals("cpw.mods.fml.common.FMLCommonHandler")) {
+        if (name.equals("cpw.mods.fml.common.FMLCommonHandler")) {
             return transformFMLCommonHandler(basicClass);
         }
         return basicClass;
@@ -44,21 +44,23 @@ public class EnhanceCrashReportsTransformer implements IClassTransformer {
         ClassNode classNode = new ClassNode();
         ClassReader classReader = new ClassReader(bytes);
         classReader.accept(classNode, 0);
-        for(MethodNode m : classNode.methods) {
+        for (Object o : classNode.methods) {
+            final MethodNode m = (MethodNode) o;
+
             if (m.name.equals("enhanceCrashReport")) {
                 AbstractInsnNode injectionTarget = null;
-                for(int i = 0; i < m.instructions.size(); i++) {
+                for (int i = 0; i < m.instructions.size(); i++) {
                     AbstractInsnNode ain = m.instructions.get(i);
-                    if(ain instanceof InsnNode) {
+                    if (ain instanceof InsnNode) {
                         InsnNode in = (InsnNode)ain;
-                        if(in.getOpcode() == RETURN) {
+                        if (in.getOpcode() == RETURN) {
                             injectionTarget = in;
                             break;
                         }
                     }
                 }
 
-                if(injectionTarget != null) {
+                if (injectionTarget != null) {
                     InsnList inject = new InsnList();
                     //ALOAD crashReport
                     inject.add(new VarInsnNode(ALOAD, 1));

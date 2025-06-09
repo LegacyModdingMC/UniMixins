@@ -52,10 +52,10 @@ public class ASMRemapperTransformer implements IClassTransformer {
 
     @Override
     public byte[] transform(String name, String transformedName, byte[] basicClass) {
-        if(basicClass == null) {
+        if (basicClass == null) {
             return null;
         }
-        if(transformedName.startsWith("io.github.legacymoddingmc.unimixins.compat.asm.")
+        if (transformedName.startsWith("io.github.legacymoddingmc.unimixins.compat.asm.")
             || transformedName.startsWith("com.google.")
             || transformedName.startsWith("org.apache.")
             || transformedName.startsWith("org.objectweb.asm.")
@@ -63,28 +63,29 @@ public class ASMRemapperTransformer implements IClassTransformer {
 
         boolean foundWrongAsm = containsAnyPattern(basicClass, getWrongASMPackagePrefixesRaw());
 
-        if(!foundWrongAsm) return basicClass;
+        if (!foundWrongAsm) return basicClass;
 
-        boolean foundShadedAsm = containsAnyPattern(basicClass, SHADED_ASM_PACKAGE_PREFIXES_RAW);
+        // Remap if we've found shaded ASM
+        boolean doRemap = containsAnyPattern(basicClass, SHADED_ASM_PACKAGE_PREFIXES_RAW);
 
-        boolean doRemap = foundShadedAsm;
-
-        if(!doRemap) {
+        if (!doRemap) {
             ClassNode classNode = new ClassNode();
             ClassReader classReaderForNode = new ClassReader(basicClass);
             classReaderForNode.accept(classNode, 0);
 
-            if(classNode.interfaces != null) {
-                for (String itf : classNode.interfaces) {
+            if (classNode.interfaces != null) {
+                for (Object itf : classNode.interfaces) {
                     if (itf.equals("org/spongepowered/asm/mixin/extensibility/IMixinConfigPlugin")) {
                         doRemap = true;
                         break;
                     }
                 }
             }
-            if(!doRemap) {
-                if(classNode.visibleAnnotations != null) {
-                    for (AnnotationNode ann : classNode.visibleAnnotations) {
+            if (!doRemap) {
+                if (classNode.visibleAnnotations != null) {
+                    for (Object o : classNode.visibleAnnotations) {
+                        final AnnotationNode ann = (AnnotationNode) o;
+
                         if (ann.desc.equals("Lio/github/legacymoddingmc/unimixins/compat/api/RemapASMForMixin;")) {
                             doRemap = true;
                             break;
@@ -94,7 +95,7 @@ public class ASMRemapperTransformer implements IClassTransformer {
             }
         }
 
-        if(doRemap) {
+        if (doRemap) {
             ClassReader classReader = new ClassReader(basicClass);
             LOGGER.info("Transforming class " + transformedName + " to fit current mixin environment.");
             ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_MAXS);
@@ -106,11 +107,11 @@ public class ASMRemapperTransformer implements IClassTransformer {
     }
 
     private static boolean containsAnyPattern(byte[] array, List<byte[]> patterns) {
-        if(array == null) {
+        if (array == null) {
             return false;
         }
-        for(byte[] pattern : patterns) {
-            if(Bytes.indexOf(array, pattern) != -1) {
+        for (byte[] pattern : patterns) {
+            if (Bytes.indexOf(array, pattern) != -1) {
                 return true;
             }
         }
@@ -118,13 +119,15 @@ public class ASMRemapperTransformer implements IClassTransformer {
     }
 
     private static String getRealASMPackagePrefix() {
-        if(realASMPackagePrefix == null) {
+        if (realASMPackagePrefix == null) {
             try {
                 ClassReader cr = new ClassReader(Launch.classLoader.getClassBytes("org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin"));
                 ClassNode cn = new ClassNode();
                 cr.accept(cn, 0);
 
-                for (MethodNode m : cn.methods) {
+                for (Object o : cn.methods) {
+                    final MethodNode m = (MethodNode) o;
+
                     if (m.name.equals("preApply")) {
                         int classNodeDescStart = StringUtils.ordinalIndexOf(m.desc, "L", 2);
                         int classNodeDescEnd = StringUtils.ordinalIndexOf(m.desc, "L", 3);
@@ -137,7 +140,7 @@ public class ASMRemapperTransformer implements IClassTransformer {
                 e.printStackTrace();
                 throw new RuntimeException("Failed to determine real package name Mixin's shaded ASM.");
             } finally {
-                if(realASMPackagePrefix == null) {
+                if (realASMPackagePrefix == null) {
                     realASMPackagePrefix = "UNKNOWN";
                 }
 
@@ -148,14 +151,14 @@ public class ASMRemapperTransformer implements IClassTransformer {
     }
 
     private static List<String> getWrongASMPackagePrefixes() {
-        if(wrongASMPackagePrefixes == null) {
+        if (wrongASMPackagePrefixes == null) {
             wrongASMPackagePrefixes = ASM_PACKAGE_PREFIXES.stream().filter(x -> !x.equals(getRealASMPackagePrefix())).collect(Collectors.toList());
         }
         return wrongASMPackagePrefixes;
      }
 
     private static List<byte[]> getWrongASMPackagePrefixesRaw() {
-        if(wrongASMPackagePrefixesRaw == null) {
+        if (wrongASMPackagePrefixesRaw == null) {
             wrongASMPackagePrefixesRaw = getWrongASMPackagePrefixes().stream().map(x -> x.getBytes(StandardCharsets.UTF_8)).collect(Collectors.toList());
         }
         return wrongASMPackagePrefixesRaw;
@@ -173,10 +176,9 @@ public class ASMRemapperTransformer implements IClassTransformer {
 
         @Override
         public String map(String typeName) {
-            for(String s : ASM_PACKAGE_PREFIXES) {
-                if(typeName.startsWith(s)) {
-                    String newName = ASMRemapperTransformer.getRealASMPackagePrefix() + typeName.substring(s.length());
-                    return newName;
+            for (String s : ASM_PACKAGE_PREFIXES) {
+                if (typeName.startsWith(s)) {
+                    return ASMRemapperTransformer.getRealASMPackagePrefix() + typeName.substring(s.length());
                 }
             }
             return super.map(typeName);

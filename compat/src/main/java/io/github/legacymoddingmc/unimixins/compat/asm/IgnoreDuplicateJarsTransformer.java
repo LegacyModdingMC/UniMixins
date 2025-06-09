@@ -29,7 +29,7 @@ public class IgnoreDuplicateJarsTransformer implements IClassTransformer {
     }
 
     private static Set<File> getUniMixinsJavaAgentJars() {
-        if(uniMixinsJavaAgentJars == null) {
+        if (uniMixinsJavaAgentJars == null) {
             uniMixinsJavaAgentJars = new HashSet<>();
             try {
                 for (String arg : ManagementFactory.getRuntimeMXBean().getInputArguments()) {
@@ -53,11 +53,11 @@ public class IgnoreDuplicateJarsTransformer implements IClassTransformer {
 
     @Override
     public byte[] transform(String name, String transformedName, byte[] basicClass) {
-        if(basicClass == null) {
+        if (basicClass == null) {
             return null;
         }
 
-        if(transformedName.equals("cpw.mods.fml.common.discovery.ModDiscoverer")) {
+        if (transformedName.equals("cpw.mods.fml.common.discovery.ModDiscoverer")) {
             basicClass = doTransformModDiscoverer(basicClass);
         }
         return basicClass;
@@ -70,8 +70,10 @@ public class IgnoreDuplicateJarsTransformer implements IClassTransformer {
             ClassNode classNode = new ClassNode();
             ClassReader classReader = new ClassReader(bytes);
             classReader.accept(classNode, 0);
-            for(MethodNode m : classNode.methods) {
-                if(m.name.equals("identifyMods")) {
+            for (Object o : classNode.methods) {
+                final MethodNode m = (MethodNode) o;
+
+                if (m.name.equals("identifyMods")) {
                     InsnList patch = new InsnList();
                     patch.add(new VarInsnNode(ALOAD, 0));
                     patch.add(new MethodInsnNode(INVOKESTATIC, "io/github/legacymoddingmc/unimixins/compat/asm/IgnoreDuplicateJarsTransformer$Hooks", "preIdentifyMods", "(Lcpw/mods/fml/common/discovery/ModDiscoverer;)V"));
@@ -95,14 +97,14 @@ public class IgnoreDuplicateJarsTransformer implements IClassTransformer {
                 List<ModCandidate> candidates = getModCandidates(dis);
 
                 Map<File, List<ModCandidate>> modCandidatesByFile = new HashMap<>();
-                for(ModCandidate mc : candidates) {
+                for (ModCandidate mc : candidates) {
                     modCandidatesByFile.computeIfAbsent(getModContainer(mc), x -> new ArrayList<>()).add(mc);
                 }
 
-                for(Map.Entry<File, List<ModCandidate>> e : modCandidatesByFile.entrySet()) {
+                for (Map.Entry<File, List<ModCandidate>> e : modCandidatesByFile.entrySet()) {
                     File file = e.getKey();
                     List<ModCandidate> mcs = e.getValue();
-                    if(getUniMixinsJavaAgentJars().contains(file)) {
+                    if (getUniMixinsJavaAgentJars().contains(file)) {
                         Iterator<ModCandidate> it = mcs.iterator();
                         while(mcs.size() > 1 && it.hasNext()) {
                             ModCandidate mc = it.next();
@@ -125,7 +127,8 @@ public class IgnoreDuplicateJarsTransformer implements IClassTransformer {
         private static List<ModCandidate> getModCandidates(ModDiscoverer dis) throws Exception {
             Field f = dis.getClass().getDeclaredField("candidates");
             f.setAccessible(true);
-            return (List<ModCandidate>)f.get(dis);
+            //noinspection unchecked
+            return (List<ModCandidate>) f.get(dis);
         }
 
         private static File getModContainer(ModCandidate mc) throws Exception {

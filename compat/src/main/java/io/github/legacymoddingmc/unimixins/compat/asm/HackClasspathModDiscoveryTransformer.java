@@ -21,12 +21,12 @@ public class HackClasspathModDiscoveryTransformer implements IClassTransformer {
 
     @Override
     public byte[] transform(String name, String transformedName, byte[] basicClass) {
-        if(basicClass == null) {
+        if (basicClass == null) {
             return null;
         }
-        if(transformedName.startsWith("org.objectweb.asm.")) return basicClass;
+        if (transformedName.startsWith("org.objectweb.asm.")) return basicClass;
 
-        if(transformedName.equals("cpw.mods.fml.common.discovery.ModDiscoverer")) {
+        if (transformedName.equals("cpw.mods.fml.common.discovery.ModDiscoverer")) {
             basicClass = doTransformModDiscoverer(basicClass);
         }
         return basicClass;
@@ -39,15 +39,17 @@ public class HackClasspathModDiscoveryTransformer implements IClassTransformer {
             ClassNode classNode = new ClassNode();
             ClassReader classReader = new ClassReader(bytes);
             classReader.accept(classNode, 0);
-            for(MethodNode m : classNode.methods) {
-                if(m.name.equals("findClasspathMods")) {
-                    Iterator<AbstractInsnNode> it = m.instructions.iterator();
+            for (Object o : classNode.methods) {
+                final MethodNode m = (MethodNode) o;
 
-                    while(it.hasNext()) {
+                if (m.name.equals("findClasspathMods")) {
+                    @SuppressWarnings("unchecked") Iterator<AbstractInsnNode> it = m.instructions.iterator();
+
+                    while (it.hasNext()) {
                         AbstractInsnNode i = it.next();
-                        if(i.getOpcode() == INVOKESTATIC) {
+                        if (i.getOpcode() == INVOKESTATIC) {
                             MethodInsnNode mi = (MethodInsnNode)i;
-                            if(mi.owner.equals("cpw/mods/fml/relauncher/CoreModManager") && mi.name.equals("getReparseableCoremods") && mi.desc.equals("()Ljava/util/List;")) {
+                            if (mi.owner.equals("cpw/mods/fml/relauncher/CoreModManager") && mi.name.equals("getReparseableCoremods") && mi.desc.equals("()Ljava/util/List;")) {
                                 m.instructions.insertBefore(mi, new MethodInsnNode(INVOKESTATIC, "io/github/legacymoddingmc/unimixins/compat/asm/HackClasspathModDiscoveryTransformer$Hooks", "redirectGetReparseableCoremods", mi.desc));
                                 it.remove();
                                 break;
@@ -56,10 +58,11 @@ public class HackClasspathModDiscoveryTransformer implements IClassTransformer {
                     }
                 }
             }
+
             ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES);
             classNode.accept(writer);
             return writer.toByteArray();
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

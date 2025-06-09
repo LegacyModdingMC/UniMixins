@@ -61,7 +61,6 @@ tasks.processResources {
         val props = HashMap<String, String>()
         props["mixinClassifier"] = mixinFlavorClassifier
         props["version"] = "$versionBase+$mixinFlavorClassifier"
-        props["projectUrl"] = ext.get("project_url").toString()
 
         expand(props)
     }
