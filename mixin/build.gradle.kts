@@ -1,7 +1,5 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.apache.tools.ant.filters.ReplaceTokens
-import java.util.Properties
-import kotlin.math.exp
 
 plugins {
     id("com.gradleup.shadow") version "8.3.6"
@@ -191,4 +189,13 @@ unimined.minecraft {
 
 tasks.jar {
     enabled = false
+}
+
+val shadowArtifact: Configuration by configurations.creating
+shadowArtifact.isCanBeConsumed = true
+
+artifacts {
+    add("shadowArtifact", tasks["shadowJar"]) {
+        builtBy(tasks["shadowJar"])
+    }
 }

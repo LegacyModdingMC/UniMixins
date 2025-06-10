@@ -1,3 +1,6 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+import org.gradle.kotlin.dsl.filter
+
 plugins {
     id("com.gradleup.shadow") version "8.3.6"
 }
@@ -6,8 +9,7 @@ val mixingasmVersion = "0.3"
 version = "$version+$mixingasmVersion"
 
 dependencies {
-    implementation(project(":mixin"))
-    //implementation(files(tasks.getByPath(":mixin:shadowJarUnimix").getOutputs().getFiles().getSingleFile()))
+    implementation(project(":mixin", "shadowArtifact"))
     shadow(project(":common")) {
         isTransitive = false
     }
@@ -37,10 +39,9 @@ tasks.jar {
 
 tasks.processResources {
     files("mcmod.info") {
-        val props = HashMap<String, String>()
-        props["mixingasmVersion"] = mixingasmVersion
-
-        expand(props)
+        filter<ReplaceTokens>("tokens" to mapOf(
+            "mixingasmVersion" to mixingasmVersion
+        ))
     }
 }
 

@@ -34,7 +34,7 @@ public class ConfigHelper {
             String urlString = resourceURL.getPath();
             int lastExclamation = urlString.lastIndexOf('!');
             String newURLString = urlString.substring(0, lastExclamation);
-            return FileSystems.newFileSystem(new File(URI.create(newURLString)).toPath(), null).getPath(resourceRelPath);
+            return FileSystems.newFileSystem(new File(URI.create(newURLString)).toPath(), (ClassLoader) null).getPath(resourceRelPath);
         case "file":
             return new File(URI.create(resourceURL.toString())).toPath();
         default:
