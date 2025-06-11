@@ -45,6 +45,14 @@ tasks.processResources {
     }
 }
 
+val shadowArtifact by configurations.creating
+shadowArtifact.isCanBeConsumed = true
+artifacts {
+    add("shadowArtifact", tasks["shadowJar"]) {
+        builtBy(tasks["shadowJar"])
+    }
+}
+
 unimined.minecraft {
 
 }
