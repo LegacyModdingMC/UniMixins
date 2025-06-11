@@ -1,6 +1,7 @@
 import org.apache.tools.ant.filters.ReplaceTokens
 
 plugins {
+	id("net.raphimc.class-token-replacer") version "1.1.6"
 	id("com.gradleup.shadow") version "8.3.6"
 }
 
@@ -18,6 +19,18 @@ dependencies {
 	compileOnly("org.spongepowered:mixin:0.8.5-gasstation_7")
 	shadow(project(":common")) {
 		isTransitive = false
+	}
+}
+
+val mblVersion = "1.2.1"
+version = "$version+$mblVersion"
+
+sourceSets {
+	main {
+		classTokenReplacer {
+			replaceInPlace = true
+			property("@VERSION@", mblVersion)
+		}
 	}
 }
 
@@ -41,9 +54,6 @@ tasks.jar {
 	dependsOn(tasks.shadowJar)
 	enabled = false
 }
-
-val mblVersion = "1.2.1"
-version = "$version+$mblVersion"
 
 tasks.processResources {
 	files("mcmod.info") {

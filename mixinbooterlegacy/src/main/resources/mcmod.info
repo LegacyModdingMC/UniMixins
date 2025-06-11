@@ -4,7 +4,7 @@
     "name": "UniMixins: MixinBooterLegacy",
     "description": "UniMixins module that provides MixinBooterLegacy extras and MixinExtras with MixinBooterLegacy's package name.",
     "version": "@mblVersion@+uni.@uniMixinsVersion@",
-    "mcversion": "@mcVersion@",
+    "mcversion": "@minecraftVersion@",
     "url": "@projectUrl@",
     "updateUrl": "",
     "authorList": ["Rongmario", "tox1cozZ"],
