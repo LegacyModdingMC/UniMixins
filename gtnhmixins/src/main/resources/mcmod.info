@@ -1,15 +1,13 @@
 [
   {
-    "modid": "${extraModid}",
+    "modid": "gtnhmixins",
     "name": "UniMixins: GTNHMixins",
     "description": "UniMixins module that provides GTNHMixins extras and MixinExtras with the GTNH package name.\nDepends on: SpongeMixins",
-    "version": "${extraVersion}+uni.${uniVersion}",
-    "mcversion": "${mcversion}",
-    "url": "${project_url}",
+    "version": "@gtnhMixinsVersion@",
+    "mcversion": "@minecraftVersion@",
+    "url": "@projectUrl@",
     "updateUrl": "",
-    "authorList": [
-      "mitchej123"
-    ],
+    "authorList": ["mitchej123"],
     "credits": "",
     "logoFile": "",
     "screenshots": [],
