@@ -3,7 +3,7 @@
     "modid": "mixinbooterlegacy",
     "name": "UniMixins: MixinBooterLegacy",
     "description": "UniMixins module that provides MixinBooterLegacy extras and MixinExtras with MixinBooterLegacy's package name.",
-    "version": "@mblVersion@+uni.@uniMixinsVersion@",
+    "version": "@mblVersion@",
     "mcversion": "@minecraftVersion@",
     "url": "@projectUrl@",
     "updateUrl": "",
