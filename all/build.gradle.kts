@@ -13,6 +13,24 @@ dependencies {
     implementation(project(":mixinextras", "shadowArtifact"))
 }
 
+val moduleList =
+    "\nMixin," +
+    "\nCompat," +
+    "\nMixingasm," +
+    "\nSpongeMixins," +
+    "\nMixinBooterLegacy," +
+    "\nGasStation," +
+    "\nGTNHMixins, and" +
+    "\nMixinExtras."
+
+tasks.processResources {
+    files("mcmod.info") {
+        filter<ReplaceTokens>("tokens" to mapOf(
+            "moduleList" to moduleList
+        ))
+    }
+}
+
 tasks.shadowJar {
     archiveClassifier = ""
 
