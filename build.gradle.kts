@@ -57,7 +57,7 @@ subprojects {
     }
 
     version = getVersion()
-    base.archivesName = "+unimixins-${ if (project.name == "all") "" else project.name }-1.7.10"
+    base.archivesName = "+unimixins${ if (project.name == "all") "" else "-${project.name}" }-1.7.10"
 
     tasks.processResources {
         files("mcmod.info") {
