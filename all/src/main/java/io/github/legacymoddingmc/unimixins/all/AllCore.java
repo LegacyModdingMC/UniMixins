@@ -1,5 +1,6 @@
 package io.github.legacymoddingmc.unimixins.all;
 
+import java.net.URL;
 import java.util.*;
 
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
@@ -14,16 +15,19 @@ public class AllCore implements IFMLLoadingPlugin {
 
     public static final Logger LOGGER = LogManager.getLogger("unimixins");
 
-    private static List<Class<?>> embeddedCorePluginClasses = new ArrayList<>();
-    private static List<IFMLLoadingPlugin> embeddedCorePluginInstances = new ArrayList<>();
+    private static final List<Class<?>> embeddedCorePluginClasses = new ArrayList<>();
+    private static final List<IFMLLoadingPlugin> embeddedCorePluginInstances = new ArrayList<>();
+    private static final URL embeddedCorePluginsFile = AllCore.class.getResource("/META-INF/unimixins-all.EmbeddedFMLCorePlugins.txt");
 
     static {
         try {
-            for(String s : IOUtils.toString(AllCore.class.getResource("/META-INF/unimixins-all.EmbeddedFMLCorePlugins.txt")).split(" ")) {
+            final String embeddedPlugins = embeddedCorePluginsFile != null
+                    ? IOUtils.toString(embeddedCorePluginsFile)
+                    : "";
+            for (String s : embeddedPlugins.split(" ")) {
                 Class<?> cls = Class.forName(s);
                 embeddedCorePluginClasses.add(cls);
             }
-
         } catch(Exception e) {
             throw new RuntimeException(e);
         }
@@ -32,7 +36,7 @@ public class AllCore implements IFMLLoadingPlugin {
     public AllCore() {
         LOGGER.info("Instantiating AllCore");
 
-        for(Class<?> cls : embeddedCorePluginClasses) {
+        for (Class<?> cls : embeddedCorePluginClasses) {
             try {
                 embeddedCorePluginInstances.add((IFMLLoadingPlugin)cls.newInstance());
             } catch (Exception e) {
@@ -44,10 +48,8 @@ public class AllCore implements IFMLLoadingPlugin {
     @Override
     public String[] getASMTransformerClass() {
         List<String> classes = new ArrayList<>();
-        for(IFMLLoadingPlugin p : embeddedCorePluginInstances) {
-            for(String s : p.getASMTransformerClass()) {
-                classes.add(s);
-            }
+        for (IFMLLoadingPlugin p : embeddedCorePluginInstances) {
+            Collections.addAll(classes, p.getASMTransformerClass());
         }
         return classes.toArray(new String[0]);
     }
@@ -64,7 +66,7 @@ public class AllCore implements IFMLLoadingPlugin {
 
     @Override
     public void injectData(Map<String, Object> data) {
-        for(IFMLLoadingPlugin p : embeddedCorePluginInstances) {
+        for (IFMLLoadingPlugin p : embeddedCorePluginInstances) {
             p.injectData(data);
         }
     }
@@ -77,9 +79,9 @@ public class AllCore implements IFMLLoadingPlugin {
     public static class CombinedAccessTransformer implements IClassTransformer {
         private final List<IClassTransformer> delegates = new ArrayList<>();
         public CombinedAccessTransformer() {
-            for(IFMLLoadingPlugin plugin : embeddedCorePluginInstances) {
+            for (IFMLLoadingPlugin plugin : embeddedCorePluginInstances) {
                 String atClass = plugin.getAccessTransformerClass();
-                if(atClass != null) {
+                if (atClass != null) {
                     try {
                         delegates.add((IClassTransformer) Class.forName(atClass).newInstance());
                     } catch (Exception e) {
@@ -91,7 +93,7 @@ public class AllCore implements IFMLLoadingPlugin {
 
         @Override
         public byte[] transform(String name, String transformedName, byte[] basicClass) {
-            for(IClassTransformer delegate : delegates) {
+            for (IClassTransformer delegate : delegates) {
                 basicClass = delegate.transform(name, transformedName, basicClass);
             }
             return basicClass;
