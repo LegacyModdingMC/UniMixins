@@ -10,6 +10,7 @@ plugins {
     id("java")
     id("xyz.wagyourtail.unimined") version "1.3.14" apply false
     id("com.palantir.git-version") version "3.3.0" apply false
+    id("com.gradleup.shadow") version "8.3.6" apply false
 }
 
 // Mod properties
@@ -24,6 +25,7 @@ subprojects {
     apply(plugin = "java")
     apply(plugin = "xyz.wagyourtail.unimined")
     apply(plugin = "com.palantir.git-version")
+    apply(plugin = "com.gradleup.shadow")
 
     java {
         sourceCompatibility = JavaVersion.VERSION_1_8

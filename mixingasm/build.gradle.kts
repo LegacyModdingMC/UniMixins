@@ -1,10 +1,6 @@
 import org.apache.tools.ant.filters.ReplaceTokens
 import org.gradle.kotlin.dsl.filter
 
-plugins {
-    id("com.gradleup.shadow") version "8.3.6"
-}
-
 val mixingasmVersion = "0.3"
 version = "$version+$mixingasmVersion"
 

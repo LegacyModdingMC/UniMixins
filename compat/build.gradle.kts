@@ -1,7 +1,3 @@
-plugins {
-    id("com.gradleup.shadow") version "8.3.6"
-}
-
 dependencies {
     compileOnly("org.spongepowered:mixin:0.8.5")
     shadow(project(":common")) {

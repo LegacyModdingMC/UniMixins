@@ -1,9 +1,5 @@
 import org.apache.tools.ant.filters.ReplaceTokens
 
-plugins {
-	id("com.gradleup.shadow") version "8.3.6"
-}
-
 val gasstationVersion = "0.5.1"
 val gasMixVersion = "0.8.5-gasstation_7"
 version = "$version+$gasstationVersion"

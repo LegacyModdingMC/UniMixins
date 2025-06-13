@@ -1,10 +1,6 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.apache.tools.ant.filters.ReplaceTokens
 
-plugins {
-    id("com.gradleup.shadow") version "8.3.6"
-}
-
 val local = false
 val versionBase = version.toString()
 

@@ -2,10 +2,6 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.apache.tools.ant.filters.ReplaceTokens
 import org.gradle.kotlin.dsl.filter
 
-plugins {
-	id("com.gradleup.shadow") version "8.3.6"
-}
-
 val gtnhMixinsVersion = "2.2.0"
 val mixinExtrasVersion = "0.1.1"
 
