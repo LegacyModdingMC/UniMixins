@@ -1,3 +1,4 @@
+import com.github.jengelman.gradle.plugins.shadow.transformers.Transformer
 import com.github.jengelman.gradle.plugins.shadow.transformers.TransformerContext
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonArray
@@ -42,7 +43,7 @@ val moduleList =
  * @author Logic Fan
  * @author ah-OOG-ah
  */
-class McmodInfoMerger(private val parentModid: String) : com.github.jengelman.gradle.plugins.shadow.transformers.Transformer {
+class McmodInfoMerger(private val parentModid: String) : Transformer {
     private val GSON = GsonBuilder().setPrettyPrinting().create()
     private val LOGGER = Logging.getLogger(McmodInfoMerger::class.java)
     private var json: JsonElement? = null
