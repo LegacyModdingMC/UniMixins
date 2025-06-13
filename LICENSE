@@ -5,6 +5,9 @@ Refer to CREDITS, LICENSE, and README.original.md (whichever of these exist)
 inside their directories for full information, including reproductions of their
 original license texts.
 
+Part of the buildscript is adapted from https://github.com/LogicFan/shadow-json-transformer under the Apache v2 license.
+Requisite notices are in CREDITS in the repository root.
+
 ## SpongeMixins
 
 Directory: module-spongemixins
