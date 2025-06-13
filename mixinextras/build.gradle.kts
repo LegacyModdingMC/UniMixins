@@ -2,7 +2,7 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.apache.tools.ant.filters.ReplaceTokens
 
 val mixinExtrasVersion = "0.4.1"
-
+ext.set("FMLCorePlugin", "io.github.legacymoddingmc.unimixins.mixinextras.MixinExtrasCore")
 val shadowSources by configurations.creating
 
 dependencies {
@@ -22,7 +22,6 @@ tasks.shadowJar {
 			"TweakClass" to "org.spongepowered.asm.launch.MixinTweaker",
 			"FMLCorePluginContainsFMLMod" to "true",
 			"ForceLoadAsMod" to "true",
-			"FMLCorePlugin" to "io.github.legacymoddingmc.unimixins.mixinextras.MixinExtrasCore",
 		)
 	}
 }

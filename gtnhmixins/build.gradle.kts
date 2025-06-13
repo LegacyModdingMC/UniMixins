@@ -6,6 +6,7 @@ val gtnhMixinsVersion = "2.2.0"
 val mixinExtrasVersion = "0.1.1"
 
 val shadowMixinExtras by configurations.creating
+ext.set("FMLCorePlugin", "com.gtnewhorizon.gtnhmixins.core.GTNHMixinsCore")
 
 repositories {
 	maven {
@@ -58,7 +59,6 @@ tasks.shadowJar {
 				"FMLCorePluginContainsFMLMod" to true,
 				"ForceLoadAsMod" to true,
 				"MixinConfigs" to "mixins.gtnhmixins.json",
-				"FMLCorePlugin" to "com.gtnewhorizon.gtnhmixins.core.GTNHMixinsCore"
 			)
 		)
 	}

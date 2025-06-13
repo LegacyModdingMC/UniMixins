@@ -1,3 +1,4 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.apache.tools.ant.filters.ReplaceTokens
 import org.gradle.kotlin.dsl.filter
 import xyz.wagyourtail.unimined.api.unimined
@@ -68,6 +69,16 @@ subprojects {
                 "uniMixinsVersion" to version.toString(),
                 "projectUrl" to "https://github.com/LegacyModdingMC/UniMixins"
             ))
+        }
+    }
+
+    tasks.named<ShadowJar>("shadowJar") {
+        from(generated.resources)
+
+        if (ext.has("FMLCorePlugin")) {
+            manifest {
+                "FMLCorePlugin" to ext.get("FMLCorePlugin")
+            }
         }
     }
 

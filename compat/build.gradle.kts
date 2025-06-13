@@ -5,6 +5,8 @@ dependencies {
     }
 }
 
+ext.set("FMLCorePlugin", "io.github.legacymoddingmc.unimixins.compat.CompatCore")
+
 tasks.shadowJar {
     configurations = listOf(project.configurations.shadow.get())
     archiveClassifier = ""
@@ -16,7 +18,6 @@ tasks.shadowJar {
             "TweakClass" to "org.spongepowered.asm.launch.MixinTweaker",
             "FMLCorePluginContainsFMLMod" to true,
             "ForceLoadAsMod" to true,
-            "FMLCorePlugin" to "io.github.legacymoddingmc.unimixins.compat.CompatCore"
         )
     }
 }

@@ -19,6 +19,7 @@ dependencies {
 
 val mblVersion = "1.2.1"
 version = "$version+$mblVersion"
+ext.set("FMLCorePlugin", "io.github.tox1cozz.mixinbooterlegacy.MixinBooterLegacyPlugin")
 
 tasks.shadowJar {
 	archiveClassifier = ""
@@ -31,7 +32,6 @@ tasks.shadowJar {
 			"TweakClass" to "org.spongepowered.asm.launch.MixinTweaker",
 			"FMLCorePluginContainsFMLMod" to true,
 			"ForceLoadAsMod" to true,
-			"FMLCorePlugin" to "io.github.tox1cozz.mixinbooterlegacy.MixinBooterLegacyPlugin",
 		)
 	}
 }
