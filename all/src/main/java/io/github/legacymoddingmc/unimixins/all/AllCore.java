@@ -17,18 +17,20 @@ public class AllCore implements IFMLLoadingPlugin {
 
     private static final List<Class<?>> embeddedCorePluginClasses = new ArrayList<>();
     private static final List<IFMLLoadingPlugin> embeddedCorePluginInstances = new ArrayList<>();
-    private static final URL embeddedCorePluginsFile = AllCore.class.getResource("/META-INF/unimixins-all.EmbeddedFMLCorePlugins.txt");
+    private static final URL embeddedCorePluginsFile = AllCore.class.getResource("/META-INF/EmbeddedFMLCorePlugins.txt");
 
     static {
         try {
-            final String embeddedPlugins = embeddedCorePluginsFile != null
-                    ? IOUtils.toString(embeddedCorePluginsFile)
-                    : "";
-            for (String s : embeddedPlugins.split(" ")) {
+            // The file contains a duplicate, and I can't be bothered to remove it at build time.
+            final HashSet<String> embeddedPlugins = (embeddedCorePluginsFile == null) 
+                    ? new HashSet<>()
+                    : new HashSet<>(Arrays.asList(IOUtils.toString(embeddedCorePluginsFile).split("\n")));
+
+            for (String s : embeddedPlugins) {
                 Class<?> cls = Class.forName(s);
                 embeddedCorePluginClasses.add(cls);
             }
-        } catch(Exception e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
@@ -38,7 +40,7 @@ public class AllCore implements IFMLLoadingPlugin {
 
         for (Class<?> cls : embeddedCorePluginClasses) {
             try {
-                embeddedCorePluginInstances.add((IFMLLoadingPlugin)cls.newInstance());
+                embeddedCorePluginInstances.add((IFMLLoadingPlugin) cls.newInstance());
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

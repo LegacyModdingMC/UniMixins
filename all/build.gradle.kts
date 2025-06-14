@@ -37,6 +37,9 @@ tasks.shadowJar {
 
     // Merge mcmod.info files
     transform(McmodInfoMerger("unimixins"))
+
+    // Merge list of coremods
+    append("META-INF/EmbeddedFMLCorePlugins.txt")
 }
 
 tasks.jar {
