@@ -5,8 +5,6 @@ dependencies {
     }
 }
 
-ext.set("FMLCorePlugin", "io.github.legacymoddingmc.unimixins.compat.CompatCore")
-
 tasks.shadowJar {
     configurations = listOf(project.configurations.shadow.get())
     archiveClassifier = ""

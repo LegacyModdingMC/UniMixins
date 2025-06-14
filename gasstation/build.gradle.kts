@@ -3,7 +3,6 @@ import org.apache.tools.ant.filters.ReplaceTokens
 val gasstationVersion = "0.5.1"
 val gasMixVersion = "0.8.5-gasstation_7"
 version = "$version+$gasstationVersion"
-ext.set("FMLCorePlugin", "com.falsepattern.gasstation.core.GasStationCore")
 
 repositories {
 	maven {

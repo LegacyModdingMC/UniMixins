@@ -8,7 +8,6 @@ val unimixMixinVersion = "0.15.3+mixin.0.8.7"
 val spongepoweredMixinVersion = "0.8.7"
 
 val asmVersion = "9.7.1"
-ext.set("FMLCorePlugin", "io.github.legacymoddingmc.unimixins.mixin.MixinCore")
 
 repositories {
     maven {

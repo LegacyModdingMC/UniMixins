@@ -1,5 +1,3 @@
-ext.set("FMLCorePlugin", "io.github.legacymoddingmc.unimixins.compatfuture.CompatFutureCore")
-
 tasks.shadowJar {
     configurations = listOf()
     archiveClassifier = ""
