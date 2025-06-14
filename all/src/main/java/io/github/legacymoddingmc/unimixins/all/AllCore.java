@@ -22,7 +22,7 @@ public class AllCore implements IFMLLoadingPlugin {
     static {
         try {
             // The file contains a duplicate, and I can't be bothered to remove it at build time.
-            final HashSet<String> embeddedPlugins = (embeddedCorePluginsFile == null) 
+            final HashSet<String> embeddedPlugins = (embeddedCorePluginsFile == null)
                     ? new HashSet<>()
                     : new HashSet<>(Arrays.asList(IOUtils.toString(embeddedCorePluginsFile).split("\n")));
 
