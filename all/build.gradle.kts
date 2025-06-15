@@ -40,6 +40,13 @@ tasks.shadowJar {
 
     // Merge list of coremods
     append("META-INF/EmbeddedFMLCorePlugins.txt")
+
+    // Manually set this, because this doesn't need to be embedded
+    manifest {
+        attributes(
+            "FMLCorePlugin" to "io.github.legacymoddingmc.unimixins.all.AllCore"
+        )
+    }
 }
 
 tasks.jar {
