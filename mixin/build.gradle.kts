@@ -136,8 +136,8 @@ tasks.shadowJar {
     manifest {
         attributes(
             "TweakClass" to "org.spongepowered.asm.launch.MixinTweaker",
-            "FMLCorePluginContainsFMLMod" to "true",
-            "ForceLoadAsMod" to "true",
+            "FMLCorePluginContainsFMLMod" to true,
+            "ForceLoadAsMod" to true,
             "Premain-Class" to "org.spongepowered.tools.agent.MixinAgent",
             "Agent-Class" to "org.spongepowered.tools.agent.MixinAgent",
             "Can-Redefine-Classes" to true,
