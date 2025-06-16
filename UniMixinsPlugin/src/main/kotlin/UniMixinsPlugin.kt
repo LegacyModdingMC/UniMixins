@@ -92,8 +92,12 @@ class UniMixinsPlugin : Plugin<Project> {
 
             // Copy licenses to a folder in META-INF, for the merged jar.
             val licenses = listOf("CREDITS", "LICENSE*", "README*")
-            sJar.from(licenses) { it.into("META-INF/${project.name}") }
-            sJar.from(licenses) { it.into("") }
+            sJar.from(project.projectDir) {
+                it.include(licenses); it.into("META-INF/licenses/${project.name}")
+            }
+
+            // And ensure they end up in the root, too.
+            sJar.from(project.projectDir) { it.include(licenses); it.into("") }
         }
 
         project.extensions.configure<UniminedExtension>("unimined") {
