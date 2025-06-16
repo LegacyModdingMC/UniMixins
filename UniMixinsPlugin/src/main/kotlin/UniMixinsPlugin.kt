@@ -35,8 +35,11 @@ class UniMixinsPlugin : Plugin<Project> {
 
         project.dependencies.add("compileOnly", "net.minecraftforge:forge:1.12.2-14.23.5.2860:universal")
 
-        val gitVersionService = GitVersionCacheService.getSharedGitVersionCacheService(project)
-        project.version = getGitVersion(gitVersionService.get().getVersionDetails(project.projectDir, null))
+        val versionDetails = GitVersionCacheService
+            .getSharedGitVersionCacheService(project)
+            .get()
+            .getVersionDetails(project.projectDir, null)
+        project.version = getGitVersion(versionDetails)
         project.group = "io.github.legacymoddingmc"
 
         val nameSuffix = if (project.name == "all") "" else "-${project.name}"
@@ -80,6 +83,7 @@ class UniMixinsPlugin : Plugin<Project> {
 
             it.manifest {
                 it.attributes(mapOf(
+                    "Commit-ID" to versionDetails.gitHash,
                     "FMLCorePlugin" to project.findProperty("FMLCorePlugin")
                 ).filterValues { it != null })
             }
