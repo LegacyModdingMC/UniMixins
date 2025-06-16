@@ -41,10 +41,18 @@ tasks.shadowJar {
     // Merge list of coremods
     append("META-INF/EmbeddedFMLCorePlugins.txt")
 
-    // Manually set this, because this doesn't need to be embedded
     manifest {
         attributes(
-            "FMLCorePlugin" to "io.github.legacymoddingmc.unimixins.all.AllCore"
+            "TweakClass" to "org.spongepowered.asm.launch.MixinTweaker",
+            "FMLCorePluginContainsFMLMod" to true,
+            "ForceLoadAsMod" to true,
+            // Manually set this, because it doesn't need to be embedded
+            "FMLCorePlugin" to "io.github.legacymoddingmc.unimixins.all.AllCore",
+            "MixinConfigs" to "mixins.gtnhmixins.json,mixins.gasstation.json,mixins.gtnhmixins.json,mixingasm.mixin.json",
+            "Premain-Class" to "org.spongepowered.tools.agent.MixinAgent",
+            "Agent-Class" to "org.spongepowered.tools.agent.MixinAgent",
+            "Can-Redefine-Classes" to true,
+            "Can-Retransform-Classes" to true,
         )
     }
 }
