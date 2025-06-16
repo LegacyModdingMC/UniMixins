@@ -13,7 +13,7 @@ repositories {
 dependencies {
 	compileOnly("org.spongepowered:mixin:$gasMixVersion")
 	compileOnly(project(":mixinbooterlegacy", "shadowArtifact"))
-	shadow(project(":common")) {
+	shadow(project(":common", "shadowArtifact")) {
 		isTransitive = false
 	}
 }

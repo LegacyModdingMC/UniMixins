@@ -6,7 +6,7 @@ version = "$version+$mixingasmVersion"
 
 dependencies {
     implementation(project(":mixin", "shadowArtifact"))
-    shadow(project(":common")) {
+    shadow(project(":common", "shadowArtifact")) {
         isTransitive = false
     }
 }

@@ -26,11 +26,11 @@ val mixinFlavorClassifier = "unimix.${mixinVersion.replace('+', '-')}"
 
 dependencies {
     compileOnly("org.spongepowered:mixin:$spongepoweredMixinVersion")
-    compileOnly(project(":common")) {
+    compileOnly(project(":common", "shadowArtifact")) {
         isTransitive = false
     }
 
-    shadowUniMix(project(":common")) {
+    shadowUniMix(project(":common", "shadowArtifact")) {
         isTransitive = false
     }
     shadowUniMix(mixinDep) {

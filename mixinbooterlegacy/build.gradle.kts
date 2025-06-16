@@ -12,7 +12,7 @@ repositories {
 
 dependencies {
 	compileOnly("org.spongepowered:mixin:0.8.5-gasstation_7")
-	shadow(project(":common")) {
+	shadow(project(":common", "shadowArtifact")) {
 		isTransitive = false
 	}
 }
