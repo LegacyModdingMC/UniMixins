@@ -1,10 +1,10 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.apache.tools.ant.filters.ReplaceTokens
+import org.gradle.kotlin.dsl.unimixins
 
 val local = false
 val versionBase = version.toString()
 
-val unimixMixinVersion = "0.15.3+mixin.0.8.7"
 val spongepoweredMixinVersion = "0.8.7"
 
 val asmVersion = "9.7.1"
@@ -20,8 +20,7 @@ val shadowUniMix: Configuration by configurations.creating
 val shadowBridgeUniMix: Configuration by configurations.creating
 val shadowSourcesUniMix: Configuration by configurations.creating
 
-val mixinVersion = "$unimixMixinVersion${if (local) "-local" else ""}"
-
+val mixinVersion = "${unimixins.uniMixVersion}${if (local) "-local" else ""}"
 val mixinDep = "io.github.legacymoddingmc:sponge-mixin:$mixinVersion"
 
 val mixinFlavorClassifier = "unimix.${mixinVersion.replace('+', '-')}"
