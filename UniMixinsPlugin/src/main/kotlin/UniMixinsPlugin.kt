@@ -13,6 +13,7 @@ import org.gradle.language.jvm.tasks.ProcessResources
 import xyz.wagyourtail.unimined.api.UniminedExtension
 import java.io.File
 
+@Suppress("unused")
 class UniMixinsPlugin : Plugin<Project> {
 
     override fun apply(project: Project): Unit {
@@ -23,6 +24,7 @@ class UniMixinsPlugin : Plugin<Project> {
 
         val minecraftVersion = "1.7.10"
         val forgeVersion = "10.13.4.1614-1.7.10"
+        project.extensions.create("unimixins", UniMixinsExtension::class.java)
 
         project.extensions.configure<JavaPluginExtension>("java") {
             it.sourceCompatibility = JavaVersion.VERSION_1_8
@@ -31,7 +33,6 @@ class UniMixinsPlugin : Plugin<Project> {
                 it.languageVersion.set(JavaLanguageVersion.of(8))
             }
         }
-
 
         project.dependencies.add("compileOnly", "net.minecraftforge:forge:1.12.2-14.23.5.2860:universal")
 
@@ -87,6 +88,10 @@ class UniMixinsPlugin : Plugin<Project> {
                     "FMLCorePlugin" to project.findProperty("FMLCorePlugin")
                 ).filterValues { it != null })
             }
+
+            // Copy licenses to a folder in META-INF, for the merged jar.
+            it.from("CREDITS", "LICENSE*", "README*")
+                .into("META-INF/${project.name}")
         }
 
         project.extensions.configure<UniminedExtension>("unimined") {
