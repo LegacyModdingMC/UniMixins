@@ -1,16 +1,16 @@
 import com.github.jengelman.gradle.plugins.shadow.transformers.Transformer
 import com.github.jengelman.gradle.plugins.shadow.transformers.TransformerContext
 import com.google.gson.GsonBuilder
+import com.google.gson.JsonArray
 import com.google.gson.JsonElement
+import com.google.gson.JsonNull
+import com.google.gson.JsonObject
 import com.google.gson.JsonParser
+import com.google.gson.JsonPrimitive
 import org.gradle.api.file.FileTreeElement
 import java.io.InputStreamReader
-import com.google.gson.JsonArray
-import com.google.gson.JsonObject
-import com.google.gson.JsonPrimitive
 import org.apache.tools.zip.ZipOutputStream
 import org.apache.tools.zip.ZipEntry
-import com.google.gson.JsonNull
 import org.gradle.api.logging.Logging
 
 /**
@@ -27,7 +27,7 @@ class McmodInfoMerger(private val parentModid: String) : Transformer {
     private val comparisonModid = "\"$parentModid\""
 
     override fun canTransformResource(element: FileTreeElement?): Boolean {
-        return targetFile.equals(element?.relativePath.toString(), ignoreCase = true)
+        return targetFile == element?.relativePath.toString()
     }
 
     override fun transform(context: TransformerContext?) {

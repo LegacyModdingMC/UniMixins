@@ -1,11 +1,11 @@
 plugins {
-    `kotlin-dsl`
+    kotlin("jvm") version "2.1.21"
     `java-gradle-plugin`
 }
 
 repositories {
+    mavenCentral()
     gradlePluginPortal()
-
     maven {
         url = uri("https://maven.wagyourtail.xyz/releases")
     }
@@ -17,4 +17,25 @@ dependencies {
     implementation("com.gradleup.shadow:com.gradleup.shadow.gradle.plugin:8.3.6")
     implementation("com.google.code.gson:gson:2.13.1")
     implementation("org.apache.ant:ant:1.10.15")
+}
+
+gradlePlugin {
+    plugins {
+        create("unimixins") {
+            id = "unimixins"
+            implementationClass = "UniMixinsPlugin"
+        }
+    }
+}
+
+kotlin {
+    jvmToolchain(21)
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
 }

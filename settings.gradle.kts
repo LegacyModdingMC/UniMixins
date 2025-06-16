@@ -22,6 +22,8 @@ pluginManagement {
             }
         }
     }
+
+    includeBuild("UniMixinsPlugin")
 }
 
 rootProject.name = "UniMixins"
