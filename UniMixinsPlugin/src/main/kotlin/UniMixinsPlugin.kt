@@ -5,6 +5,7 @@ import org.apache.tools.ant.filters.ReplaceTokens
 import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.java.archives.Manifest
 import org.gradle.api.plugins.BasePluginExtension
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.tasks.SourceSetContainer
@@ -79,19 +80,20 @@ class UniMixinsPlugin : Plugin<Project> {
             }
         }
 
-        project.tasks.withType(ShadowJar::class.java).configureEach {
-            it.from(generated.resources)
+        project.tasks.withType(ShadowJar::class.java).configureEach { sJar ->
+            sJar.from(generated.resources)
 
-            it.manifest {
-                it.attributes(mapOf(
+            sJar.manifest { manifest ->
+                manifest.attributes(mapOf(
                     "Commit-ID" to versionDetails.gitHash,
                     "FMLCorePlugin" to project.findProperty("FMLCorePlugin")
                 ).filterValues { it != null })
             }
 
             // Copy licenses to a folder in META-INF, for the merged jar.
-            it.from("CREDITS", "LICENSE*", "README*")
-                .into("META-INF/${project.name}")
+            val licenses = listOf("CREDITS", "LICENSE*", "README*")
+            sJar.from(licenses) { it.into("META-INF/${project.name}") }
+            sJar.from(licenses) { it.into("") }
         }
 
         project.extensions.configure<UniminedExtension>("unimined") {
