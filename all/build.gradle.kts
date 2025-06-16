@@ -57,7 +57,7 @@ tasks.shadowJar {
             "Agent-Class" to "org.spongepowered.tools.agent.MixinAgent",
             "Can-Redefine-Classes" to true,
             "Can-Retransform-Classes" to true,
-            "Implementation-Version" to unimixins.uniMixVersion
+            "Implementation-Version" to unimixins.uniMixVersion.get()
         )
     }
 }

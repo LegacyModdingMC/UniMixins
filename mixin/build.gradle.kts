@@ -19,7 +19,7 @@ val shadowUniMix: Configuration by configurations.creating
 val shadowBridgeUniMix: Configuration by configurations.creating
 val shadowSourcesUniMix: Configuration by configurations.creating
 
-val mixinVersion = unimixins.uniMixVersion.toString()
+val mixinVersion = unimixins.uniMixVersion.get()
 val mixinDep = "io.github.legacymoddingmc:sponge-mixin:$mixinVersion"
 
 val mixinFlavorClassifier = "unimix.${mixinVersion.replace('+', '-')}"
