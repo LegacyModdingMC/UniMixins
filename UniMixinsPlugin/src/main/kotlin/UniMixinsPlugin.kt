@@ -68,15 +68,15 @@ class UniMixinsPlugin : Plugin<Project> {
             }
         }
 
-        project.tasks.named("processResources", ProcessResources::class.java) {
-            it.dependsOn(generateEmbeddedCorePluginFile)
+        project.tasks.named("processResources", ProcessResources::class.java) { task ->
+            task.dependsOn(generateEmbeddedCorePluginFile)
 
-            it.from("mcmod.info") {
-                it.filter(mapOf("tokens" to mapOf(
+            task.filesMatching("mcmod.info") { copy ->
+                copy.filter(mapOf("tokens" to mapOf(
                     "minecraftVersion" to minecraftVersion,
                     "uniMixinsVersion" to project.version.toString(),
-                    "projectUrl" to "https://github.com/LegacyModdingMC/UniMixins")
-                ), ReplaceTokens::class.java)
+                    "projectUrl" to "https://github.com/LegacyModdingMC/UniMixins")),
+                    ReplaceTokens::class.java)
             }
         }
 
