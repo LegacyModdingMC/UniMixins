@@ -1,11 +1,9 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import com.palantir.gradle.gitversion.GitVersionCacheService
-import com.palantir.gradle.gitversion.VersionDetails
 import org.apache.tools.ant.filters.ReplaceTokens
 import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.java.archives.Manifest
 import org.gradle.api.plugins.BasePluginExtension
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.tasks.SourceSetContainer
@@ -13,6 +11,7 @@ import org.gradle.jvm.toolchain.JavaLanguageVersion
 import org.gradle.language.jvm.tasks.ProcessResources
 import xyz.wagyourtail.unimined.api.UniminedExtension
 import java.io.File
+import java.lang.invoke.MethodHandle
 
 @Suppress("unused")
 class UniMixinsPlugin : Plugin<Project> {
@@ -37,11 +36,12 @@ class UniMixinsPlugin : Plugin<Project> {
 
         project.dependencies.add("compileOnly", "net.minecraftforge:forge:1.12.2-14.23.5.2860:universal")
 
-        val versionDetails = GitVersionCacheService
+        val gitVersion = GitVersionCacheService
             .getSharedGitVersionCacheService(project)
             .get()
+        val versionDetails = gitVersion
             .getVersionDetails(project.projectDir, null)
-        project.version = getGitVersion(versionDetails)
+        project.version = getUniMixinsVersion(gitVersion, project)
         project.group = "io.github.legacymoddingmc"
 
         val nameSuffix = if (project.name == "all") "" else "-${project.name}"
@@ -116,16 +116,13 @@ class UniMixinsPlugin : Plugin<Project> {
         }
     }
 
-    private fun getGitVersion(versionDetails: VersionDetails): String {
+    private fun getUniMixinsVersion(versionCacheService: GitVersionCacheService, project: Project): String {
         val override = System.getenv("VERSION")
         if (override != null) {
             println("VERSION set! Overriding version to $override")
             return override
         }
 
-        var ret = versionDetails.lastTag
-        if (versionDetails.commitDistance > 0) ret += "-${versionDetails.commitDistance}-${versionDetails.gitHash}"
-        if (!versionDetails.isCleanTag) ret += "-dirty"
-        return ret
+        return versionCacheService.getGitVersion(project.projectDir, null)
     }
 }
