@@ -34,6 +34,7 @@ tasks.shadowJar {
 
     // Exclude errant license files
     exclude("LICENSE*")
+    exclude("README.original.md")
 
     // Merge mcmod.info files
     transform(McmodInfoMerger("unimixins"))
