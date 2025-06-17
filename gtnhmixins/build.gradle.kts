@@ -47,6 +47,7 @@ tasks.shadowJar {
 
 	from(zipTree(mixinExtrasJar.get().archiveFile)) {
 		eachFile {
+			if (!path.endsWith(".class")) exclude()
 			path = "data/legacy_gtnh_mixinextras/" + path.replace(".class", ".klass")
 		}
 	}
