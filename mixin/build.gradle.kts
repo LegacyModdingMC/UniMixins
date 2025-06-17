@@ -133,6 +133,13 @@ tasks.shadowJar {
         }
     })
 
+    // Copy licenses to modularized path too
+    from(zipTree(mixinJarTask.get().archiveFile).matching {
+        include("LICENSE*")
+    }) {
+        into("META-INF/licenses/mixin")
+    }
+
     from(zipTree(bridgeJarTask.get().archiveFile).matching {
         include("org/spongepowered/asm/bridge/*")
     })
