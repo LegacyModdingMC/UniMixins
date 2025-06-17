@@ -122,7 +122,13 @@ tasks.shadowJar {
         exclude("module-info.class")
         eachFile {
             if (path.startsWith("META-INF/services/")) {
-                filter({ l -> (if (l.startsWith("org.spongepowered.asm.service.modlauncher.")) null else l).toString() })
+                @Suppress("NULL_FOR_NONNULL_TYPE")
+                filter { l ->
+                    if (l.startsWith("org.spongepowered.asm.service.modlauncher."))
+                        return@filter null
+                    else
+                        return@filter l
+                }
             }
         }
     })
