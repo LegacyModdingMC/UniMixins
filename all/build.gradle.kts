@@ -42,6 +42,9 @@ tasks.shadowJar {
     // Merge list of coremods
     append("META-INF/EmbeddedFMLCorePlugins.txt")
 
+    // Merge service files
+    mergeServiceFiles()
+
     // Only keep the manifest from this jar
     files("META-INF/MANIFEST.MF") {
         duplicatesStrategy = DuplicatesStrategy.EXCLUDE
