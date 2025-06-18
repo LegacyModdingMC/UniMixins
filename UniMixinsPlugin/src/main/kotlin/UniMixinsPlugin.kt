@@ -17,16 +17,18 @@ import java.lang.invoke.MethodHandle
 class UniMixinsPlugin : Plugin<Project> {
 
     override fun apply(project: Project): Unit {
-        project.plugins.apply("java")
-        project.plugins.apply("xyz.wagyourtail.unimined")
-        project.plugins.apply("com.palantir.git-version")
-        project.plugins.apply("com.gradleup.shadow")
+        val plugins = project.plugins
+        plugins.apply("java")
+        plugins.apply("xyz.wagyourtail.unimined")
+        plugins.apply("com.palantir.git-version")
+        plugins.apply("com.gradleup.shadow")
 
+        val extensions = project.extensions
         val minecraftVersion = "1.7.10"
         val forgeVersion = "10.13.4.1614-1.7.10"
-        project.extensions.create("unimixins", UniMixinsExtension::class.java)
+        extensions.create("unimixins", UniMixinsExtension::class.java)
 
-        project.extensions.configure<JavaPluginExtension>("java") {
+        extensions.configure<JavaPluginExtension>("java") {
             it.sourceCompatibility = JavaVersion.VERSION_1_8
             it.targetCompatibility = JavaVersion.VERSION_1_8
             it.toolchain {
@@ -45,17 +47,19 @@ class UniMixinsPlugin : Plugin<Project> {
         project.group = "io.github.legacymoddingmc"
 
         val nameSuffix = if (project.name == "all") "" else "-${project.name}"
-        project.extensions.configure<BasePluginExtension>("base") {
+        extensions.configure<BasePluginExtension>("base") {
             it.archivesName.set("+unimixins$nameSuffix-1.7.10")
         }
 
-        val sourceSets = project.extensions.getByName("sourceSets") as SourceSetContainer
+        val sourceSets = extensions.getByName("sourceSets") as SourceSetContainer
         val generated = sourceSets.create("generated")
         val genDir = project.layout.buildDirectory.file("genResources")
 
         generated.resources.srcDir(genDir)
 
-        val generateEmbeddedCorePluginFile = project.tasks.register("generateEmbeddedCorePluginFile") {
+        val tasks = project.tasks
+
+        val generateEmbeddedCorePluginFile = tasks.register("generateEmbeddedCorePluginFile") {
             it.doLast {
                 if (project.hasProperty("FMLCorePlugin")) {
                     val corePlugin = project.property("FMLCorePlugin") as String
@@ -68,7 +72,7 @@ class UniMixinsPlugin : Plugin<Project> {
             }
         }
 
-        project.tasks.named("processResources", ProcessResources::class.java) { task ->
+        tasks.named("processResources", ProcessResources::class.java) { task ->
             task.dependsOn(generateEmbeddedCorePluginFile)
 
             task.filesMatching("mcmod.info") { copy ->
@@ -80,7 +84,7 @@ class UniMixinsPlugin : Plugin<Project> {
             }
         }
 
-        project.tasks.withType(ShadowJar::class.java).configureEach { sJar ->
+        tasks.withType(ShadowJar::class.java).configureEach { sJar ->
             sJar.from(generated.resources)
 
             sJar.manifest { manifest ->
@@ -100,7 +104,7 @@ class UniMixinsPlugin : Plugin<Project> {
             sJar.from(project.projectDir) { it.include(licenses); it.into("") }
         }
 
-        project.extensions.configure<UniminedExtension>("unimined") {
+        extensions.configure<UniminedExtension>("unimined") {
             it.minecraft(sourceSets.getByName("main"), true) {
                 version = minecraftVersion
 
