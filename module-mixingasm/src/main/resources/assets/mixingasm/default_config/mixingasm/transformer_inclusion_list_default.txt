@@ -25,3 +25,4 @@ net.minecraftforge.*
 codechicken.core.asm.*
 codechicken.lib.asm.*
 org.spongepowered.asm.*
+ofdev.*
