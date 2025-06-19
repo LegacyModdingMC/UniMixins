@@ -1,5 +1,8 @@
 import org.apache.tools.ant.filters.ReplaceTokens
-import org.gradle.kotlin.dsl.filter
+
+plugins {
+    id("unimixins")
+}
 
 val mixingasmVersion = "0.3"
 version = "$version+$mixingasmVersion"

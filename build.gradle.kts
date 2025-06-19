@@ -11,6 +11,4 @@ subprojects {
     configure<UniMixinsExtension> {
         uniMixVersion = "0.15.3+mixin.0.8.7"
     }
-
-    apply(plugin = "unimixins")
 }

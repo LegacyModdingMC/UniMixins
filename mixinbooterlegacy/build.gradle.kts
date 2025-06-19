@@ -1,5 +1,13 @@
 import org.apache.tools.ant.filters.ReplaceTokens
 
+unimixins {
+	fmlCorePlugin = "io.github.tox1cozz.mixinbooterlegacy.MixinBooterLegacyPlugin"
+}
+
+plugins {
+	id("unimixins")
+}
+
 repositories {
 	maven {
 		name = "sponge"

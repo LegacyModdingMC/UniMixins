@@ -65,13 +65,13 @@ class UniMixinsPlugin : Plugin<Project> {
 
         val generateEmbeddedCorePluginFile = tasks.register("generateEmbeddedCorePluginFile") {
             it.doLast {
-                if (project.hasProperty("FMLCorePlugin")) {
-                    val corePlugin = project.property("FMLCorePlugin") as String
+                val fmlCorePlugin = unimixins.fmlCorePlugin.orNull
+                if (fmlCorePlugin != null) {
                     val dir = File(genDir.get().asFile, "META-INF")
                     dir.mkdirs()
 
                     val embeddedFile = File(dir, "EmbeddedFMLCorePlugins.txt")
-                    embeddedFile.writeText(corePlugin)
+                    embeddedFile.writeText(fmlCorePlugin)
                 }
             }
         }
@@ -106,7 +106,7 @@ class UniMixinsPlugin : Plugin<Project> {
             sJar.manifest { manifest ->
                 manifest.attributes(mapOf(
                     "Commit-ID" to versionDetails.gitHash,
-                    "FMLCorePlugin" to project.findProperty("FMLCorePlugin")
+                    "FMLCorePlugin" to unimixins.uniMixVersion.orNull
                 ).filterValues { it != null })
             }
 

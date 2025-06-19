@@ -1,3 +1,7 @@
+plugins {
+    id("unimixins")
+}
+
 val shadowArtifact: Configuration by configurations.creating
 shadowArtifact.isCanBeConsumed = true
 

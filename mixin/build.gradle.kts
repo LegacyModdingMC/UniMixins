@@ -1,6 +1,13 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.apache.tools.ant.filters.ReplaceTokens
-import org.gradle.kotlin.dsl.unimixins
+
+unimixins {
+    fmlCorePlugin = "io.github.legacymoddingmc.unimixins.mixin.MixinCore"
+}
+
+plugins {
+    id("unimixins")
+}
 
 val versionBase = version.toString()
 

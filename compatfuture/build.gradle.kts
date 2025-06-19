@@ -1,3 +1,11 @@
+unimixins {
+    fmlCorePlugin = "io.github.legacymoddingmc.unimixins.compatfuture.CompatFutureCore"
+}
+
+plugins {
+    id("unimixins")
+}
+
 tasks.shadowJar {
     configurations = listOf()
     

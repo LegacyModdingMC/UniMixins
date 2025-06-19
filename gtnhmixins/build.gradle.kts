@@ -1,6 +1,13 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.apache.tools.ant.filters.ReplaceTokens
-import org.gradle.kotlin.dsl.filter
+
+unimixins {
+	fmlCorePlugin = "com.gtnewhorizon.gtnhmixins.core.GTNHMixinsCore"
+}
+
+plugins {
+	id("unimixins")
+}
 
 val gtnhMixinsVersion = "2.2.0"
 val mixinExtrasVersion = "0.1.1"

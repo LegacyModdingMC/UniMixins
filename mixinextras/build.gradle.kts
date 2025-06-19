@@ -1,6 +1,14 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.apache.tools.ant.filters.ReplaceTokens
 
+unimixins {
+	fmlCorePlugin = "io.github.legacymoddingmc.unimixins.mixinextras.MixinExtrasCore"
+}
+
+plugins {
+	id("unimixins")
+}
+
 val mixinExtrasVersion = "0.4.1"
 val shadowSources by configurations.creating
 

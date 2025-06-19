@@ -1,3 +1,11 @@
+unimixins {
+    fmlCorePlugin = "io.github.legacymoddingmc.unimixins.compat.CompatCore"
+}
+
+plugins {
+    id("unimixins")
+}
+
 dependencies {
     compileOnly("org.spongepowered:mixin:0.8.5")
     shadow(project(":common", "shadowArtifact")) {
