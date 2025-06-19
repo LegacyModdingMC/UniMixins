@@ -17,13 +17,13 @@ dependencies {
 
 val moduleList =
     "\\nMixin," +
-    "\\nCompat," +
-    "\\nMixingasm," +
-    "\\nSpongeMixins," +
-    "\\nMixinBooterLegacy," +
-    "\\nGasStation," +
-    "\\nGTNHMixins, and" +
-    "\\nMixinExtras."
+    "Compat," +
+    "Mixingasm," +
+    "SpongeMixins," +
+    "MixinBooterLegacy," +
+    "GasStation," +
+    "GTNHMixins, and" +
+    "MixinExtras."
 
 tasks.processResources {
     files("mcmod.info") {
