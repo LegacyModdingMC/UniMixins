@@ -6,9 +6,11 @@ plugins {
 
 // See buildSrc/src/main/kotlin/UniMixinsPlugin for shared config logic.
 subprojects {
-    apply(plugin = "unimixins")
+    apply(plugin = "unimixinsConfig")
 
     configure<UniMixinsExtension> {
         uniMixVersion = "0.15.3+mixin.0.8.7"
     }
+
+    apply(plugin = "unimixins")
 }

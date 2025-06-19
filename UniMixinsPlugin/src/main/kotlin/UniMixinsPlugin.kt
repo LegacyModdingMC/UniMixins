@@ -30,7 +30,7 @@ class UniMixinsPlugin : Plugin<Project> {
         val extensions = project.extensions
         val minecraftVersion = "1.7.10"
         val forgeVersion = "10.13.4.1614-1.7.10"
-        extensions.create("unimixins", UniMixinsExtension::class.java)
+        val unimixins = extensions.getByType(UniMixinsExtension::class.java)
 
         extensions.configure<JavaPluginExtension>("java") {
             it.sourceCompatibility = JavaVersion.VERSION_1_8
