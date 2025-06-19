@@ -12,7 +12,6 @@ dependencies {
 }
 
 tasks.shadowJar {
-    archiveClassifier = ""
     configurations = listOf(project.configurations.shadow.get())
 
     relocate("io.github.legacymoddingmc.unimixins.common", "io.github.legacymoddingmc.unimixins.mixingasm.repackage.common")
@@ -26,11 +25,6 @@ tasks.shadowJar {
             "TweakOrder" to 0,
         )
     }
-}
-
-tasks.jar {
-    dependsOn(tasks.shadowJar)
-    enabled = false
 }
 
 tasks.processResources {

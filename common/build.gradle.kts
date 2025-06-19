@@ -1,8 +1,3 @@
-tasks.jar {
-    dependsOn(tasks.shadowJar)
-    enabled = false
-}
-
 val shadowArtifact: Configuration by configurations.creating
 shadowArtifact.isCanBeConsumed = true
 

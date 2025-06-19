@@ -4,14 +4,18 @@ import org.apache.tools.ant.filters.ReplaceTokens
 import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.artifacts.Configuration
+import org.gradle.api.component.AdhocComponentWithVariants
+import org.gradle.api.component.ConfigurationVariantDetails
 import org.gradle.api.plugins.BasePluginExtension
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.tasks.SourceSetContainer
+import org.gradle.jvm.tasks.Jar
 import org.gradle.jvm.toolchain.JavaLanguageVersion
 import org.gradle.language.jvm.tasks.ProcessResources
 import xyz.wagyourtail.unimined.api.UniminedExtension
 import java.io.File
-import java.lang.invoke.MethodHandle
+
 
 @Suppress("unused")
 class UniMixinsPlugin : Plugin<Project> {
@@ -84,8 +88,20 @@ class UniMixinsPlugin : Plugin<Project> {
             }
         }
 
-        tasks.withType(ShadowJar::class.java).configureEach { sJar ->
+        val cfgs = project.configurations
+        val shadowImplementation: Configuration = cfgs.maybeCreate("shadowImplementation")
+        shadowImplementation.isCanBeConsumed = false
+        shadowImplementation.isCanBeResolved = true
+
+        for (config in listOf("compileClasspath", "runtimeClasspath", "testCompileClasspath", "testRuntimeClasspath")) {
+            cfgs.getByName(config).extendsFrom(shadowImplementation)
+        }
+
+        val shadowJar = tasks.named("shadowJar", ShadowJar::class.java)
+        shadowJar.configure { sJar ->
             sJar.from(generated.resources)
+            sJar.configurations = listOf(shadowImplementation)
+            sJar.archiveClassifier.set("dev")
 
             sJar.manifest { manifest ->
                 manifest.attributes(mapOf(
@@ -104,9 +120,25 @@ class UniMixinsPlugin : Plugin<Project> {
             sJar.from(project.projectDir) { it.include(licenses); it.into("") }
         }
 
+        for (outgoingConfig in listOf("runtimeElements", "apiElements")) {
+            val outgoing = cfgs.getByName(outgoingConfig)
+            outgoing.outgoing.artifacts.clear()
+            outgoing.outgoing.artifact(shadowJar)
+        }
+
+        tasks.named("jar", Jar::class.java).configure { jar ->
+            jar.archiveClassifier.set("dev-preshadow")
+        }
+
+        val shadowRuntimeElements = cfgs.getByName("shadowRuntimeElements")
+        val javaComponent = project.components.named("java").get() as AdhocComponentWithVariants
+        javaComponent.withVariantsFromConfiguration(shadowRuntimeElements, ConfigurationVariantDetails::skip)
+
         extensions.configure<UniminedExtension>("unimined") {
             it.minecraft(sourceSets.getByName("main"), true) {
                 version = minecraftVersion
+                defaultRemapJar = false
+                defaultRemapSourcesJar = false
 
                 mappings {
                     searge()
@@ -115,6 +147,10 @@ class UniMixinsPlugin : Plugin<Project> {
 
                 minecraftForge {
                     loader(forgeVersion)
+                }
+
+                remap(tasks.getByName("shadowJar")) {
+                    prodNamespace("searge")
                 }
             }
         }

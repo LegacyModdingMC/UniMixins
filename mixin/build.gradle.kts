@@ -105,7 +105,6 @@ val bridgeJarTask = tasks.register<ShadowJar>("bridgeJarUniMix", ShadowJar::clas
 tasks.shadowJar {
     // Clear defaults for the shadow jar
     configurations = listOf()
-    archiveClassifier = ""
 
     version = "$versionBase+$mixinFlavorClassifier"
     from(sourceSets["main"].output)
@@ -191,10 +190,6 @@ tasks["jar"].dependsOn(shadowSourcesJarTask)
 
 unimined.minecraft {
 
-}
-
-tasks.jar {
-    enabled = false
 }
 
 val shadowArtifact: Configuration by configurations.creating

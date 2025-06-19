@@ -7,7 +7,6 @@ dependencies {
 
 tasks.shadowJar {
     configurations = listOf(project.configurations.shadow.get())
-    archiveClassifier = ""
 
     relocate("io.github.legacymoddingmc.unimixins.common", "io.github.legacymoddingmc.unimixins.compat.repackage.common")
 
@@ -18,11 +17,6 @@ tasks.shadowJar {
             "ForceLoadAsMod" to true,
         )
     }
-}
-
-tasks.jar {
-    dependsOn(tasks.shadowJar)
-    enabled = false
 }
 
 val shadowArtifact: Configuration by configurations.creating

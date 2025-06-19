@@ -21,7 +21,6 @@ val mblVersion = "1.2.1"
 version = "$version+$mblVersion"
 
 tasks.shadowJar {
-	archiveClassifier = ""
 	configurations = listOf(project.configurations.shadow.get())
 
 	relocate("io.github.legacymoddingmc.unimixins.common", "io.github.legacymoddingmc.unimixins.mixinbooterlegacy.repackage.common")
@@ -33,11 +32,6 @@ tasks.shadowJar {
 			"ForceLoadAsMod" to true,
 		)
 	}
-}
-
-tasks.jar {
-	dependsOn(tasks.shadowJar)
-	enabled = false
 }
 
 tasks.processResources {

@@ -8,7 +8,6 @@ val extraVersion = "2.0.1"
 version = "$version+gtnh.$extraVersion"
 
 tasks.shadowJar {
-	archiveClassifier = ""
 	configurations = listOf()
 	relocate("com.gtnewhorizon", "ru.timeconqueror.spongemixins.repackage.com.gtnewhorizon")
 	manifest {
@@ -26,11 +25,6 @@ tasks.processResources {
 			"gtnhMixinsVersion" to extraVersion
 		))
 	}
-}
-
-tasks.jar {
-	dependsOn(tasks.shadowJar)
-	enabled = false
 }
 
 val shadowArtifact: Configuration by configurations.creating

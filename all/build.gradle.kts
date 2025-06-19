@@ -30,8 +30,6 @@ tasks.processResources {
 }
 
 tasks.shadowJar {
-    archiveClassifier = ""
-
     // Exclude errant license files
     exclude("LICENSE*")
     exclude("README.original.md")
@@ -64,11 +62,6 @@ tasks.shadowJar {
             "Implementation-Version" to unimixins.uniMixVersion.get()
         )
     }
-}
-
-tasks.jar {
-    dependsOn(tasks.shadowJar)
-    enabled = false
 }
 
 unimined.minecraft {

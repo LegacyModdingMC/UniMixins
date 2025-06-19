@@ -1,6 +1,5 @@
 tasks.shadowJar {
     configurations = listOf()
-    archiveClassifier = ""
     
     relocate("io.github.legacymoddingmc.unimixins.compat.stub.cpw", "cpw")
 
@@ -10,11 +9,6 @@ tasks.shadowJar {
             "ForceLoadAsMod" to true,
         )
     }
-}
-
-tasks.jar {
-    dependsOn(tasks.shadowJar.get())
-    enabled = false
 }
 
 unimined.minecraft {

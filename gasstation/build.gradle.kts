@@ -20,7 +20,6 @@ dependencies {
 
 tasks.shadowJar {
 	configurations = listOf(project.configurations.shadow.get())
-	archiveClassifier = ""
 	relocate("io.github.legacymoddingmc.unimixins.common", "io.github.legacymoddingmc.unimixins.gasstation.repackage.common")
 
 	manifest {
@@ -31,11 +30,6 @@ tasks.shadowJar {
 			"MixinConfigs" to "mixins.gasstation.json",
 		)
 	}
-}
-
-tasks.jar {
-	enabled = false
-	dependsOn(tasks.shadowJar)
 }
 
 val shadowArtifact: Configuration by configurations.creating

@@ -11,7 +11,6 @@ dependencies {
 version = "$version+$mixinExtrasVersion"
 
 tasks.shadowJar {
-	archiveClassifier = ""
 	configurations = listOf(project.configurations.shadow.get())
 	
 	relocate("org.objectweb.asm", "org.spongepowered.asm.lib")
@@ -35,11 +34,6 @@ val shadowSourcesJar by tasks.registering(ShadowJar::class) {
 //	enabled = false
 //	dependsOn(shadowSourcesJar)
 //}
-
-tasks.jar {
-	enabled = false
-	dependsOn(tasks.shadowJar)
-}
 
 tasks.processResources {
 	files("mcmod.info") {

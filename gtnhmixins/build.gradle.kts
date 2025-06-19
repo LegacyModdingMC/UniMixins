@@ -39,7 +39,6 @@ val mixinExtrasJar by tasks.registering(ShadowJar::class) {
 
 // Configure the main shadowJar
 tasks.shadowJar {
-	archiveClassifier = ""
 	configurations = listOf(project.configurations.shadow.get())
 
 	relocate("org.objectweb.asm", "org.spongepowered.asm.lib")
@@ -62,15 +61,7 @@ tasks.shadowJar {
 			)
 		)
 	}
-}
 
-// Disable regular JAR and depend on shadowJar
-tasks.jar {
-	dependsOn(tasks.shadowJar)
-	enabled = false
-}
-
-tasks.shadowJar {
 	dependsOn(mixinExtrasJar)
 }
 
