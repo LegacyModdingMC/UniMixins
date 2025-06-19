@@ -21,6 +21,10 @@ dependencies {
 
 gradlePlugin {
     plugins {
+        create("unimixinsConfig") {
+            id = "unimixinsConfig"
+            implementationClass = "UniMixinsExtender"
+        }
         create("unimixins") {
             id = "unimixins"
             implementationClass = "UniMixinsPlugin"
