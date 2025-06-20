@@ -134,8 +134,8 @@ class UniMixinsPlugin : Plugin<Project> {
         val javaComponent = project.components.named("java").get() as AdhocComponentWithVariants
         javaComponent.withVariantsFromConfiguration(shadowRuntimeElements, ConfigurationVariantDetails::skip)
 
-        extensions.configure<UniminedExtension>("unimined") {
-            it.minecraft(sourceSets.getByName("main"), true) {
+        extensions.configure<UniminedExtension>("unimined") { unimined ->
+            unimined.minecraft(sourceSets.getByName("main"), true) {
                 version = minecraftVersion
                 defaultRemapJar = false
                 defaultRemapSourcesJar = false
