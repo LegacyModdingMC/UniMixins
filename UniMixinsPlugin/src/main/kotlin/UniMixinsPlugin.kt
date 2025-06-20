@@ -19,7 +19,7 @@ import java.io.File
 @Suppress("unused")
 class UniMixinsPlugin : Plugin<Project> {
 
-    override fun apply(project: Project): Unit {
+    override fun apply(project: Project) {
         val plugins = project.plugins
         plugins.apply("java")
         plugins.apply("xyz.wagyourtail.unimined")
