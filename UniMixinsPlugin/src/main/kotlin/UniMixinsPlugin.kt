@@ -149,8 +149,12 @@ class UniMixinsPlugin : Plugin<Project> {
                     loader(forgeVersion)
                 }
 
-                remap(tasks.getByName("shadowJar")) {
+                val remapJar = remap(tasks.getByName("shadowJar")) {
                     prodNamespace("searge")
+                }
+
+                tasks.named("assemble").configure { assemble ->
+                    assemble.dependsOn(remapJar)
                 }
             }
         }
