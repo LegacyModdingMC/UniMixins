@@ -127,6 +127,7 @@ The project needs to be compiled using Java 8. For example: `JAVA_HOME=/path/to/
 * `-Plocal`: use the locally built version of `unimix` when building the Mixin module.
     * Invoke `./gradlew publishToMavenLocal` in the UniMix repo first to install a local build.
 * `-PenableAltMixin`: build alternate flavors of the Mixin module, not just UniMix.
+* `-PpublishAll`: publish all modules, not just the combined one.
 
 ### Roadmap
 

@@ -1,0 +1,15 @@
+[
+  {
+    "modid": "mixingasm",
+    "name": "UniMixins: Mixingasm",
+    "description": "UniMixins module that implements Mixingasm (version: @mixingasmVersion@).",
+    "version": "@mixingasmVersion@+uni.@uniMixinsVersion@",
+    "mcversion": "@minecraftVersion@",
+    "url": "@projectUrl@",
+    "updateUrl": "",
+    "authorList": ["makamys"],
+    "credits": "",
+    "logoFile": "",
+    "screenshots": []
+  }
+]

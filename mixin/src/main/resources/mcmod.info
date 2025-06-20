@@ -1,0 +1,16 @@
+[
+  {
+    "modid": "unimixins-mixin",
+    "name": "UniMixins: Mixin (UniMix)",
+    "description": "UniMixins module that provides the UniMix fork of Mixin (version: @mixinClassifier@).",
+    "version": "@version@",
+    "mcversion": "1.7.10",
+    "url": "@projectUrl@",
+    "updateUrl": "",
+    "authorList": ["makamys"],
+    "credits": "",
+    "logoFile": "",
+    "screenshots": [],
+    "dependencies": []
+  }
+]

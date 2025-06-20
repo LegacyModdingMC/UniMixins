@@ -5,22 +5,27 @@ Refer to CREDITS, LICENSE, and README.original.md (whichever of these exist)
 inside their directories for full information, including reproductions of their
 original license texts.
 
-## SpongeMixins
+Part of the buildscript is adapted from https://github.com/LogicFan/shadow-json-transformer under the Apache v2 license.
+Requisite notices are in CREDITS in the repository root. Another part is adapted from
+https://github.com/GTNewHorizons/GTNHGradle under the LGPLv3. Again, requisite notices are in CREDITS.
 
-Directory: module-spongemixins
+## SpongeMixins
+Directory: spongemixins
 LICENSE: LGPLv3
 
 ## MixinBooterLegacy
-
-Directory: module-mixinbooterlegacy
+Directory: mixinbooterlegacy
 LICENSE: LGPLv2.1
 
 ## GasStation
-
-Directory: module-gasstation
-LICENSE: LGPLv3+SNEED
+Directory: gasstation
+LICENSE: LGPLv3
 
 ## GTNHMixins
-
-Directory: module-gtnhmixins
+Directory: gtnhmixins
 LICENSE: LGPLv3
+
+## UniMixinsPlugin
+Directory: UniMixinsPlugin
+LICENSE: LGPLv3
+Not technically a module proper, it just hosts shared build logic for the others.

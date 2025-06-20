@@ -1,0 +1,15 @@
+[
+  {
+    "modid": "spongemixins",
+    "name": "UniMixins: SpongeMixins",
+    "description": "UniMixins module that provides an emulation of SpongeMixins (version: @gtnhMixinsVersion@ from GTNHMixins).",
+    "version": "@gtnhMixinsVersion@+gtnh.uni.@uniMixinsVersion@",
+    "mcversion": "@minecraftVersion@",
+    "url": "@projectUrl@",
+    "updateUrl": "",
+    "authorList": ["Time_Conqueror", "mitchej123"],
+    "credits": "SpongePowered Team",
+    "logoFile": "",
+    "screenshots": []
+  }
+]

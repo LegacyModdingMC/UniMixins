@@ -1,0 +1,16 @@
+[
+  {
+    "modid": "gasstation",
+    "name": "UniMixins: GasStation",
+    "description": "UniMixins module that provides GasStation extras.\nDepends on: SpongeMixins, MixinBooterLegacy, MixinExtras",
+    "version": "@gasstationVersion@",
+    "mcversion": "@minecraftVersion@",
+    "url": "@projectUrl@",
+    "updateUrl": "",
+    "authorList": ["FalsePattern"],
+    "credits": "",
+    "logoFile": "",
+    "screenshots": [],
+    "dependencies": []
+  }
+]
