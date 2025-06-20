@@ -27,9 +27,11 @@ class UniMixinsPlugin : Plugin<Project> {
         plugins.apply("com.palantir.git-version")
         plugins.apply("com.gradleup.shadow")
 
-        val extensions = project.extensions
         val minecraftVersion = "1.7.10"
         val forgeVersion = "10.13.4.1614-1.7.10"
+
+        val extensions = project.extensions
+        extensions.getByType(JavaPluginExtension::class.java).withSourcesJar()
         val unimixins = extensions.getByType(UniMixinsExtension::class.java)
 
         extensions.configure<JavaPluginExtension>("java") {
