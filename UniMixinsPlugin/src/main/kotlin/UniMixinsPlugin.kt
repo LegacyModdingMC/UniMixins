@@ -108,7 +108,7 @@ class UniMixinsPlugin : Plugin<Project> {
             sJar.manifest { manifest ->
                 manifest.attributes(mapOf(
                     "Commit-ID" to versionDetails.gitHash,
-                    "FMLCorePlugin" to unimixins.uniMixVersion.orNull
+                    "FMLCorePlugin" to unimixins.fmlCorePlugin.orNull
                 ).filterValues { it != null })
             }
 
