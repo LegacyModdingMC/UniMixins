@@ -11,14 +11,11 @@ plugins {
 val mixinExtrasVersion = "0.4.1"
 
 dependencies {
-	shadow("io.github.llamalad7:mixinextras-common:$mixinExtrasVersion")
-	shadowSources("io.github.llamalad7:mixinextras-common:$mixinExtrasVersion:sources")
+	shadowImplSources("io.github.llamalad7:mixinextras-common:$mixinExtrasVersion")
 }
 version = "$version+$mixinExtrasVersion"
 
 tasks.shadowJar {
-	configurations = listOf(project.configurations.shadow.get())
-	
 	relocate("org.objectweb.asm", "org.spongepowered.asm.lib")
 	
 	manifest {
