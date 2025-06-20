@@ -33,11 +33,11 @@ val mixinFlavorClassifier = "unimix.${mixinVersion.replace('+', '-')}"
 
 dependencies {
     compileOnly("org.spongepowered:mixin:$spongepoweredMixinVersion")
-    compileOnly(project(":common", "shadowArtifact")) {
+    compileOnly(project(":common")) {
         isTransitive = false
     }
 
-    shadowUniMix(project(":common", "shadowArtifact")) {
+    shadowUniMix(project(":common")) {
         isTransitive = false
     }
     shadowUniMix(mixinDep) {
@@ -197,13 +197,4 @@ tasks["jar"].dependsOn(shadowSourcesJarTask)
 
 unimined.minecraft {
 
-}
-
-val shadowArtifact: Configuration by configurations.creating
-shadowArtifact.isCanBeConsumed = true
-
-artifacts {
-    add("shadowArtifact", tasks["shadowJar"]) {
-        builtBy(tasks["shadowJar"])
-    }
 }

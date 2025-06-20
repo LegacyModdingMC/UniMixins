@@ -23,10 +23,10 @@ repositories {
 
 dependencies {
 	compileOnly("org.spongepowered:mixin:0.8.7")
-	shadow(project(":common", "shadowArtifact")) {
+	shadow(project(":common")) {
 		isTransitive = false
 	}
-	compileOnly(project(":mixingasm", "shadowArtifact")) {
+	compileOnly(project(":mixingasm")) {
 		isTransitive = false
 	}
 	compileOnly("com.github.LlamaLad7:MixinExtras:$mixinExtrasVersion")
@@ -70,15 +70,6 @@ tasks.shadowJar {
 	}
 
 	dependsOn(mixinExtrasJar)
-}
-
-val shadowArtifact: Configuration by configurations.creating
-shadowArtifact.isCanBeConsumed = true
-
-artifacts {
-	add("shadowArtifact", tasks["shadowJar"]) {
-		builtBy(tasks["shadowJar"])
-	}
 }
 
 tasks.processResources {

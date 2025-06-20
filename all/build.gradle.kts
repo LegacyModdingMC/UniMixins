@@ -5,14 +5,14 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":mixin", "shadowArtifact"))
-    implementation(project(":compat", "shadowArtifact"))
-    implementation(project(":mixingasm", "shadowArtifact"))
-    implementation(project(":spongemixins", "shadowArtifact"))
-    implementation(project(":mixinbooterlegacy", "shadowArtifact"))
-    implementation(project(":gasstation", "shadowArtifact"))
-    implementation(project(":gtnhmixins", "shadowArtifact"))
-    implementation(project(":mixinextras", "shadowArtifact"))
+    implementation(project(":mixin"))
+    implementation(project(":compat"))
+    implementation(project(":mixingasm"))
+    implementation(project(":spongemixins"))
+    implementation(project(":mixinbooterlegacy"))
+    implementation(project(":gasstation"))
+    implementation(project(":gtnhmixins"))
+    implementation(project(":mixinextras"))
 }
 
 val moduleList =

@@ -8,7 +8,7 @@ plugins {
 
 dependencies {
     compileOnly("org.spongepowered:mixin:0.8.5")
-    shadow(project(":common", "shadowArtifact")) {
+    shadow(project(":common")) {
         isTransitive = false
     }
 }
@@ -24,15 +24,6 @@ tasks.shadowJar {
             "FMLCorePluginContainsFMLMod" to true,
             "ForceLoadAsMod" to true,
         )
-    }
-}
-
-val shadowArtifact: Configuration by configurations.creating
-shadowArtifact.isCanBeConsumed = true
-
-artifacts {
-    add("shadowArtifact", tasks["shadowJar"]) {
-        builtBy(tasks["shadowJar"])
     }
 }
 

@@ -20,7 +20,7 @@ repositories {
 
 dependencies {
 	compileOnly("org.spongepowered:mixin:0.8.5-gasstation_7")
-	shadow(project(":common", "shadowArtifact")) {
+	shadow(project(":common")) {
 		isTransitive = false
 	}
 }
@@ -52,13 +52,4 @@ tasks.processResources {
 
 unimined.minecraft {
 
-}
-
-val shadowArtifact: Configuration by configurations.creating
-shadowArtifact.isCanBeConsumed = true
-
-artifacts {
-	add("shadowArtifact", tasks["shadowJar"]) {
-		builtBy(tasks["shadowJar"])
-	}
 }

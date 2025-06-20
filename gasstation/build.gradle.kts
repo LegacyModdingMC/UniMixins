@@ -20,8 +20,8 @@ repositories {
 
 dependencies {
 	compileOnly("org.spongepowered:mixin:$gasMixVersion")
-	compileOnly(project(":mixinbooterlegacy", "shadowArtifact"))
-	shadow(project(":common", "shadowArtifact")) {
+	compileOnly(project(":mixinbooterlegacy"))
+	shadow(project(":common")) {
 		isTransitive = false
 	}
 }
@@ -37,15 +37,6 @@ tasks.shadowJar {
 			"ForceLoadAsMod" to true,
 			"MixinConfigs" to "mixins.gasstation.json",
 		)
-	}
-}
-
-val shadowArtifact: Configuration by configurations.creating
-shadowArtifact.isCanBeConsumed = true
-
-artifacts {
-	add("shadowArtifact", tasks["shadowJar"]) {
-		builtBy(tasks["shadowJar"])
 	}
 }
 

@@ -8,8 +8,8 @@ val mixingasmVersion = "0.3"
 version = "$version+$mixingasmVersion"
 
 dependencies {
-    implementation(project(":mixin", "shadowArtifact"))
-    shadow(project(":common", "shadowArtifact")) {
+    implementation(project(":mixin"))
+    shadow(project(":common")) {
         isTransitive = false
     }
 }
@@ -35,14 +35,6 @@ tasks.processResources {
         filter<ReplaceTokens>("tokens" to mapOf(
             "mixingasmVersion" to mixingasmVersion
         ))
-    }
-}
-
-val shadowArtifact by configurations.creating
-shadowArtifact.isCanBeConsumed = true
-artifacts {
-    add("shadowArtifact", tasks["shadowJar"]) {
-        builtBy(tasks["shadowJar"])
     }
 }
 
