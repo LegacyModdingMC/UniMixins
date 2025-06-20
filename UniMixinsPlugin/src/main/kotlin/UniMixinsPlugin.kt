@@ -98,10 +98,10 @@ class UniMixinsPlugin : Plugin<Project> {
             cfg.isCanBeResolved = true
         }
 
+        shadowImplementation.extendsFrom(shadowImplSources)
         for (config in listOf("compileClasspath", "runtimeClasspath", "testCompileClasspath", "testRuntimeClasspath")) {
             cfgs.getByName(config)
                 .extendsFrom(shadowImplementation)
-                .extendsFrom(shadowImplSources)
         }
 
         // Add the sources from the dual set...
