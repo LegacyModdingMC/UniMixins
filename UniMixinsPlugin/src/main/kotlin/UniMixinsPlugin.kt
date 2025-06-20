@@ -105,8 +105,10 @@ class UniMixinsPlugin : Plugin<Project> {
         }
 
         // Add the sources from the dual set...
-        shadowSources.dependencies.addAll(shadowImplSources.dependencies.map {
-            project.dependencies.create("${it.group}:${it.name}:${it.version}:sources")
+        shadowSources.dependencies.addAllLater(project.provider {
+            shadowImplSources.dependencies.map {
+                project.dependencies.create("${it.group}:${it.name}:${it.version}:sources")
+            }
         })
 
         // ...and copy the files into the source jar
