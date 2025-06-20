@@ -4,7 +4,6 @@ import org.apache.tools.ant.filters.ReplaceTokens
 import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.artifacts.Configuration
 import org.gradle.api.component.AdhocComponentWithVariants
 import org.gradle.api.component.ConfigurationVariantDetails
 import org.gradle.api.plugins.BasePluginExtension
@@ -91,12 +90,30 @@ class UniMixinsPlugin : Plugin<Project> {
         }
 
         val cfgs = project.configurations
-        val shadowImplementation: Configuration = cfgs.maybeCreate("shadowImplementation")
-        shadowImplementation.isCanBeConsumed = false
-        shadowImplementation.isCanBeResolved = true
+        val shadowImplementation = cfgs.maybeCreate("shadowImplementation")
+        val shadowImplSources = cfgs.maybeCreate("shadowImplSources")
+        val shadowSources = cfgs.maybeCreate("shadowSources")
+        for (cfg in listOf(shadowImplementation, shadowImplSources)) {
+            cfg.isCanBeConsumed = false
+            cfg.isCanBeResolved = true
+        }
 
         for (config in listOf("compileClasspath", "runtimeClasspath", "testCompileClasspath", "testRuntimeClasspath")) {
-            cfgs.getByName(config).extendsFrom(shadowImplementation)
+            cfgs.getByName(config)
+                .extendsFrom(shadowImplementation)
+                .extendsFrom(shadowImplSources)
+        }
+
+        // Add the sources from the dual set...
+        shadowSources.dependencies.addAll(shadowImplSources.dependencies.map {
+            project.dependencies.create("${it.group}:${it.name}:${it.version}:sources")
+        })
+
+        // ...and copy the files into the source jar
+        tasks.named("sourcesJar", Jar::class.java) {
+            it.from(shadowSources.map { source ->
+                project.zipTree(source)
+            })
         }
 
         val shadowJar = tasks.named("shadowJar", ShadowJar::class.java)
