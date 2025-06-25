@@ -8,14 +8,12 @@ plugins {
 
 dependencies {
     compileOnly("org.spongepowered:mixin:0.8.5")
-    shadow(project(":common")) {
+    shadowImplementation(project(":common")) {
         isTransitive = false
     }
 }
 
 tasks.shadowJar {
-    configurations = listOf(project.configurations.shadow.get())
-
     relocate("io.github.legacymoddingmc.unimixins.common", "io.github.legacymoddingmc.unimixins.compat.repackage.common")
 
     manifest {

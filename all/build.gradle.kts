@@ -5,14 +5,16 @@ plugins {
 }
 
 dependencies {
+    // TODO: make this work
     shadowImplementation(project(":mixin"))
-    shadowImplementation(project(":compat"))
-    shadowImplementation(project(":mixingasm"))
-    shadowImplementation(project(":spongemixins"))
-    shadowImplementation(project(":mixinbooterlegacy"))
-    shadowImplementation(project(":gasstation"))
-    shadowImplementation(project(":gtnhmixins"))
-    shadowImplementation(project(":mixinextras"))
+    // TODO: make this suck less
+    shadowImplementation(project(":compat"));            shadowSources(project(":compat", "sourcesElements"))
+    shadowImplementation(project(":mixingasm"));         shadowSources(project(":mixingasm", "sourcesElements"))
+    shadowImplementation(project(":spongemixins"));      shadowSources(project(":spongemixins", "sourcesElements"))
+    shadowImplementation(project(":mixinbooterlegacy")); shadowSources(project(":mixinbooterlegacy", "sourcesElements"))
+    shadowImplementation(project(":gasstation"));        shadowSources(project(":gasstation", "sourcesElements"))
+    shadowImplementation(project(":gtnhmixins"));        shadowSources(project(":gtnhmixins", "sourcesElements"))
+    shadowImplementation(project(":mixinextras"));       shadowSources(project(":mixinextras", "sourcesElements"))
 }
 
 val moduleList =

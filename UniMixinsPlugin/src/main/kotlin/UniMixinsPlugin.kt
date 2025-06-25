@@ -6,6 +6,7 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.component.AdhocComponentWithVariants
 import org.gradle.api.component.ConfigurationVariantDetails
+import org.gradle.api.file.DuplicatesStrategy
 import org.gradle.api.plugins.BasePluginExtension
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.tasks.SourceSetContainer
@@ -100,8 +101,7 @@ class UniMixinsPlugin : Plugin<Project> {
 
         shadowImplementation.extendsFrom(shadowImplSources)
         for (config in listOf("compileClasspath", "runtimeClasspath", "testCompileClasspath", "testRuntimeClasspath")) {
-            cfgs.getByName(config)
-                .extendsFrom(shadowImplementation)
+            cfgs.getByName(config).extendsFrom(shadowImplementation)
         }
 
         // Add the sources from the dual set...
@@ -112,7 +112,11 @@ class UniMixinsPlugin : Plugin<Project> {
         })
 
         // ...and copy the files into the source jar
-        tasks.named("sourcesJar", Jar::class.java) {
+        val sourcesJar = tasks.named("sourcesJar", Jar::class.java)
+        sourcesJar.configure {
+            it.duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+            it.dependsOn(shadowSources)
             it.from(shadowSources.map { source ->
                 project.zipTree(source)
             })
