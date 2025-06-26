@@ -22,7 +22,6 @@ repositories {
     }
 }
 
-val shadowBridgeUniMix: Configuration by configurations.creating
 val shadowSourcesUniMix: Configuration by configurations.creating
 
 val mixinVersion = unimixins.uniMixVersion.get()
@@ -45,10 +44,6 @@ dependencies {
     shadowImplementation("org.ow2.asm:asm-tree:$asmVersion")
     shadowImplementation("org.ow2.asm:asm-commons:$asmVersion")
     shadowImplementation("org.ow2.asm:asm-util:$asmVersion")
-
-    shadowBridgeUniMix(mixinDep) {
-        isTransitive = false
-    }
 
     shadowSourcesUniMix("$mixinDep:sources") {
         isTransitive = false
@@ -101,7 +96,6 @@ val mixinJarTask = tasks.register<ShadowJar>("mixinJarUniMix", ShadowJar::class)
 val bridgeJarTask = tasks.register<ShadowJar>("bridgeJarUniMix", ShadowJar::class) {
     destinationDirectory = file("build/tmp")
     archiveClassifier = "tmpBridgeUniMix"
-    configurations = listOf(shadowBridgeUniMix)
 
     include("org/spongepowered/asm/bridge/*")
 }
