@@ -4,6 +4,7 @@ import org.apache.tools.ant.filters.ReplaceTokens
 import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.artifacts.ProjectDependency
 import org.gradle.api.component.AdhocComponentWithVariants
 import org.gradle.api.component.ConfigurationVariantDetails
 import org.gradle.api.file.DuplicatesStrategy
@@ -107,7 +108,13 @@ class UniMixinsPlugin : Plugin<Project> {
         // Add the sources from the dual set...
         shadowSources.dependencies.addAllLater(project.provider {
             shadowImplSources.dependencies.map {
-                project.dependencies.create("${it.group}:${it.name}:${it.version}:sources")
+                if (it is ProjectDependency) {
+                    project.dependencies.project(mapOf(
+                        "path" to it.path,
+                        "configuration" to "sourcesElements"))
+                } else {
+                    project.dependencies.create("${it.group}:${it.name}:${it.version}:sources")
+                }
             }
         })
 
