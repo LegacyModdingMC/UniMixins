@@ -88,7 +88,6 @@ val mixinJarTask = tasks.register<ShadowJar>("mixinJarUniMix", ShadowJar::class)
     exclude("**/module-info.class")
 
     // Exclude jar-specific stuff
-
     exclude("META-INF/MANIFEST.MF", "META-INF/maven/**", "META-INF/*.RSA", "META-INF/*.SF")
 }
 
@@ -96,6 +95,7 @@ val mixinJarTask = tasks.register<ShadowJar>("mixinJarUniMix", ShadowJar::class)
 val bridgeJarTask = tasks.register<ShadowJar>("bridgeJarUniMix", ShadowJar::class) {
     destinationDirectory = file("build/tmp")
     archiveClassifier = "tmpBridgeUniMix"
+    configurations = listOf(project.configurations.shadowImplementation.get())
 
     include("org/spongepowered/asm/bridge/*")
 }
