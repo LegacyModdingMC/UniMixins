@@ -1,0 +1,15 @@
+[
+  {
+    "modid": "unimixins-compat",
+    "name": "UniMixins: Compatibility",
+    "description": "UniMixins module that improves compatibility and helps debug crashes.",
+    "version": "@uniMixinsVersion@",
+    "mcversion": "@minecraftVersion@",
+    "url": "@projectUrl@",
+    "updateUrl": "",
+    "authorList": ["makamys"],
+    "credits": "",
+    "logoFile": "",
+    "screenshots": []
+  }
+]

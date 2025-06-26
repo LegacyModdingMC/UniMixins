@@ -1,0 +1,193 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+import org.apache.tools.ant.filters.ReplaceTokens
+
+unimixins {
+    fmlCorePlugin = "io.github.legacymoddingmc.unimixins.mixin.MixinCore"
+}
+
+plugins {
+    id("unimixins")
+}
+
+val versionBase = version.toString()
+
+val spongepoweredMixinVersion = "0.8.7"
+
+val asmVersion = "9.7.1"
+
+repositories {
+    maven {
+        name = "GTNH Third-Party Maven"
+        url = uri("https://nexus.gtnewhorizons.com/repository/thirdparty/")
+    }
+}
+
+val shadowSourcesUniMix: Configuration by configurations.creating
+
+val mixinVersion = unimixins.uniMixVersion.get()
+val mixinDep = "io.github.legacymoddingmc:sponge-mixin:$mixinVersion"
+
+val mixinFlavorClassifier = "unimix.${mixinVersion.replace('+', '-')}"
+
+dependencies {
+    compileOnly("org.spongepowered:mixin:$spongepoweredMixinVersion")
+    compileOnly(project(":common")) {
+        isTransitive = false
+    }
+
+    shadowImplementation(project(":common")) {
+        isTransitive = false
+    }
+    shadowImplementation(mixinDep) {
+        exclude(group = "org.ow2.asm")
+    }
+    shadowImplementation("org.ow2.asm:asm-tree:$asmVersion")
+    shadowImplementation("org.ow2.asm:asm-commons:$asmVersion")
+    shadowImplementation("org.ow2.asm:asm-util:$asmVersion")
+
+    shadowSourcesUniMix("$mixinDep:sources") {
+        isTransitive = false
+    }
+}
+
+tasks.processResources {
+    files("mcmod.info") {
+        filter<ReplaceTokens>("tokens" to mapOf(
+            "mixinClassifier" to mixinFlavorClassifier,
+            "version" to "$versionBase+$mixinFlavorClassifier"
+        ))
+    }
+}
+
+// We want to *not* relocate ASM in the bridge classes. So we use a multi-step
+// build procedure:
+
+// 1. Create relocated Mixin jar, without the bridge classes
+val mixinJarTask = tasks.register<ShadowJar>("mixinJarUniMix", ShadowJar::class) {
+    destinationDirectory = file("build/tmp")
+    archiveClassifier = "tmpUnimix"
+    configurations = listOf(project.configurations.shadowImplementation.get())
+
+    relocate("org.objectweb.asm", "org.spongepowered.asm.lib")
+    relocate("com.google", "org.spongepowered.libraries.com.google")
+
+    exclude("org/spongepowered/asm/bridge/RemapperAdapter.class")
+    exclude("org/spongepowered/asm/bridge/RemapperAdapterFML.class")
+
+    // Exclude stuff that's compiled for Java 16
+
+    exclude("org/spongepowered/asm/service/modlauncher/*")
+    exclude("org/spongepowered/asm/launch/MixinTransformationServiceLegacy*")
+    exclude("org/spongepowered/asm/launch/MixinLaunchPlugin*")
+    exclude("org/spongepowered/asm/launch/MixinTransformationService*")
+    exclude("org/spongepowered/asm/launch/platform/container/ContainerHandleModLauncherEx*")
+
+    exclude("META-INF/services/cpw.mods.modlauncher.api.ITransformationService")
+    exclude("META-INF/services/cpw.mods.modlauncher.serviceapi.ILaunchPluginService")
+
+    exclude("**/module-info.class")
+
+    // Exclude jar-specific stuff
+    exclude("META-INF/MANIFEST.MF", "META-INF/maven/**", "META-INF/*.RSA", "META-INF/*.SF")
+}
+
+// 2. Create Mixin jar without relocation, with *only* the bridge classes
+val bridgeJarTask = tasks.register<ShadowJar>("bridgeJarUniMix", ShadowJar::class) {
+    destinationDirectory = file("build/tmp")
+    archiveClassifier = "tmpBridgeUniMix"
+    configurations = listOf(project.configurations.shadowImplementation.get())
+
+    include("org/spongepowered/asm/bridge/*")
+}
+
+// 3. Combine the two jars
+tasks.shadowJar {
+    // Clear defaults for the shadow jar
+    configurations = listOf()
+
+    version = "$versionBase+$mixinFlavorClassifier"
+    from(sourceSets["main"].output)
+
+    relocate(
+        "io.github.legacymoddingmc.unimixins.common",
+        "io.github.legacymoddingmc.unimixins.mixin.repackage.common"
+    )
+
+    dependsOn(mixinJarTask)
+    dependsOn(bridgeJarTask)
+
+    from(zipTree(mixinJarTask.get().archiveFile).matching {
+        exclude("module-info.class")
+        eachFile {
+            if (path.startsWith("META-INF/services/")) {
+                @Suppress("NULL_FOR_NONNULL_TYPE")
+                filter { l ->
+                    if (l.startsWith("org.spongepowered.asm.service.modlauncher."))
+                        return@filter null
+                    else
+                        return@filter l
+                }
+            }
+        }
+    })
+
+    // Copy licenses to modularized path too
+    from(zipTree(mixinJarTask.get().archiveFile).matching {
+        include("LICENSE*")
+    }) {
+        into("META-INF/licenses/mixin")
+    }
+
+    from(zipTree(bridgeJarTask.get().archiveFile).matching {
+        include("org/spongepowered/asm/bridge/*")
+    })
+
+    manifest {
+        attributes(
+            "TweakClass" to "org.spongepowered.asm.launch.MixinTweaker",
+            "FMLCorePluginContainsFMLMod" to true,
+            "ForceLoadAsMod" to true,
+            "Premain-Class" to "org.spongepowered.tools.agent.MixinAgent",
+            "Agent-Class" to "org.spongepowered.tools.agent.MixinAgent",
+            "Can-Redefine-Classes" to true,
+            "Can-Retransform-Classes" to true,
+            "Implementation-Version" to mixinVersion
+        )
+    }
+
+    doLast {
+        delete(mixinJarTask.get().archiveFile)
+        delete(bridgeJarTask.get().archiveFile)
+    }
+}
+
+val shadowSourcesJarTask = tasks.register<ShadowJar>("shadowSourcesJar", ShadowJar::class) {
+    from(sourceSets["main"].allSource)
+
+    version = "$versionBase+$mixinFlavorClassifier"
+    archiveClassifier = "sources"
+    configurations = listOf(shadowSourcesUniMix)
+}
+
+tasks.jar {
+    dependsOn(shadowSourcesJarTask)
+    dependsOn(tasks.shadowJar)
+}
+
+/*if (publishModuleToMaven){
+    publishing {
+        publications {
+            create("maven$_flavor", MavenPublication) {
+                artifact tasks."shadowJar$_flavor"
+                artifact tasks."shadowSourcesJar"
+
+                artifactId = archivesBaseName.substring(1) + (mixinFlavor == "unimix" ? "" : "-" + mixinFlavor)
+                groupId = mavenGroupId
+            }
+        }
+    }
+}*/
+
+unimined.minecraft {
+
+}

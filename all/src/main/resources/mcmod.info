@@ -1,0 +1,11 @@
+[
+  {
+    "modid": "unimixins",
+    "name": "UniMixins",
+    "description": "UniMixins composite jar consisting of the following modules:@moduleList@",
+    "version": "@uniMixinsVersion@",
+    "mcversion": "1.7.10",
+    "url": "@projectUrl@",
+    "authorList": ["makamys"]
+  }
+]
