@@ -22,7 +22,6 @@ repositories {
     }
 }
 
-val shadowUniMix: Configuration by configurations.creating
 val shadowBridgeUniMix: Configuration by configurations.creating
 val shadowSourcesUniMix: Configuration by configurations.creating
 
@@ -37,15 +36,15 @@ dependencies {
         isTransitive = false
     }
 
-    shadowUniMix(project(":common")) {
+    shadowImplementation(project(":common")) {
         isTransitive = false
     }
-    shadowUniMix(mixinDep) {
+    shadowImplementation(mixinDep) {
         exclude(group = "org.ow2.asm")
     }
-    shadowUniMix("org.ow2.asm:asm-tree:$asmVersion")
-    shadowUniMix("org.ow2.asm:asm-commons:$asmVersion")
-    shadowUniMix("org.ow2.asm:asm-util:$asmVersion")
+    shadowImplementation("org.ow2.asm:asm-tree:$asmVersion")
+    shadowImplementation("org.ow2.asm:asm-commons:$asmVersion")
+    shadowImplementation("org.ow2.asm:asm-util:$asmVersion")
 
     shadowBridgeUniMix(mixinDep) {
         isTransitive = false
@@ -71,8 +70,8 @@ tasks.processResources {
 // 1. Create relocated Mixin jar, without the bridge classes
 val mixinJarTask = tasks.register<ShadowJar>("mixinJarUniMix", ShadowJar::class) {
     destinationDirectory = file("build/tmp")
-    archiveClassifier = "tmpMixinUniMix"
-    configurations = listOf(shadowUniMix)
+    archiveClassifier = "tmpUnimix"
+    configurations = listOf(project.configurations.shadowImplementation.get())
 
     relocate("org.objectweb.asm", "org.spongepowered.asm.lib")
     relocate("com.google", "org.spongepowered.libraries.com.google")
