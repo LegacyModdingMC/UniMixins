@@ -169,8 +169,6 @@ tasks.shadowJar {
     }
 }
 
-tasks["jar"].dependsOn(tasks.shadowJar)
-
 val shadowSourcesJarTask = tasks.register<ShadowJar>("shadowSourcesJar", ShadowJar::class) {
     from(sourceSets["main"].allSource)
 
@@ -179,7 +177,10 @@ val shadowSourcesJarTask = tasks.register<ShadowJar>("shadowSourcesJar", ShadowJ
     configurations = listOf(shadowSourcesUniMix)
 }
 
-tasks["jar"].dependsOn(shadowSourcesJarTask)
+tasks.jar {
+    dependsOn(shadowSourcesJarTask)
+    dependsOn(tasks.shadowJar)
+}
 
 /*if (publishModuleToMaven){
     publishing {
