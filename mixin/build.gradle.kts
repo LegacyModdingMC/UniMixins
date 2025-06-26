@@ -104,7 +104,6 @@ val bridgeJarTask = tasks.register<ShadowJar>("bridgeJarUniMix", ShadowJar::clas
     archiveClassifier = "tmpBridgeUniMix"
     configurations = listOf(shadowBridgeUniMix)
 
-    include("*.jar")
     include("org/spongepowered/asm/bridge/*")
 }
 
