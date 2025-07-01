@@ -1,6 +1,8 @@
 package com.gtnewhorizon.gtnhmixins.mixinbuilder;
 
 import com.gtnewhorizon.gtnhmixins.GTNHMixins;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -33,7 +35,8 @@ public interface IMixins {
         final List<String> mixinsToLoad = new ArrayList<>();
         final List<String> mixinsToNotLoad = new ArrayList<>();
         MixinBuilder.loadMixins(mixinsEnum, mixinsToLoad, mixinsToNotLoad);
-        GTNHMixins.LOGGER.info("Not loading the following mixins: {}", mixinsToNotLoad);
+        final Logger LOGGER = LogManager.getLogger("IMixins Loader");
+        LOGGER.info("Not loading the following mixins: {}", mixinsToNotLoad);
         return mixinsToLoad;
     }
 
