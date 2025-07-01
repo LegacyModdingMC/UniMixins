@@ -146,10 +146,10 @@ public class MixinBuilder {
         if (clientMixins != null) count += clientMixins.size();
         if (serverMixins != null) count += serverMixins.size();
         if (count == 0) {
-            throw new RuntimeException("No mixin class registered for IMixins : " + mixin.name());
+            throw new IllegalArgumentException("No mixin class registered for IMixins : " + mixin.name());
         }
         if (requirePhase && phase == null) {
-            throw new RuntimeException("No Phase specified for IMixins : " + mixin.name());
+            throw new IllegalArgumentException("No Phase specified for IMixins : " + mixin.name());
         }
     }
 
@@ -175,22 +175,22 @@ public class MixinBuilder {
 
     private static void validateTargetedMod(ITargetedMod target, Phase phaseIn) {
         if (target == null) {
-            throw new NullPointerException("ITargetedMod is null!");
+            throw new NullPointerException("ITargetedMod is null");
         }
         if (target.getModId() == null && target.getCoreModClass() == null && target.getTargetClass() == null && target.getClassNodeTest() == null && target.getJarNameTest() == null) {
-            throw new RuntimeException("No information at all provided by ITargetedMod " + target);
+            throw new IllegalArgumentException("No information at all provided by ITargetedMod " + target);
         }
         if (phaseIn == Phase.EARLY) {
             if (target.getCoreModClass() == null && target.getTargetClass() == null && target.getClassNodeTest() == null && target.getJarNameTest() == null) {
-                throw new RuntimeException("Not enough information provided by ITargetedMod " + target + " used by early mixins");
+                throw new IllegalArgumentException("Not enough information provided by ITargetedMod " + target + " used by early mixins");
             }
         } else if (phaseIn == Phase.LATE) {
             if (target.getModId() == null && target.getTargetClass() == null && target.getClassNodeTest() == null && target.getJarNameTest() == null) {
-                throw new RuntimeException("Not enough information provided by ITargetedMod " + target + " used by late mixins");
+                throw new IllegalArgumentException("Not enough information provided by ITargetedMod " + target + " used by late mixins");
             }
         }
         if (target.getClassNodeTest() != null && target.getTargetClass() == null) {
-            throw new RuntimeException("ITargetedMod " + target + " uses a ClassNode test but doesn't specify the target class");
+            throw new IllegalArgumentException("ITargetedMod " + target + " uses a ClassNode test but doesn't specify the target class");
         }
     }
 
