@@ -115,7 +115,7 @@ public class GTNHMixinsCore implements IFMLLoadingPlugin {
                         Reflection.mixinClassesField.set(Reflection.configField.get(config), mixins);
                         Reflection.registerConfigurationMethod.invoke(null, config);
                     }
-                } catch (Exception e) {
+                } catch (ReflectiveOperationException e) {
                     LOGGER.error("Unexpected error", e);
                 }
             }
