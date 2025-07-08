@@ -84,25 +84,25 @@ public class MixinBuilder extends AbstractBuilder {
         return this;
     }
 
-    protected static <E extends Enum<E> & IMixins> void loadMixins(Class<E> mixinsEnum, List<String> mixinsToLoad, List<String> mixinsToNotLoad) {
-        List<AbstractBuilder> builders = getEnabledBuildersForPhase(mixinsEnum, null, mixinsToNotLoad);
+    protected static <E extends Enum<E> & IMixins> void loadMixins(Class<E> mixinsEnum, List<String> toLoad, List<String> toNotLoad) {
+        List<AbstractBuilder> builders = getEnabledBuildersForPhase(mixinsEnum, null, toNotLoad);
         Set<ITargetMod> loadedTargets = getLoadedTargetedMods(builders, null, Collections.emptySet(), Collections.emptySet());
-        loadClasses(builders, loadedTargets, mixinsToLoad, mixinsToNotLoad);
+        loadClasses(builders, loadedTargets, toLoad, toNotLoad);
     }
 
-    protected static <E extends Enum<E> & IMixins> void loadEarlyMixins(Class<E> mixinsEnum, Set<String> loadedCoreMods, List<String> mixinsToLoad, List<String> mixinsToNotLoad) {
-        List<AbstractBuilder> builders = getEnabledBuildersForPhase(mixinsEnum, Phase.EARLY, mixinsToNotLoad);
+    protected static <E extends Enum<E> & IMixins> void loadEarlyMixins(Class<E> mixinsEnum, Set<String> loadedCoreMods, List<String> toLoad, List<String> toNotLoad) {
+        List<AbstractBuilder> builders = getEnabledBuildersForPhase(mixinsEnum, Phase.EARLY, toNotLoad);
         Set<ITargetMod> loadedTargets = getLoadedTargetedMods(builders, Phase.EARLY, loadedCoreMods, Collections.emptySet());
-        loadClasses(builders, loadedTargets, mixinsToLoad, mixinsToNotLoad);
+        loadClasses(builders, loadedTargets, toLoad, toNotLoad);
     }
 
-    protected static <E extends Enum<E> & IMixins> void loadLateMixins(Class<E> mixinsEnum, Set<String> loadedMods, List<String> mixinsToLoad, List<String> mixinsToNotLoad) {
-        List<AbstractBuilder> builders = getEnabledBuildersForPhase(mixinsEnum, Phase.LATE, mixinsToNotLoad);
+    protected static <E extends Enum<E> & IMixins> void loadLateMixins(Class<E> mixinsEnum, Set<String> loadedMods, List<String> toLoad, List<String> toNotLoad) {
+        List<AbstractBuilder> builders = getEnabledBuildersForPhase(mixinsEnum, Phase.LATE, toNotLoad);
         Set<ITargetMod> loadedTargets = getLoadedTargetedMods(builders, Phase.LATE, Collections.emptySet(), loadedMods);
-        loadClasses(builders, loadedTargets, mixinsToLoad, mixinsToNotLoad);
+        loadClasses(builders, loadedTargets, toLoad, toNotLoad);
     }
 
-    private static <E extends Enum<E> & IMixins> List<AbstractBuilder> getEnabledBuildersForPhase(Class<E> mixinsEnum, Phase loadingPhase, List<String> mixinsToNotLoad) {
+    private static <E extends Enum<E> & IMixins> List<AbstractBuilder> getEnabledBuildersForPhase(Class<E> mixinsEnum, Phase loadingPhase, List<String> toNotLoad) {
         final E[] constants = mixinsEnum.getEnumConstants();
         List<AbstractBuilder> list = new ArrayList<>(constants.length + 1);
         for (E mixin : constants) {
@@ -112,7 +112,7 @@ public class MixinBuilder extends AbstractBuilder {
             if (builder.applyIf.get()) {
                 list.add(builder);
             } else {
-                builder.addAllClassesTo(mixinsToNotLoad);
+                builder.addAllClassesTo(toNotLoad);
             }
         }
         return list;

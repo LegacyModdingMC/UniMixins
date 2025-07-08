@@ -81,16 +81,16 @@ public abstract class AbstractBuilder {
         return this;
     }
 
-    protected void addClassesForCurrentSide(List<String> classesToLoad, List<String> classesToNotLoad) {
+    protected void addClassesForCurrentSide(List<String> toLoad, List<String> toNotLoad) {
         final boolean isClient = FMLLaunchHandler.side().isClient();
-        if (commonClasses != null) classesToLoad.addAll(commonClasses);
+        if (commonClasses != null) toLoad.addAll(commonClasses);
         if (clientClasses != null) {
-            if (isClient) classesToLoad.addAll(clientClasses);
-            else classesToNotLoad.addAll(clientClasses);
+            if (isClient) toLoad.addAll(clientClasses);
+            else toNotLoad.addAll(clientClasses);
         }
         if (serverClasses != null) {
-            if (!isClient) classesToLoad.addAll(serverClasses);
-            else classesToNotLoad.addAll(serverClasses);
+            if (!isClient) toLoad.addAll(serverClasses);
+            else toNotLoad.addAll(serverClasses);
         }
     }
 

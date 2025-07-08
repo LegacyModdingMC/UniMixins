@@ -30,12 +30,12 @@ public interface IMixins extends IBaseTransformer {
      * </pre>
      */
     static <E extends Enum<E> & IMixins> List<String> getMixins(Class<E> mixinsEnum) {
-        final List<String> mixinsToLoad = new ArrayList<>();
-        final List<String> mixinsToNotLoad = new ArrayList<>();
-        MixinBuilder.loadMixins(mixinsEnum, mixinsToLoad, mixinsToNotLoad);
-        GTNHMixins.LOGGER.info("Loading the following mixins: {}", mixinsToLoad);
-        GTNHMixins.LOGGER.info("Not loading the following mixins: {}", mixinsToNotLoad);
-        return mixinsToLoad;
+        final List<String> toLoad = new ArrayList<>();
+        final List<String> toNotLoad = new ArrayList<>();
+        MixinBuilder.loadMixins(mixinsEnum, toLoad, toNotLoad);
+        GTNHMixins.LOGGER.info("Loading the following mixins: {}", toLoad);
+        GTNHMixins.LOGGER.info("Not loading the following mixins: {}", toNotLoad);
+        return toLoad;
     }
 
     /**
@@ -53,11 +53,11 @@ public interface IMixins extends IBaseTransformer {
      * </pre>
      */
     static <E extends Enum<E> & IMixins> List<String> getEarlyMixins(Class<E> mixinsEnum, Set<String> loadedCoreMods) {
-        final List<String> mixinsToLoad = new ArrayList<>();
-        final List<String> mixinsToNotLoad = new ArrayList<>();
-        MixinBuilder.loadEarlyMixins(mixinsEnum, loadedCoreMods, mixinsToLoad, mixinsToNotLoad);
-        GTNHMixins.LOGGER.info("Not loading the following EARLY mixins: {}", mixinsToNotLoad);
-        return mixinsToLoad;
+        final List<String> toLoad = new ArrayList<>();
+        final List<String> toNotLoad = new ArrayList<>();
+        MixinBuilder.loadEarlyMixins(mixinsEnum, loadedCoreMods, toLoad, toNotLoad);
+        GTNHMixins.LOGGER.info("Not loading the following EARLY mixins: {}", toNotLoad);
+        return toLoad;
     }
 
     /**
@@ -75,10 +75,10 @@ public interface IMixins extends IBaseTransformer {
      * </pre>
      */
     static <E extends Enum<E> & IMixins> List<String> getLateMixins(Class<E> mixinsEnum, Set<String> loadedMods) {
-        final List<String> mixinsToLoad = new ArrayList<>();
-        final List<String> mixinsToNotLoad = new ArrayList<>();
-        MixinBuilder.loadLateMixins(mixinsEnum, loadedMods, mixinsToLoad, mixinsToNotLoad);
-        GTNHMixins.LOGGER.info("Not loading the following LATE mixins: {}", mixinsToNotLoad.toString());
-        return mixinsToLoad;
+        final List<String> toLoad = new ArrayList<>();
+        final List<String> toNotLoad = new ArrayList<>();
+        MixinBuilder.loadLateMixins(mixinsEnum, loadedMods, toLoad, toNotLoad);
+        GTNHMixins.LOGGER.info("Not loading the following LATE mixins: {}", toNotLoad.toString());
+        return toLoad;
     }
 }
