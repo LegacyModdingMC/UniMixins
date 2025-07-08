@@ -154,11 +154,11 @@ public abstract class AbstractBuilder {
             }
         }
         if (loadingPhase == null) {
-            GTNHMixins.log("ITargetMods detected: {}", targets.toString());
-            GTNHMixins.log("ITargetMods not detected: {}", notPresent.toString());
+            GTNHMixins.log("ITargetMods found: {}", targets.toString());
+            GTNHMixins.log("ITargetMods not found: {}", notPresent.toString());
         } else {
-            GTNHMixins.log("ITargetMods detected at Phase {}: {}", loadingPhase, targets.toString());
-            GTNHMixins.log("ITargetMods not detected at Phase {}: {}", loadingPhase, notPresent.toString());
+            GTNHMixins.log("ITargetMods found during Phase {}: {}", loadingPhase, targets.toString());
+            GTNHMixins.log("ITargetMods not found during Phase {}: {}", loadingPhase, notPresent.toString());
         }
         return targets;
     }
