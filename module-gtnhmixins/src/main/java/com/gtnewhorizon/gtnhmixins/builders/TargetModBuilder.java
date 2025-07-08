@@ -89,6 +89,8 @@ public class TargetModBuilder {
         }
     }
 
+    private boolean foundTargetClass;
+
     protected boolean isTargetPresent(Set<String> loadedCoreMods, Set<String> loadedMods) {
         // 1. check coremod class (early mixins only)
         if (!loadedCoreMods.isEmpty() && this.coreModClass != null && loadedCoreMods.contains(this.coreModClass)) {
@@ -100,14 +102,21 @@ public class TargetModBuilder {
         }
         // 3. check class
         if (this.targetClass != null) {
+            if (foundTargetClass) {
+                return true;
+            }
             try {
                 ClassNode classNode = MixinService.getService().getBytecodeProvider().getClassNode(this.targetClass, false);
                 if (this.classNodeTest == null) {
+                    foundTargetClass = true;
                     return true;
                 }
                 // 4. test bytecode of this class
                 final boolean test = this.classNodeTest.test(classNode);
-                if (test) return true;
+                if (test) {
+                    foundTargetClass = true;
+                    return true;
+                }
             } catch (ClassNotFoundException | IOException ignored) {}
         }
         // 5 find jar files and test jar name
