@@ -8,6 +8,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -121,6 +123,34 @@ public abstract class AbstractBuilder {
             if (loadedTargets.contains(excludedMods.get(i))) return false;
         }
         return true;
+    }
+
+    protected static void loadClasses(List<AbstractBuilder> builders, Set<ITargetMod> loadedTargets, List<String> toLoad, List<String> toNotLoad) {
+        for (int i = 0; i < builders.size(); i++) {
+            AbstractBuilder builder = builders.get(i);
+            if (builder.shouldLoad(loadedTargets)) {
+                builder.addClassesForCurrentSide(toLoad, toNotLoad);
+            } else {
+                builder.addAllClassesTo(toNotLoad);
+            }
+        }
+    }
+
+    protected static Set<ITargetMod> getLoadedTargetedMods(List<AbstractBuilder> builders, Phase loadingPhase, Set<String> loadedCoreMods, Set<String> loadedMods) {
+        Set<ITargetMod> targets = new HashSet<>();
+        for (int i = 0; i < builders.size(); i++) {
+            builders.get(i).addAllTargetsTo(targets);
+        }
+        Iterator<ITargetMod> iterator = targets.iterator();
+        while (iterator.hasNext()) {
+            ITargetMod target = iterator.next();
+            TargetModBuilder builder = target.getBuilder();
+            TargetModBuilder.validateBuilder(builder, target, loadingPhase);
+            if (!builder.isTargetPresent(loadedCoreMods, loadedMods)) {
+                iterator.remove();
+            }
+        }
+        return targets;
     }
 }
 

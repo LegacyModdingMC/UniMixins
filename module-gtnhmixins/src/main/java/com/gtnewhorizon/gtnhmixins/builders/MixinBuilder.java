@@ -6,13 +6,11 @@ import com.gtnewhorizon.gtnhmixins.builders.IMixins.Side;
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Supplier;
 
-@SuppressWarnings({"unused", "ForLoopReplaceableByForEach"})
+@SuppressWarnings("unused")
 public class MixinBuilder extends AbstractBuilder {
 
     public MixinBuilder() {}
@@ -86,6 +84,40 @@ public class MixinBuilder extends AbstractBuilder {
         return this;
     }
 
+    protected static <E extends Enum<E> & IMixins> void loadMixins(Class<E> mixinsEnum, List<String> mixinsToLoad, List<String> mixinsToNotLoad) {
+        List<AbstractBuilder> builders = getEnabledBuildersForPhase(mixinsEnum, null, mixinsToNotLoad);
+        Set<ITargetMod> loadedTargets = getLoadedTargetedMods(builders, null, Collections.emptySet(), Collections.emptySet());
+        loadClasses(builders, loadedTargets, mixinsToLoad, mixinsToNotLoad);
+    }
+
+    protected static <E extends Enum<E> & IMixins> void loadEarlyMixins(Class<E> mixinsEnum, Set<String> loadedCoreMods, List<String> mixinsToLoad, List<String> mixinsToNotLoad) {
+        List<AbstractBuilder> builders = getEnabledBuildersForPhase(mixinsEnum, Phase.EARLY, mixinsToNotLoad);
+        Set<ITargetMod> loadedTargets = getLoadedTargetedMods(builders, Phase.EARLY, loadedCoreMods, Collections.emptySet());
+        loadClasses(builders, loadedTargets, mixinsToLoad, mixinsToNotLoad);
+    }
+
+    protected static <E extends Enum<E> & IMixins> void loadLateMixins(Class<E> mixinsEnum, Set<String> loadedMods, List<String> mixinsToLoad, List<String> mixinsToNotLoad) {
+        List<AbstractBuilder> builders = getEnabledBuildersForPhase(mixinsEnum, Phase.LATE, mixinsToNotLoad);
+        Set<ITargetMod> loadedTargets = getLoadedTargetedMods(builders, Phase.LATE, Collections.emptySet(), loadedMods);
+        loadClasses(builders, loadedTargets, mixinsToLoad, mixinsToNotLoad);
+    }
+
+    private static <E extends Enum<E> & IMixins> List<AbstractBuilder> getEnabledBuildersForPhase(Class<E> mixinsEnum, Phase loadingPhase, List<String> mixinsToNotLoad) {
+        final E[] constants = mixinsEnum.getEnumConstants();
+        List<AbstractBuilder> list = new ArrayList<>(constants.length + 1);
+        for (E mixin : constants) {
+            MixinBuilder builder = mixin.getBuilder();
+            validateBuilder(builder, mixin, loadingPhase != null);
+            if (builder.phase != loadingPhase) continue;
+            if (builder.applyIf.get()) {
+                list.add(builder);
+            } else {
+                builder.addAllClassesTo(mixinsToNotLoad);
+            }
+        }
+        return list;
+    }
+
     private static void validateBuilder(MixinBuilder builder, Enum<?> mixin, boolean requirePhase) {
         if (builder == null) {
             throw new NullPointerException("Builder is null for IMixins : " + mixin.name());
@@ -100,67 +132,5 @@ public class MixinBuilder extends AbstractBuilder {
         if (requirePhase && builder.phase == null) {
             throw new IllegalArgumentException("No Phase specified for IMixins : " + mixin.name());
         }
-    }
-
-    protected static <E extends Enum<E> & IMixins> void loadMixins(Class<E> mixinsEnum, List<String> mixinsToLoad, List<String> mixinsToNotLoad) {
-        List<MixinBuilder> builders = getEnabledBuildersForPhase(mixinsEnum, null, mixinsToNotLoad);
-        Set<ITargetMod> loadedTargets = getLoadedTargetedMods(builders, null, Collections.emptySet(), Collections.emptySet());
-        loadMixins(builders, loadedTargets, mixinsToLoad, mixinsToNotLoad);
-    }
-
-    protected static <E extends Enum<E> & IMixins> void loadEarlyMixins(Class<E> mixinsEnum, Set<String> loadedCoreMods, List<String> mixinsToLoad, List<String> mixinsToNotLoad) {
-        List<MixinBuilder> builders = getEnabledBuildersForPhase(mixinsEnum, Phase.EARLY, mixinsToNotLoad);
-        Set<ITargetMod> loadedTargets = getLoadedTargetedMods(builders, Phase.EARLY, loadedCoreMods, Collections.emptySet());
-        loadMixins(builders, loadedTargets, mixinsToLoad, mixinsToNotLoad);
-    }
-
-    protected static <E extends Enum<E> & IMixins> void loadLateMixins(Class<E> mixinsEnum, Set<String> loadedMods, List<String> mixinsToLoad, List<String> mixinsToNotLoad) {
-        List<MixinBuilder> builders = getEnabledBuildersForPhase(mixinsEnum, Phase.LATE, mixinsToNotLoad);
-        Set<ITargetMod> loadedTargets = getLoadedTargetedMods(builders, Phase.LATE, Collections.emptySet(), loadedMods);
-        loadMixins(builders, loadedTargets, mixinsToLoad, mixinsToNotLoad);
-    }
-
-    private static void loadMixins(List<MixinBuilder> builders, Set<ITargetMod> loadedTargets, List<String> mixinsToLoad, List<String> mixinsToNotLoad) {
-        for (int i = 0; i < builders.size(); i++) {
-            MixinBuilder builder = builders.get(i);
-            if (builder.shouldLoad(loadedTargets)) {
-                builder.addClassesForCurrentSide(mixinsToLoad, mixinsToNotLoad);
-            } else {
-                builder.addAllClassesTo(mixinsToNotLoad);
-            }
-        }
-    }
-
-    private static <E extends Enum<E> & IMixins> List<MixinBuilder> getEnabledBuildersForPhase(Class<E> mixinsEnum, Phase loadingPhase, List<String> mixinsToNotLoad) {
-        final E[] constants = mixinsEnum.getEnumConstants();
-        List<MixinBuilder> list = new ArrayList<>(constants.length + 1);
-        for (E mixin : constants) {
-            MixinBuilder builder = mixin.getBuilder();
-            validateBuilder(builder, mixin, loadingPhase != null);
-            if (builder.phase != loadingPhase) continue;
-            if (builder.applyIf.get()) {
-                list.add(builder);
-            } else {
-                builder.addAllClassesTo(mixinsToNotLoad);
-            }
-        }
-        return list;
-    }
-
-    private static Set<ITargetMod> getLoadedTargetedMods(List<MixinBuilder> builders, Phase loadingPhase, Set<String> loadedCoreMods, Set<String> loadedMods) {
-        Set<ITargetMod> targets = new HashSet<>();
-        for (int i = 0; i < builders.size(); i++) {
-            builders.get(i).addAllTargetsTo(targets);
-        }
-        Iterator<ITargetMod> iterator = targets.iterator();
-        while (iterator.hasNext()) {
-            ITargetMod target = iterator.next();
-            TargetModBuilder builder = target.getBuilder();
-            TargetModBuilder.validateBuilder(builder, target, loadingPhase);
-            if (!builder.isTargetPresent(loadedCoreMods, loadedMods)) {
-                iterator.remove();
-            }
-        }
-        return targets;
     }
 }
