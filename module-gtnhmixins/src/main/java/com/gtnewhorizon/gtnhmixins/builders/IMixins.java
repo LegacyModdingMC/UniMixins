@@ -1,4 +1,4 @@
-package com.gtnewhorizon.gtnhmixins.mixinbuilder;
+package com.gtnewhorizon.gtnhmixins.builders;
 
 import com.gtnewhorizon.gtnhmixins.GTNHMixins;
 import org.apache.logging.log4j.LogManager;

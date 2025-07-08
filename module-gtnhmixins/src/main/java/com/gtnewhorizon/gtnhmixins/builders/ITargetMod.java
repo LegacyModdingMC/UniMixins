@@ -1,4 +1,4 @@
-package com.gtnewhorizon.gtnhmixins.mixinbuilder;
+package com.gtnewhorizon.gtnhmixins.builders;
 
 import org.objectweb.asm.tree.ClassNode;
 

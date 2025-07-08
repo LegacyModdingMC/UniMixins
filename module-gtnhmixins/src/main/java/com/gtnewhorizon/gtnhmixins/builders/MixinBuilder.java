@@ -1,7 +1,7 @@
-package com.gtnewhorizon.gtnhmixins.mixinbuilder;
+package com.gtnewhorizon.gtnhmixins.builders;
 
-import com.gtnewhorizon.gtnhmixins.mixinbuilder.IMixins.Phase;
-import com.gtnewhorizon.gtnhmixins.mixinbuilder.IMixins.Side;
+import com.gtnewhorizon.gtnhmixins.builders.IMixins.Phase;
+import com.gtnewhorizon.gtnhmixins.builders.IMixins.Side;
 import cpw.mods.fml.relauncher.FMLLaunchHandler;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.service.MixinService;
@@ -77,10 +77,10 @@ public class MixinBuilder {
 
     /**
      * Mixins registered from a {@link com.gtnewhorizon.gtnhmixins.IEarlyMixinLoader} need to set this to
-     * {@link com.gtnewhorizon.gtnhmixins.mixinbuilder.IMixins.Phase#EARLY}.
+     * {@link com.gtnewhorizon.gtnhmixins.builders.IMixins.Phase#EARLY}.
      * <p>
      * Mixins registered from a {@link com.gtnewhorizon.gtnhmixins.ILateMixinLoader} need to set this to
-     * {@link com.gtnewhorizon.gtnhmixins.mixinbuilder.IMixins.Phase#LATE}.
+     * {@link com.gtnewhorizon.gtnhmixins.builders.IMixins.Phase#LATE}.
      * <p>
      * Mixins registered from a {@link org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin} need to leave this
      * null.
