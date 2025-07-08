@@ -13,7 +13,7 @@ import java.util.Set;
  * This interface needs to be implemented on an enum that declares all your mixins
  */
 @SuppressWarnings("unused")
-public interface IMixins {
+public interface IMixins extends IBaseTransformer {
 
     @Nonnull
     MixinBuilder getBuilder();
@@ -83,19 +83,5 @@ public interface IMixins {
         MixinBuilder.loadLateMixins(mixinsEnum, loadedMods, mixinsToLoad, mixinsToNotLoad);
         GTNHMixins.LOGGER.info("Not loading the following LATE mixins: {}", mixinsToNotLoad.toString());
         return mixinsToLoad;
-    }
-
-    /**
-     * Phase is only used for early and late mixins from gtnh mixins
-     */
-    enum Phase {
-        EARLY,
-        LATE
-    }
-
-    enum Side {
-        COMMON,
-        CLIENT,
-        SERVER
     }
 }

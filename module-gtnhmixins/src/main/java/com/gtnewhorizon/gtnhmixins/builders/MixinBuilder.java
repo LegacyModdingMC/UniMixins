@@ -1,7 +1,7 @@
 package com.gtnewhorizon.gtnhmixins.builders;
 
-import com.gtnewhorizon.gtnhmixins.builders.IMixins.Phase;
-import com.gtnewhorizon.gtnhmixins.builders.IMixins.Side;
+import com.gtnewhorizon.gtnhmixins.builders.IBaseTransformer.Phase;
+import com.gtnewhorizon.gtnhmixins.builders.IBaseTransformer.Side;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;

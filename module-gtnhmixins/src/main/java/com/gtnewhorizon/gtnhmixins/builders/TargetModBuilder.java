@@ -1,6 +1,6 @@
 package com.gtnewhorizon.gtnhmixins.builders;
 
-import com.gtnewhorizon.gtnhmixins.builders.IMixins.Phase;
+import com.gtnewhorizon.gtnhmixins.builders.IBaseTransformer.Phase;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.service.MixinService;
 
