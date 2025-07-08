@@ -2,6 +2,7 @@ package com.gtnewhorizon.gtnhmixins.core;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.util.concurrent.Runnables;
+import com.gtnewhorizon.gtnhmixins.GTNHMixins;
 import com.gtnewhorizon.gtnhmixins.IEarlyMixinLoader;
 import com.gtnewhorizon.gtnhmixins.Reflection;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
@@ -40,7 +41,7 @@ public class GTNHMixinsCore implements IFMLLoadingPlugin {
             .build();
 
     static {
-        LOGGER.info("Initializing GTNHMixins Core");
+        GTNHMixins.LOGGER.info("Initializing GTNHMixins Core");
         GTNHMixinsModule.init();
     }
 
@@ -90,13 +91,13 @@ public class GTNHMixinsCore implements IFMLLoadingPlugin {
 
     @Override
     public void injectData(Map<String, Object> data) {
-        LOGGER.debug("Examining core mod list");
+        GTNHMixins.LOGGER.debug("Examining core mod list");
         final Object coremodList = data.get("coremodList");
 
         if (coremodList instanceof List) {
             final Set<String> loadedCoremods = getLoadedCoremods((List<?>) coremodList);
 
-            LOGGER.debug("LoadedCoreMods {}", loadedCoremods.toString());
+            GTNHMixins.LOGGER.debug("LoadedCoreMods {}", loadedCoremods.toString());
             for (Object coremod : (List<?>) coremodList) {
                 // Identify any coremods that are `IEarlyMixinLoader`, and inject any relevant mixins 
                 try {
@@ -107,13 +108,13 @@ public class GTNHMixinsCore implements IFMLLoadingPlugin {
                         final Config config = Config.create(mixinConfig, null);
                         final List<String> mixins = loader.getMixins(loadedCoremods);
                         for (String mixin : mixins) {
-                            LOGGER.debug("Loading [{}] {}", mixinConfig, mixin);
+                            GTNHMixins.LOGGER.debug("Loading [{}] {}", mixinConfig, mixin);
                         }
                         Reflection.mixinClassesField.set(Reflection.configField.get(config), mixins);
                         Reflection.registerConfigurationMethod.invoke(null, config);
                     }
                 } catch (ReflectiveOperationException e) {
-                    LOGGER.error("Unexpected error", e);
+                    GTNHMixins.LOGGER.error("Unexpected error", e);
                 }
             }
         }

@@ -1,12 +1,12 @@
 package com.gtnewhorizon.gtnhmixins.builders;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import com.gtnewhorizon.gtnhmixins.GTNHMixins;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("unused")
 public interface ITransformers extends IBaseTransformer {
 
     @Nonnull
@@ -29,9 +29,8 @@ public interface ITransformers extends IBaseTransformer {
         final List<String> toLoad = new ArrayList<>();
         final List<String> toNotLoad = new ArrayList<>();
         TransformerBuilder.loadTransformers(transformerEnum, toLoad, toNotLoad);
-        final Logger LOGGER = LogManager.getLogger("ITransformers Loader");
-        LOGGER.info("Loading the following transformers: {}", toLoad);
-        LOGGER.info("Not loading the following transformers: {}", toNotLoad);
+        GTNHMixins.LOGGER.info("Loading the following transformers: {}", toLoad);
+        GTNHMixins.LOGGER.info("Not loading the following transformers: {}", toNotLoad);
         return toLoad.toArray(new String[0]);
     }
 }
