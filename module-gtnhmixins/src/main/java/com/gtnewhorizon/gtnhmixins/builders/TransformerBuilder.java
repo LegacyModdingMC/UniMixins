@@ -65,7 +65,7 @@ public class TransformerBuilder extends AbstractBuilder {
         return (TransformerBuilder) super.addExcludedMod(mod);
     }
 
-    public static <E extends Enum<E> & ITransformers> void loadTransformers(Class<E> transformerEnum, List<String> toLoad, List<String> toNotLoad) {
+    protected static <E extends Enum<E> & ITransformers> void loadTransformers(Class<E> transformerEnum, List<String> toLoad, List<String> toNotLoad) {
         List<AbstractBuilder> builders = getEnabledBuildersForPhase(transformerEnum, toNotLoad);
         Set<ITargetMod> loadedTargets = getLoadedTargetedMods(builders, null, Collections.emptySet(), Collections.emptySet());
         loadClasses(builders, loadedTargets, toLoad, toNotLoad);
