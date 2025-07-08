@@ -1,7 +1,11 @@
 package com.gtnewhorizon.gtnhmixins.builders;
 
+import com.gtnewhorizon.gtnhmixins.builders.IMixins.Phase;
 import org.objectweb.asm.tree.ClassNode;
+import org.spongepowered.asm.service.MixinService;
 
+import java.io.IOException;
+import java.util.Set;
 import java.util.function.Predicate;
 
 public class TargetModBuilder {
@@ -60,23 +64,53 @@ public class TargetModBuilder {
         return this;
     }
 
-    protected String getCoreModClass() {
-        return coreModClass;
+    protected static void validateBuilder(TargetModBuilder builder, ITargetMod target, Phase phaseIn) {
+        if (builder == null) {
+            throw new NullPointerException("TargetModBuilder is null for ITargetMod " + target);
+        }
+        if (builder.modId == null && builder.coreModClass == null && builder.targetClass == null && builder.classNodeTest == null && builder.jarNameTest == null) {
+            throw new IllegalArgumentException("No information at all provided by ITargetMod " + target);
+        }
+        if (phaseIn == Phase.EARLY) {
+            if (builder.coreModClass == null && builder.targetClass == null && builder.classNodeTest == null && builder.jarNameTest == null) {
+                throw new IllegalArgumentException("Not enough information provided by ITargetMod " + target + " used by early mixins");
+            }
+        } else if (phaseIn == Phase.LATE) {
+            if (builder.modId == null && builder.targetClass == null && builder.classNodeTest == null && builder.jarNameTest == null) {
+                throw new IllegalArgumentException("Not enough information provided by ITargetMod " + target + " used by late mixins");
+            }
+        }
+        if (builder.classNodeTest != null && builder.targetClass == null) {
+            throw new IllegalArgumentException("ITargetMod " + target + " uses a ClassNode test but doesn't specify the target class");
+        }
     }
 
-    protected String getModId() {
-        return modId;
-    }
-
-    protected String getTargetClass() {
-        return targetClass;
-    }
-
-    protected Predicate<ClassNode> getClassNodeTest() {
-        return classNodeTest;
-    }
-
-    protected Predicate<String> getJarNameTest() {
-        return jarNameTest;
+    protected boolean isTargetPresent(Set<String> loadedCoreMods, Set<String> loadedMods) {
+        // 1. check coremod class (early mixins only)
+        if (!loadedCoreMods.isEmpty() && this.coreModClass != null && loadedCoreMods.contains(this.coreModClass)) {
+            return true;
+        }
+        // 2. check modID (late mixins only)
+        if (!loadedMods.isEmpty() && this.modId != null && loadedMods.contains(this.modId)) {
+            return true;
+        }
+        // 3. check class
+        if (this.targetClass != null) {
+            try {
+                ClassNode classNode = MixinService.getService().getBytecodeProvider().getClassNode(this.targetClass, false);
+                if (this.classNodeTest == null) {
+                    return true;
+                }
+                // 4. test bytecode of this class
+                final boolean test = this.classNodeTest.test(classNode);
+                if (test) return true;
+            } catch (ClassNotFoundException | IOException ignored) {}
+        }
+        // 5 find jar files and test jar name
+        if (this.jarNameTest != null) {
+            // TODO implement jar name matching
+            throw new UnsupportedOperationException("Jar name matching isn't implemented yet");
+        }
+        return false;
     }
 }
