@@ -31,7 +31,7 @@ public interface ITransformers extends IBaseTransformer {
         TransformerBuilder.loadTransformers(transformerEnum, toLoad, toNotLoad);
         GTNHMixins.log("Not loading the following transformers: {}", toNotLoad);
         for (String transformer : toLoad) {
-            GTNHMixins.log("Loading {}", transformer);
+            GTNHMixins.log("Loading ITransformer {}", transformer);
         }
         return toLoad.toArray(new String[0]);
     }
