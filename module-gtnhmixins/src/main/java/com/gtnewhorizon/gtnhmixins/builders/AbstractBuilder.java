@@ -1,0 +1,127 @@
+package com.gtnewhorizon.gtnhmixins.builders;
+
+import com.gtnewhorizon.gtnhmixins.builders.IMixins.Phase;
+import com.gtnewhorizon.gtnhmixins.builders.IMixins.Side;
+import cpw.mods.fml.relauncher.FMLLaunchHandler;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.function.Supplier;
+
+@SuppressWarnings("ForLoopReplaceableByForEach")
+public abstract class AbstractBuilder {
+
+    protected @Nullable List<String> commonClasses;
+    protected @Nullable List<String> clientClasses;
+    protected @Nullable List<String> serverClasses;
+    protected @Nullable List<ITargetMod> requiredMods;
+    protected @Nullable List<ITargetMod> excludedMods;
+    protected @Nullable Phase phase;
+    protected @Nonnull Supplier<Boolean> applyIf = () -> true;
+
+    protected AbstractBuilder addCommonClasses(@Nonnull String... classes) {
+        Objects.requireNonNull(classes);
+        if (commonClasses == null) commonClasses = new ArrayList<>(4);
+        Collections.addAll(commonClasses, classes);
+        return this;
+    }
+
+    protected AbstractBuilder addClientClasses(@Nonnull String... classes) {
+        Objects.requireNonNull(classes);
+        if (clientClasses == null) clientClasses = new ArrayList<>(4);
+        Collections.addAll(clientClasses, classes);
+        return this;
+    }
+
+    protected AbstractBuilder addServerClasses(@Nonnull String... classes) {
+        Objects.requireNonNull(classes);
+        if (serverClasses == null) serverClasses = new ArrayList<>(4);
+        Collections.addAll(serverClasses, classes);
+        return this;
+    }
+
+    protected AbstractBuilder addSidedClasses(@Nonnull Side side, @Nonnull String... classes) {
+        Objects.requireNonNull(side);
+        switch (side) {
+            case COMMON:
+                return addCommonClasses(classes);
+            case CLIENT:
+                return addClientClasses(classes);
+            case SERVER:
+                return addServerClasses(classes);
+            default:
+                throw new IllegalArgumentException();
+        }
+    }
+
+    protected AbstractBuilder setApplyIf(@Nonnull Supplier<Boolean> applyIf) {
+        Objects.requireNonNull(applyIf);
+        this.applyIf = applyIf;
+        return this;
+    }
+
+    protected AbstractBuilder addRequiredMod(@Nonnull ITargetMod mod) {
+        Objects.requireNonNull(mod);
+        if (requiredMods == null) requiredMods = new ArrayList<>(2);
+        requiredMods.add(mod);
+        return this;
+    }
+
+    protected AbstractBuilder addExcludedMod(@Nonnull ITargetMod mod) {
+        Objects.requireNonNull(mod);
+        if (excludedMods == null) excludedMods = new ArrayList<>(2);
+        excludedMods.add(mod);
+        return this;
+    }
+
+    protected void addClassesForCurrentSide(List<String> classesToLoad, List<String> classesToNotLoad) {
+        final boolean isClient = FMLLaunchHandler.side().isClient();
+        if (commonClasses != null) classesToLoad.addAll(commonClasses);
+        if (clientClasses != null) {
+            if (isClient) classesToLoad.addAll(clientClasses);
+            else classesToNotLoad.addAll(clientClasses);
+        }
+        if (serverClasses != null) {
+            if (!isClient) classesToLoad.addAll(serverClasses);
+            else classesToNotLoad.addAll(serverClasses);
+        }
+    }
+
+    protected void addAllClassesTo(List<String> list) {
+        if (commonClasses != null) list.addAll(commonClasses);
+        if (clientClasses != null) list.addAll(clientClasses);
+        if (serverClasses != null) list.addAll(serverClasses);
+    }
+
+    protected void addAllTargetsTo(Set<ITargetMod> set) {
+        if (requiredMods != null) set.addAll(requiredMods);
+        if (excludedMods != null) set.addAll(excludedMods);
+    }
+
+    protected boolean shouldLoad(Set<ITargetMod> loadedTargets) {
+        return allRequiredModsPresent(loadedTargets) && noExcludedModsPresent(loadedTargets);
+    }
+
+    protected boolean allRequiredModsPresent(Set<ITargetMod> loadedTargets) {
+        if (requiredMods == null) return true;
+        for (int i = 0; i < requiredMods.size(); i++) {
+            if (!loadedTargets.contains(requiredMods.get(i))) return false;
+        }
+        return true;
+    }
+
+    protected boolean noExcludedModsPresent(Set<ITargetMod> loadedTargets) {
+        if (excludedMods == null) return true;
+        for (int i = 0; i < excludedMods.size(); i++) {
+            if (loadedTargets.contains(excludedMods.get(i))) return false;
+        }
+        return true;
+    }
+}
+
+
