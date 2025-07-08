@@ -79,6 +79,10 @@ public class TargetModBuilder {
             if (builder.modId == null && builder.targetClass == null && builder.classNodeTest == null && builder.jarNameTest == null) {
                 throw new IllegalArgumentException("Not enough information provided by ITargetMod " + target + " used by late mixins");
             }
+        } else {
+            if (builder.targetClass == null && builder.classNodeTest == null && builder.jarNameTest == null) {
+                throw new IllegalArgumentException("Not enough information provided by ITargetMod " + target);
+            }
         }
         if (builder.classNodeTest != null && builder.targetClass == null) {
             throw new IllegalArgumentException("ITargetMod " + target + " uses a ClassNode test but doesn't specify the target class");
