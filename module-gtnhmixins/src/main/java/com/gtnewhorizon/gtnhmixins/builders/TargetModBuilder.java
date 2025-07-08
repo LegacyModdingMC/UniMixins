@@ -55,14 +55,14 @@ public class TargetModBuilder {
         return this;
     }
 
-    /**
-     * A conditional check that will test the name of the jar files. !!! This mod identification method should only be
-     * used as a last resort if you cannot identify your targeted mod with the other methods !!!
-     */
-    public TargetModBuilder setJarNameTest(Predicate<String> jarNameTest) {
-        this.jarNameTest = jarNameTest;
-        return this;
-    }
+    ///**
+    // * A conditional check that will test the name of the jar files. !!! This mod identification method should only be
+    // * used as a last resort if you cannot identify your targeted mod with the other methods !!!
+    // */
+    //public TargetModBuilder setJarNameTest(Predicate<String> jarNameTest) {
+    //    this.jarNameTest = jarNameTest;
+    //    return this;
+    //}
 
     protected static void validateBuilder(TargetModBuilder builder, ITargetMod target, Phase phaseIn) {
         if (builder == null) {
