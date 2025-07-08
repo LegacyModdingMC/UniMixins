@@ -36,6 +36,7 @@ public interface IMixins {
         final List<String> mixinsToNotLoad = new ArrayList<>();
         MixinBuilder.loadMixins(mixinsEnum, mixinsToLoad, mixinsToNotLoad);
         final Logger LOGGER = LogManager.getLogger("IMixins Loader");
+        LOGGER.info("Loading the following mixins: {}", mixinsToLoad);
         LOGGER.info("Not loading the following mixins: {}", mixinsToNotLoad);
         return mixinsToLoad;
     }
