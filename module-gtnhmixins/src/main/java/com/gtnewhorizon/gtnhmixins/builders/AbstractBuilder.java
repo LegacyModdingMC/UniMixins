@@ -1,5 +1,6 @@
 package com.gtnewhorizon.gtnhmixins.builders;
 
+import com.gtnewhorizon.gtnhmixins.GTNHMixins;
 import com.gtnewhorizon.gtnhmixins.builders.IBaseTransformer.Phase;
 import com.gtnewhorizon.gtnhmixins.builders.IBaseTransformer.Side;
 import cpw.mods.fml.relauncher.FMLLaunchHandler;
@@ -150,6 +151,7 @@ public abstract class AbstractBuilder {
                 iterator.remove();
             }
         }
+        GTNHMixins.log("Loaded ITargetMods detected: {}", targets.toString());
         return targets;
     }
 }
