@@ -1,6 +1,7 @@
 package com.gtnewhorizon.gtnhmixins.builders;
 
 import com.gtnewhorizon.gtnhmixins.builders.IBaseTransformer.Phase;
+import com.gtnewhorizon.gtnhmixins.builders.ITargetMod.Predicates;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.service.MixinService;
 
@@ -48,10 +49,50 @@ public class TargetModBuilder {
 
     /**
      * A conditional check that will test the raw (un-transformed) bytecode of the class specified in
-     * {@link TargetModBuilder#setTargetClass}. Requires you to implement {@link TargetModBuilder#setTargetClass}.
+     * {@link TargetModBuilder#setTargetClass}. Requires you to specify a class to target via {@link TargetModBuilder#setTargetClass}.
      */
     public TargetModBuilder setClassNodeTest(Predicate<ClassNode> classNodeTest) {
         this.classNodeTest = classNodeTest;
+        return this;
+    }
+
+    /**
+     * A conditional check that will test the contents of the @Mod annotation of the class specified in
+     * {@link TargetModBuilder#setTargetClass}. Requires you to specify a class to target via {@link TargetModBuilder#setTargetClass}.
+     * Tests if the modId of the target class is equals to the modId provided.
+     */
+    public TargetModBuilder testModID(String modId) {
+        this.classNodeTest = Predicates.testModAnnotation(Predicates.equals(modId), null, null);
+        return this;
+    }
+
+    /**
+     * A conditional check that will test the contents of the @Mod annotation of the class specified in
+     * {@link TargetModBuilder#setTargetClass}. Requires you to specify a class to target via {@link TargetModBuilder#setTargetClass}.
+     * Tests if the modId and modVersion of the target class are equal to the modId and modVersion provided.
+     */
+    public TargetModBuilder testModVersion(String modId, String modVersion) {
+        this.classNodeTest = Predicates.testModAnnotation(Predicates.equals(modId), null, Predicates.equals(modVersion));
+        return this;
+    }
+
+    /**
+     * A conditional check that will test the contents of the @Mod annotation of the class specified in
+     * {@link TargetModBuilder#setTargetClass}. Requires you to specify a class to target via {@link TargetModBuilder#setTargetClass}.
+     * Tests if the modId of the target class is equals to the modId provided and tests the modVersion with the provided test.
+     */
+    public TargetModBuilder testModVersion(String modId, Predicate<String> modVersionTest) {
+        this.classNodeTest = Predicates.testModAnnotation(Predicates.equals(modId), null, modVersionTest);
+        return this;
+    }
+
+    /**
+     * A conditional check that will test the contents of the @Mod annotation of the class specified in
+     * {@link TargetModBuilder#setTargetClass}. Requires you to specify a class to target via {@link TargetModBuilder#setTargetClass}.
+     * Some arguments can be null but not all at once.
+     */
+    public TargetModBuilder testModAnnotation(Predicate<String> modIdTest, Predicate<String> modNameTest, Predicate<String> modVersionTest) {
+        this.classNodeTest = Predicates.testModAnnotation(modIdTest, modNameTest, modVersionTest);
         return this;
     }
 
