@@ -33,8 +33,10 @@ public interface IMixins extends IBaseTransformer {
         final List<String> toLoad = new ArrayList<>();
         final List<String> toNotLoad = new ArrayList<>();
         MixinBuilder.loadMixins(mixinsEnum, toLoad, toNotLoad);
-        GTNHMixins.LOGGER.info("Loading the following mixins: {}", toLoad);
-        GTNHMixins.LOGGER.info("Not loading the following mixins: {}", toNotLoad);
+        GTNHMixins.log("Not loading the following mixins: {}", toNotLoad);
+        for (String mixin : toLoad) {
+            GTNHMixins.log("Loading {}", mixin);
+        }
         return toLoad;
     }
 
@@ -56,7 +58,7 @@ public interface IMixins extends IBaseTransformer {
         final List<String> toLoad = new ArrayList<>();
         final List<String> toNotLoad = new ArrayList<>();
         MixinBuilder.loadEarlyMixins(mixinsEnum, loadedCoreMods, toLoad, toNotLoad);
-        GTNHMixins.LOGGER.info("Not loading the following EARLY mixins: {}", toNotLoad);
+        GTNHMixins.log("Not loading the following EARLY mixins: {}", toNotLoad);
         return toLoad;
     }
 
@@ -78,7 +80,7 @@ public interface IMixins extends IBaseTransformer {
         final List<String> toLoad = new ArrayList<>();
         final List<String> toNotLoad = new ArrayList<>();
         MixinBuilder.loadLateMixins(mixinsEnum, loadedMods, toLoad, toNotLoad);
-        GTNHMixins.LOGGER.info("Not loading the following LATE mixins: {}", toNotLoad.toString());
+        GTNHMixins.log("Not loading the following LATE mixins: {}", toNotLoad.toString());
         return toLoad;
     }
 }

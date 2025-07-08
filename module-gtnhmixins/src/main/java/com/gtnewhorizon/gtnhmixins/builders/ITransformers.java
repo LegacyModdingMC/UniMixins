@@ -29,8 +29,10 @@ public interface ITransformers extends IBaseTransformer {
         final List<String> toLoad = new ArrayList<>();
         final List<String> toNotLoad = new ArrayList<>();
         TransformerBuilder.loadTransformers(transformerEnum, toLoad, toNotLoad);
-        GTNHMixins.LOGGER.info("Loading the following transformers: {}", toLoad);
-        GTNHMixins.LOGGER.info("Not loading the following transformers: {}", toNotLoad);
+        GTNHMixins.log("Not loading the following transformers: {}", toNotLoad);
+        for (String transformer : toLoad) {
+            GTNHMixins.log("Loading {}", transformer);
+        }
         return toLoad.toArray(new String[0]);
     }
 }

@@ -29,6 +29,7 @@ import java.util.Set;
 public class GTNHMixinsCore implements IFMLLoadingPlugin {
     public static final String PLUGIN_NAME = "GTNHMixins Core Plugin";
     public static final Logger LOGGER = LogManager.getLogger(PLUGIN_NAME);
+    private static boolean isObf;
 
     /**
      * Core mods we need to Manually look for:
@@ -41,7 +42,7 @@ public class GTNHMixinsCore implements IFMLLoadingPlugin {
             .build();
 
     static {
-        GTNHMixins.LOGGER.info("Initializing GTNHMixins Core");
+        GTNHMixins.LOGGER.debug("Initializing GTNHMixins Core");
         GTNHMixinsModule.init();
     }
 
@@ -91,24 +92,26 @@ public class GTNHMixinsCore implements IFMLLoadingPlugin {
 
     @Override
     public void injectData(Map<String, Object> data) {
-        GTNHMixins.LOGGER.debug("Examining core mod list");
-        final Object coremodList = data.get("coremodList");
+        isObf = (boolean) data.get("runtimeDeobfuscationEnabled");
+        GTNHMixins.log("Searching coremodList for IEarlyMixinLoaders");
 
+        final Object coremodList = data.get("coremodList");
         if (coremodList instanceof List) {
             final Set<String> loadedCoremods = getLoadedCoremods((List<?>) coremodList);
 
-            GTNHMixins.LOGGER.debug("LoadedCoreMods {}", loadedCoremods.toString());
+            GTNHMixins.log("LoadedCoreMods {}", loadedCoremods.toString());
             for (Object coremod : (List<?>) coremodList) {
                 // Identify any coremods that are `IEarlyMixinLoader`, and inject any relevant mixins 
                 try {
                     Object theMod = Reflection.coreModInstanceField.get(coremod);
                     if (theMod instanceof IEarlyMixinLoader) {
+                        GTNHMixins.log("Loading mixins from IEarlyMixinLoader [{}]", theMod.getClass().getName());
                         final IEarlyMixinLoader loader = (IEarlyMixinLoader) theMod;
                         final String mixinConfig = loader.getMixinConfig();
                         final Config config = Config.create(mixinConfig, null);
                         final List<String> mixins = loader.getMixins(loadedCoremods);
                         for (String mixin : mixins) {
-                            GTNHMixins.LOGGER.debug("Loading [{}] {}", mixinConfig, mixin);
+                            GTNHMixins.log("Loading [{}] {}", mixinConfig, mixin);
                         }
                         Reflection.mixinClassesField.set(Reflection.configField.get(config), mixins);
                         Reflection.registerConfigurationMethod.invoke(null, config);
@@ -125,6 +128,10 @@ public class GTNHMixinsCore implements IFMLLoadingPlugin {
     @Override
     public String getAccessTransformerClass() {
         return null;
+    }
+
+    public static boolean isObf() {
+        return isObf;
     }
 }
 
