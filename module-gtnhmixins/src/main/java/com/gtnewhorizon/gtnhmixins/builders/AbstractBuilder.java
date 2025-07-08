@@ -143,18 +143,22 @@ public abstract class AbstractBuilder {
             builders.get(i).addAllTargetsTo(targets);
         }
         Iterator<ITargetMod> iterator = targets.iterator();
+        List<ITargetMod> notPresent = new ArrayList<>();
         while (iterator.hasNext()) {
             ITargetMod target = iterator.next();
             TargetModBuilder builder = target.getBuilder();
             TargetModBuilder.validateBuilder(builder, target, loadingPhase);
             if (!builder.isTargetPresent(loadedCoreMods, loadedMods)) {
+                notPresent.add(target);
                 iterator.remove();
             }
         }
         if (loadingPhase == null) {
-            GTNHMixins.log("Loaded ITargetMods detected: {}", targets.toString());
+            GTNHMixins.log("ITargetMods detected: {}", targets.toString());
+            GTNHMixins.log("ITargetMods not detected: {}", notPresent.toString());
         } else {
-            GTNHMixins.log("Loaded ITargetMods detected at Phase {}: {}", loadingPhase, targets.toString());
+            GTNHMixins.log("ITargetMods detected at Phase {}: {}", loadingPhase, targets.toString());
+            GTNHMixins.log("ITargetMods not detected at Phase {}: {}", loadingPhase, notPresent.toString());
         }
         return targets;
     }
