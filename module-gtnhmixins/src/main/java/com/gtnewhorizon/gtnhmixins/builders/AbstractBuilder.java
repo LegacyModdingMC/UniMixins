@@ -151,7 +151,11 @@ public abstract class AbstractBuilder {
                 iterator.remove();
             }
         }
-        GTNHMixins.log("Loaded ITargetMods detected: {}", targets.toString());
+        if (loadingPhase == null) {
+            GTNHMixins.log("Loaded ITargetMods detected: {}", targets.toString());
+        } else {
+            GTNHMixins.log("Loaded ITargetMods detected at Phase {}: {}", loadingPhase, targets.toString());
+        }
         return targets;
     }
 }
