@@ -17,7 +17,7 @@ public interface IMixins extends IBaseTransformer {
     MixinBuilder getBuilder();
 
     /**
-     * Returns the list of mixins that should be loaded from your {@link org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin} implementation.
+     * Returns the list of mixins that should be loaded by your {@link org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin} implementation.
      * <p>
      * You may call it as such :
      * <pre>
@@ -41,7 +41,7 @@ public interface IMixins extends IBaseTransformer {
     }
 
     /**
-     * Returns the list of mixins that should be loaded from your {@link com.gtnewhorizon.gtnhmixins.IEarlyMixinLoader} implementation.
+     * Returns the list of mixins that should be loaded by your {@link com.gtnewhorizon.gtnhmixins.IEarlyMixinLoader} implementation.
      * Note that you also need to implement {@link cpw.mods.fml.relauncher.IFMLLoadingPlugin} for early mixins to work.
      * <p>
      * You may call it as such :
@@ -63,7 +63,7 @@ public interface IMixins extends IBaseTransformer {
     }
 
     /**
-     * Returns the list of mixins that should be loaded from your {@link com.gtnewhorizon.gtnhmixins.ILateMixinLoader} implementation.
+     * Returns the list of mixins that should be loaded by your {@link com.gtnewhorizon.gtnhmixins.ILateMixinLoader} implementation.
      * Note that you also need to annotate your class with {@link com.gtnewhorizon.gtnhmixins.LateMixin} for late mixins to work.
      * <p>
      * You may call it as such :

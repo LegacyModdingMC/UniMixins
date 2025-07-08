@@ -13,7 +13,7 @@ public interface ITransformers extends IBaseTransformer {
     TransformerBuilder getBuilder();
 
     /**
-     * Returns the list of transformers that should be loaded from your {@link cpw.mods.fml.relauncher.IFMLLoadingPlugin} implementation.
+     * Returns the list of transformers that should be loaded by your {@link cpw.mods.fml.relauncher.IFMLLoadingPlugin} implementation.
      * <p>
      * You may call it as such :
      * <pre>
