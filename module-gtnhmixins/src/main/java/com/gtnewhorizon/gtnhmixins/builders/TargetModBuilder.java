@@ -1,15 +1,15 @@
 package com.gtnewhorizon.gtnhmixins.builders;
 
 import com.gtnewhorizon.gtnhmixins.builders.IBaseTransformer.Phase;
-import com.gtnewhorizon.gtnhmixins.builders.ITargetMod.Predicates;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.service.MixinService;
 
+import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.util.Set;
 import java.util.function.Predicate;
 
-public class TargetModBuilder {
+public class TargetModBuilder implements ITargetMod {
 
     private String coreModClass;
     private String modId;
@@ -166,5 +166,11 @@ public class TargetModBuilder {
             throw new UnsupportedOperationException("Jar name matching isn't implemented yet");
         }
         return false;
+    }
+
+    @Nonnull
+    @Override
+    public TargetModBuilder getBuilder() {
+        return this;
     }
 }
