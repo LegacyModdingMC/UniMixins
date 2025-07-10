@@ -76,15 +76,15 @@ public interface ITargetMod {
                                     }
                                 }
                             }
-                            boolean test = false;
+                            boolean test = true;
                             if (modIdTest != null) {
-                                test = modIdTest.test(modId);
+                                test = /*test &&*/ modIdTest.test(modId);
                             }
                             if (modNameTest != null) {
-                                test = modNameTest.test(modName);
+                                test = test && modNameTest.test(modName);
                             }
                             if (modVersionTest != null) {
-                                test = modVersionTest.test(modVersion);
+                                test = test && modVersionTest.test(modVersion);
                             }
                             return test;
                         }
