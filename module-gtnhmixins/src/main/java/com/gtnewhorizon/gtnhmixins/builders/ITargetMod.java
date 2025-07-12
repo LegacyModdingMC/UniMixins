@@ -8,6 +8,32 @@ import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.function.Predicate;
 
+/**
+ * This interface is used to identify mods targeted by the {@link com.gtnewhorizon.gtnhmixins.builders.IMixins}
+ * and {@link com.gtnewhorizon.gtnhmixins.builders.ITransformers} system. It provides a flexible mechanism for
+ * conditionally applying mixins or asm transformers based on the presence or absence of other mods during runtime.
+ * You can declare your targeted mods in an enum, although it's not required to be an enum.
+ * <pre>
+ * {@code
+ * public enum TargetMods implements ITargetMod {
+ *
+ *     COFHCORE("cofh.asm.LoadingPlugin", "CoFHCore"),
+ *     OPTIFINE("optifine.OptiFineForgeTweaker", "Optifine");
+ *
+ *     private final TargetModBuilder builder;
+ *
+ *     TargetMods(String coreModClass, String modId) {
+ *         this.builder = new TargetModBuilder().setCoreModClass(coreModClass).setModId(modId);
+ *     }
+ *
+ *     @Override
+ *     public getBuidler() {
+ *         return builder;
+ *     }
+ * }
+ * }
+ * </pre>
+ */
 public interface ITargetMod {
 
     @Nonnull
@@ -49,6 +75,10 @@ public interface ITargetMod {
             return s -> new ComparableVersion(version).compareTo(new ComparableVersion(s)) < 0;
         }
 
+        /**
+         * If the class targeted by this test has a {@link cpw.mods.fml.common.Mod} annotation, this test will parse the annotation and
+         * test it against the predicates. At least one of the predicates must be non-null, this test will return true if all the predicates are true.
+         */
         public static Predicate<ClassNode> testModAnnotation(Predicate<String> modIdTest, Predicate<String> modNameTest, Predicate<String> modVersionTest) {
             if (modIdTest == null && modNameTest == null && modVersionTest == null) {
                 throw new IllegalArgumentException("At least one of the Mod Annotation test predicates must be non null");
