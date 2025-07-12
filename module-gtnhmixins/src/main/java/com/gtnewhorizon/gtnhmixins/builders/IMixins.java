@@ -9,7 +9,7 @@ import java.util.Set;
 
 /**
  * The IMixins interface provides a flexible way of declaring and registering mixins during runtime.
- * Registration is done based on conditions such as looking configs, loading side (CLIENT, COMMON, SERVER)
+ * Registration is done based on conditions such as user defined logic, looking configs, loading side (CLIENT, COMMON, SERVER)
  * or looking at the presence or absence of mods declared using the {@link com.gtnewhorizon.gtnhmixins.builders.ITargetMod} interface.
  * This interface must be implemented on an enum.
  * <pre>
