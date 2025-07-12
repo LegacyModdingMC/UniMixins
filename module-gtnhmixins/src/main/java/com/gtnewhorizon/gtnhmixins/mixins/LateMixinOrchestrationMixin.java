@@ -5,7 +5,6 @@ import com.gtnewhorizon.gtnhmixins.GTNHMixins;
 import com.gtnewhorizon.gtnhmixins.ILateMixinLoader;
 import com.gtnewhorizon.gtnhmixins.LateMixin;
 import com.gtnewhorizon.gtnhmixins.Reflection;
-
 import cpw.mods.fml.common.LoadController;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.LoaderState;
@@ -13,7 +12,6 @@ import cpw.mods.fml.common.ModClassLoader;
 import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.common.discovery.ASMDataTable;
 import net.minecraft.launchwrapper.Launch;
-
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.MixinEnvironment;
@@ -44,45 +42,42 @@ public class LateMixinOrchestrationMixin {
             return;
         }
 
-        GTNHMixins.LOGGER.info("Instantiating all @LateMixin annotated and ILateMixinLoader implemented classes...");
+        GTNHMixins.log("Searching ASMData for ILateMixinLoaders");
 
-        
-        ModClassLoader modClassLoader = (ModClassLoader)eventData[0];
-        ASMDataTable asmDataTable = (ASMDataTable)eventData[1];
+        ModClassLoader modClassLoader = (ModClassLoader) eventData[0];
+        ASMDataTable asmDataTable = (ASMDataTable) eventData[1];
         final Loader loader = Loader.instance();
 
         final Set<String> loadedModsTemp = new HashSet<>();
         loadedModsTemp.addAll(loader.getIndexedModList().keySet());
         loadedModsTemp.addAll(getLiteLoaderMods());
         final Set<String> loadedMods = Collections.unmodifiableSet(loadedModsTemp);
-        GTNHMixins.LOGGER.info("LoadedMods {}", loadedMods.toString());
+        GTNHMixins.log("LoadedMods {}", loadedMods.toString());
 
         for (ASMDataTable.ASMData asmData : asmDataTable.getAll(LateMixin.class.getName())) {
             modClassLoader.addFile(asmData.getCandidate().getModContainer()); // Add to path before `newInstance`
             final String mixinClassName = asmData.getClassName().replace('/', '.');
-            GTNHMixins.LOGGER.info("Instantiating {} for its mixins.", mixinClassName);
             Class<?> lateMixinClass = Class.forName(mixinClassName);
-            if(!ILateMixinLoader.class.isAssignableFrom(lateMixinClass)) {
+            if (!ILateMixinLoader.class.isAssignableFrom(lateMixinClass)) {
                 GTNHMixins.LOGGER.error("Class {} has the @LateMixin annotation, but does not implement the ILateMixinLoader interface!", mixinClassName);
                 continue;
             }
-            ILateMixinLoader lateLoader = (ILateMixinLoader)lateMixinClass.newInstance();
+            ILateMixinLoader lateLoader = (ILateMixinLoader) lateMixinClass.newInstance();
+            GTNHMixins.log("Loading mixins from ILateMixinLoader [{}]", lateLoader.getClass().getName());
             final String mixinConfig = lateLoader.getMixinConfig();
-            GTNHMixins.LOGGER.info("Adding {} mixin configuration.", mixinConfig);
-
             final Config config = Config.create(mixinConfig, null);
             final List<String> mixins = new ArrayList<>();
             mixins.addAll(lateLoader.getMixins(loadedMods));
             mixins.addAll((List<String>) Reflection.mixinClassesField.get(Reflection.configField.get(config)));
-            for(String mixin : mixins) {
-                GTNHMixins.LOGGER.info("Loading [{}] {}", mixinConfig, mixin);
+            for (String mixin : mixins) {
+                GTNHMixins.log("Loading [{}] {}", mixinConfig, mixin);
             }
             Reflection.mixinClassesField.set(Reflection.configField.get(config), mixins);
             Reflection.registerConfigurationMethod.invoke(null, config);
 
         }
 
-        ((Runnable)Launch.blackboard.getOrDefault("unimixins.mixinModidDecorator.refresh", Runnables.doNothing())).run();
+        ((Runnable) Launch.blackboard.getOrDefault("unimixins.mixinModidDecorator.refresh", Runnables.doNothing())).run();
 
         // Add all mods to the classpath now so they're available for mixin
         for (ModContainer container : loader.getActiveModList()) {
@@ -94,7 +89,7 @@ public class LateMixinOrchestrationMixin {
 
         Field transformerField = Proxy.class.getDeclaredField("transformer");
         transformerField.setAccessible(true);
-        
+
         @SuppressWarnings("OptionalGetWithoutIsPresent")
         Object transformer = transformerField.get(Launch.classLoader.getTransformers().stream().filter(Proxy.class::isInstance).findFirst().get());
 
@@ -113,14 +108,14 @@ public class LateMixinOrchestrationMixin {
             Object bootstrap = FieldUtils.readDeclaredField(instance, "bootstrap", true);
             Object enumerator = FieldUtils.readDeclaredField(bootstrap, "enumerator", true);
             Map<String, ?> enabledContainers = (Map<String, ?>) FieldUtils.readDeclaredField(enumerator, "enabledContainers", true);
-            GTNHMixins.LOGGER.info("LiteLoader present, adding its mods to the list.");
-            for(Entry<String, ?> e : enabledContainers.entrySet()) {
-                if((boolean) hasValidMetaData.invoke(e.getValue())) {
+            GTNHMixins.log("LiteLoader present, adding its mods to the list");
+            for (Entry<String, ?> e : enabledContainers.entrySet()) {
+                if ((boolean) hasValidMetaData.invoke(e.getValue())) {
                     mods.add(e.getKey());
                 }
             }
         } catch (ClassNotFoundException e) {
-            GTNHMixins.LOGGER.info("LiteLoader not present.");
+            GTNHMixins.log("LiteLoader not present");
         } catch (Exception e) {
             GTNHMixins.LOGGER.error("Failed to get LiteLoader mods.", e);
         }
