@@ -66,13 +66,18 @@ public class LateMixinOrchestrationMixin {
             GTNHMixins.log("Loading mixins from ILateMixinLoader [{}]", lateLoader.getClass().getName());
             final String mixinConfig = lateLoader.getMixinConfig();
             final Config config = Config.create(mixinConfig, null);
-            final List<String> mixins = new ArrayList<>();
+            final Object o = Reflection.mixinClassesField.get(Reflection.configField.get(config));
+            final List<String> mixins;
+            if (o instanceof List) {
+                mixins = (List<String>) o;
+            } else {
+                mixins = new ArrayList<>();
+                Reflection.mixinClassesField.set(Reflection.configField.get(config), mixins);
+            }
             mixins.addAll(lateLoader.getMixins(loadedMods));
-            mixins.addAll((List<String>) Reflection.mixinClassesField.get(Reflection.configField.get(config)));
             for (String mixin : mixins) {
                 GTNHMixins.log("Loading [{}] {}", mixinConfig, mixin);
             }
-            Reflection.mixinClassesField.set(Reflection.configField.get(config), mixins);
             Reflection.registerConfigurationMethod.invoke(null, config);
 
         }
