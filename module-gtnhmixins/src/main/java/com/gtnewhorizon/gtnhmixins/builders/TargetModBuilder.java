@@ -15,7 +15,6 @@ public class TargetModBuilder implements ITargetMod {
     private String modId;
     private String targetClass;
     private Predicate<ClassNode> classNodeTest;
-    private Predicate<String> jarNameTest;
 
     /**
      * Fully qualified name of the class that implements the IFMLLoadingPlugin interface in this targeted mod. This can
@@ -96,32 +95,23 @@ public class TargetModBuilder implements ITargetMod {
         return this;
     }
 
-    ///**
-    // * A conditional check that will test the name of the jar files. !!! This mod identification method should only be
-    // * used as a last resort if you cannot identify your targeted mod with the other methods !!!
-    // */
-    //public TargetModBuilder setJarNameTest(Predicate<String> jarNameTest) {
-    //    this.jarNameTest = jarNameTest;
-    //    return this;
-    //}
-
     protected static void validateBuilder(TargetModBuilder builder, ITargetMod target, Phase phaseIn) {
         if (builder == null) {
             throw new NullPointerException("TargetModBuilder is null for ITargetMod " + target);
         }
-        if (builder.modId == null && builder.coreModClass == null && builder.targetClass == null && builder.classNodeTest == null && builder.jarNameTest == null) {
+        if (builder.modId == null && builder.coreModClass == null && builder.targetClass == null && builder.classNodeTest == null) {
             throw new IllegalArgumentException("No information at all provided by ITargetMod " + target);
         }
         if (phaseIn == Phase.EARLY) {
-            if (builder.coreModClass == null && builder.targetClass == null && builder.classNodeTest == null && builder.jarNameTest == null) {
+            if (builder.coreModClass == null && builder.targetClass == null && builder.classNodeTest == null) {
                 throw new IllegalArgumentException("Not enough information provided by ITargetMod " + target + " used by early mixins");
             }
         } else if (phaseIn == Phase.LATE) {
-            if (builder.modId == null && builder.targetClass == null && builder.classNodeTest == null && builder.jarNameTest == null) {
+            if (builder.modId == null && builder.targetClass == null && builder.classNodeTest == null) {
                 throw new IllegalArgumentException("Not enough information provided by ITargetMod " + target + " used by late mixins");
             }
         } else {
-            if (builder.targetClass == null && builder.classNodeTest == null && builder.jarNameTest == null) {
+            if (builder.targetClass == null && builder.classNodeTest == null) {
                 throw new IllegalArgumentException("Not enough information provided by ITargetMod " + target);
             }
         }
@@ -159,11 +149,6 @@ public class TargetModBuilder implements ITargetMod {
                     return true;
                 }
             } catch (ClassNotFoundException | IOException ignored) {}
-        }
-        // 5 find jar files and test jar name
-        if (this.jarNameTest != null) {
-            // TODO implement jar name matching
-            throw new UnsupportedOperationException("Jar name matching isn't implemented yet");
         }
         return false;
     }
