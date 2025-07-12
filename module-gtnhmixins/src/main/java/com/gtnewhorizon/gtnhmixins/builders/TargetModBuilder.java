@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.Set;
 import java.util.function.Predicate;
 
+@SuppressWarnings("unused")
 public class TargetModBuilder implements ITargetMod {
 
     private String coreModClass;
