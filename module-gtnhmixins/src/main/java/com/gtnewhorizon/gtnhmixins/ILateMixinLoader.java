@@ -1,5 +1,6 @@
 package com.gtnewhorizon.gtnhmixins;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.Set;
 
@@ -11,7 +12,7 @@ import java.util.Set;
  * If you want to add mixins that affect vanilla or forge, use and consult {@link IEarlyMixinLoader}
  * <p>
  * Implement this in any arbitrary class, along with the annotation @{@link LateMixin}.  The annotation will cause the class to be constructed when mixins are 
- * ready to be queued. Return all of the mixin classes (under the mixinConfig's package) that you want to queue and send to Mixin library.
+ * ready to be queued. Return additional mixin classes if you want to dynamically enable or disable them, or an empty list if there is none.
  */
 public interface ILateMixinLoader {
 
@@ -22,7 +23,7 @@ public interface ILateMixinLoader {
 
     /**
      * @param loadedMods Set of loaded modids, for use in discrimination of what mixins load
-     * @return mixin configurations to be queued and sent to Mixin library.
+     * @return additional mixin configurations to be queued and sent to Mixin library.
      */
-    List<String> getMixins(Set<String> loadedMods);
+    @Nonnull List<String> getMixins(Set<String> loadedMods);
 }
