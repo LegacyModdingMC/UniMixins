@@ -25,6 +25,7 @@ import org.spongepowered.asm.mixin.transformer.Proxy;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -35,6 +36,7 @@ import java.util.Set;
 
 @Mixin(value = LoadController.class, remap = false)
 public class LateMixinOrchestrationMixin {
+    @SuppressWarnings("unchecked")
     @Inject(method = "distributeStateMessage(Lcpw/mods/fml/common/LoaderState;[Ljava/lang/Object;)V", at = @At(value = "HEAD"))
     private void beforeConstructing(LoaderState state, Object[] eventData, CallbackInfo ci) throws Throwable {
         // This state is where Forge adds mod files to ModClassLoader
@@ -69,7 +71,9 @@ public class LateMixinOrchestrationMixin {
             GTNHMixins.LOGGER.info("Adding {} mixin configuration.", mixinConfig);
 
             final Config config = Config.create(mixinConfig, null);
-            final List<String> mixins = lateLoader.getMixins(loadedMods);
+            final List<String> mixins = new ArrayList<>();
+            mixins.addAll(lateLoader.getMixins(loadedMods));
+            mixins.addAll((List<String>) Reflection.mixinClassesField.get(Reflection.configField.get(config)));
             for(String mixin : mixins) {
                 GTNHMixins.LOGGER.info("Loading [{}] {}", mixinConfig, mixin);
             }
