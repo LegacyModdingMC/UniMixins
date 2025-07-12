@@ -8,7 +8,62 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * This interface needs to be implemented on an enum that declares all your mixins
+ * The IMixins interface provides a flexible way of declaring and registering mixins during runtime.
+ * Registration is done based on conditions such as looking configs, loading side (CLIENT, COMMON, SERVER)
+ * or looking at the presence or absence of mods declared using the {@link com.gtnewhorizon.gtnhmixins.builders.ITargetMod} interface.
+ * This interface must be implemented on an enum.
+ * <pre>
+ * {@code
+ * public enum Mixins implements IMixins {
+ *
+ *     EXAMPLE_MIXIN(new MixinBuilder("Hello") // optional comment
+ *         .addRequiredMod(TargetMod.IC2) // optional
+ *         .addExcludedMod(...) // optional
+ *         .setPhase(Phase.EARLY) // optional, required for gtnh mixins
+ *         .addCommonMixins("........") // mixins that needs to be both on client and server
+ *         .addClientMixins("........") // mixins only for the client
+ *         .addServerMixins("........") // mixins only for the dedicated server
+ *         .setApplyIf(() -> Config.yourconfig....)); // optional
+ *         // it is required to have at least one mixin class
+ *
+ *     private final MixinBuilder builder;
+ *
+ *     Mixins(MixinBuilder builder) {
+ *         this.builder = builder;
+ *     }
+ *
+ *     @Override
+ *     public MixinBuilder getBuilder() {
+ *         return this.builder;
+ *     }
+ * }
+ * }
+ * </pre>
+ * <p>
+ * If you do not need very complex logic in your enum, you can instantiate
+ * the MixinBuilder in the enum constructor and declare simplistic enum entries.
+ *
+ * <pre>
+ * {@code
+ * public enum Mixins implements IMixins {
+ *
+ *     CLIENT_MIXIN1(Side.CLIENT, "MixinClientClass1"),
+ *     CLIENT_MIXIN2(Side.CLIENT, "MixinClientClass2"),
+ *     COMMON_MIXIN(Side.COMMON, "MixinCommonClass");
+ *
+ *     private final MixinBuilder builder;
+ *
+ *     Mixins(Side side, String... mixins) {
+ *         builder = new MixinBuilder().addSidedMixins(side, mixins);
+ *     }
+ *
+ *     @Override
+ *     public MixinBuilder getBuilder() {
+ *         return this.builder;
+ *     }
+ * }
+ * }
+ * </pre>
  */
 @SuppressWarnings("unused")
 public interface IMixins extends IBaseTransformer {
