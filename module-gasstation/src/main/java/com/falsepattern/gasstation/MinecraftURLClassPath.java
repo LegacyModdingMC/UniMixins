@@ -21,6 +21,7 @@ import java.lang.reflect.Field;
 import java.net.URL;
 import java.nio.file.Path;
 
+@Deprecated
 public class MinecraftURLClassPath {
     /**
      *  Utility to manipulate the minecraft URL ClassPath
