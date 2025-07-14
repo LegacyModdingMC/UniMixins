@@ -22,6 +22,7 @@ import java.util.Map;
 @net.minecraftforge.fml.relauncher.IFMLLoadingPlugin.SortingIndex(Integer.MIN_VALUE + 5)
 @net.minecraftforge.fml.relauncher.IFMLLoadingPlugin.Name(GasStationCore.PLUGIN_NAME)
 @net.minecraftforge.fml.relauncher.IFMLLoadingPlugin.TransformerExclusions("com.falsepattern.gasstation.core")
+@Deprecated
 public class GasStationCore implements IFMLLoadingPlugin {
     public static final String PLUGIN_NAME = Tags.MODNAME + " Core Plugin";
     public static final Logger LOGGER = LogManager.getLogger(PLUGIN_NAME);

@@ -2,17 +2,11 @@ package com.falsepattern.gasstation;
 
 import java.util.List;
 
+
 /**
- * Late mixins are defined as mixins that affects mod classes.
- * Or technically, classes that can be queried via the current state of
- * {@link net.minecraft.launchwrapper.LaunchClassLoader}
- * <p>
- * Majority if not all vanilla and forge classes would have been loaded here.
- * If you want to add mixins that affect vanilla or forge, use and consult {@link IEarlyMixinLoader}
- * <p>
- * Implement this in any arbitrary class. Said class will be constructed when mixins are ready to be queued.
- * Return all late mixin configs you want MixinBooter to queue and send to Mixin library.
+ * Use {@link com.gtnewhorizon.gtnhmixins.ILateMixinLoader} instead!
  */
+@Deprecated
 public interface ILateMixinLoader {
 
     /**

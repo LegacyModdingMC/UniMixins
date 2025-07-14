@@ -10,5 +10,6 @@ import cpw.mods.fml.common.Mod;
         version = Tags.VERSION,
         name = Tags.MODNAME,
         acceptableRemoteVersions = "*")
+@Deprecated
 public class GasStation {
 }

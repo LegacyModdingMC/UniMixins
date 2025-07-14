@@ -2,6 +2,7 @@ package com.falsepattern.gasstation;
 
 // Use this class for Strings only. Do not import any classes here. It will lead to issues with Mixins if in use!
 
+@Deprecated
 public class Tags {
 
     // GRADLETOKEN_* will be replaced by your configuration values at build time
