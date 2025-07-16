@@ -3,9 +3,11 @@ package com.gtnewhorizon.gtnhmixins.builders;
 import net.minecraftforge.fml.common.versioning.ComparableVersion;
 import org.objectweb.asm.tree.AnnotationNode;
 import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.MethodNode;
 
 import javax.annotation.Nonnull;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Predicate;
 
 /**
@@ -76,8 +78,44 @@ public interface ITargetMod {
         }
 
         /**
-         * If the class targeted by this test has a {@link cpw.mods.fml.common.Mod} annotation, this test will parse the annotation and
-         * test it against the predicates. At least one of the predicates must be non-null, this test will return true if all the predicates are true.
+         * Returns a ClassNode test that will return true if the targeted class contains a method with a matching name.
+         */
+        public static Predicate<ClassNode> hasMethod(@Nonnull String name) {
+            Objects.requireNonNull(name);
+            return cn -> {
+                final int size = cn.methods.size();
+                for (int i = 0; i < size; i++) {
+                    MethodNode mn = cn.methods.get(i);
+                    if (name.equals(mn.name)) {
+                        return true;
+                    }
+                }
+                return false;
+            };
+        }
+
+        /**
+         * Returns a ClassNode test that will return true if the targeted class contains a method with a matching name and descriptor.
+         */
+        public static Predicate<ClassNode> hasMethod(@Nonnull String name, @Nonnull String desc) {
+            Objects.requireNonNull(name);
+            Objects.requireNonNull(desc);
+            return cn -> {
+                final int size = cn.methods.size();
+                for (int i = 0; i < size; i++) {
+                    MethodNode mn = cn.methods.get(i);
+                    if (name.equals(mn.name) && desc.equals(mn.desc)) {
+                        return true;
+                    }
+                }
+                return false;
+            };
+        }
+
+        /**
+         * Returns a ClassNode test that will test the {@link cpw.mods.fml.common.Mod} annotation - if present - of the targeted class against the passed in Predicates.
+         * At least one of the predicates must be non-null, this test will return true if the targeted
+         * class has a {@link cpw.mods.fml.common.Mod} annotation and if all the predicates are true.
          */
         public static Predicate<ClassNode> testModAnnotation(Predicate<String> modIdTest, Predicate<String> modNameTest, Predicate<String> modVersionTest) {
             if (modIdTest == null && modNameTest == null && modVersionTest == null) {
