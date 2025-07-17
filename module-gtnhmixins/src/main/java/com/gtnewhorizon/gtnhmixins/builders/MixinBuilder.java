@@ -70,6 +70,14 @@ public class MixinBuilder extends AbstractBuilder {
     }
 
     /**
+     * Specify mods that will disable this mixin if they are present and the condition is true.
+     */
+    public MixinBuilder addExcludedModIf(@Nonnull ITargetMod mod, boolean condition) {
+        if (condition) return (MixinBuilder) super.addExcludedMod(mod);
+        return this;
+    }
+
+    /**
      * Mixins registered from a {@link com.gtnewhorizon.gtnhmixins.IEarlyMixinLoader} need to set this to
      * {@link com.gtnewhorizon.gtnhmixins.builders.IMixins.Phase#EARLY}.
      * <p>

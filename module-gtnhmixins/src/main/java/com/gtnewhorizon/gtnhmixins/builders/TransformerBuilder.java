@@ -65,6 +65,14 @@ public class TransformerBuilder extends AbstractBuilder {
         return (TransformerBuilder) super.addExcludedMod(mod);
     }
 
+    /**
+     * Specify mods that will disable this transformer if they are present and the condition is true.
+     */
+    public TransformerBuilder addExcludedModIf(@Nonnull ITargetMod mod, boolean condition) {
+        if (condition) return (TransformerBuilder) super.addExcludedMod(mod);
+        return this;
+    }
+
     protected static <E extends Enum<E> & ITransformers> void loadTransformers(Class<E> transformerEnum, List<String> toLoad, List<String> toNotLoad) {
         List<AbstractBuilder> builders = getEnabledBuildersForPhase(transformerEnum, toNotLoad);
         Set<ITargetMod> loadedTargets = getLoadedTargetedMods(builders, null, Collections.emptySet(), Collections.emptySet());
