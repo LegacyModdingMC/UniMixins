@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
 @SuppressWarnings("unused")
@@ -62,6 +63,14 @@ public class MixinBuilder extends AbstractBuilder {
     }
 
     /**
+     * Specify mods that are required to be present for this mixin to load and the condition is true. The condition is evaluated lazily during mixin loading.
+     */
+    @Override
+    public MixinBuilder addRequiredModIf(@Nonnull ITargetMod mod, @Nonnull BooleanSupplier condition) {
+        return (MixinBuilder) super.addExcludedModIf(mod, condition);
+    }
+
+    /**
      * Specify mods that will disable this mixin if they are present
      */
     @Override
@@ -70,11 +79,11 @@ public class MixinBuilder extends AbstractBuilder {
     }
 
     /**
-     * Specify mods that will disable this mixin if they are present and the condition is true.
+     * Specify mods that will disable this mixin if they are present and the condition is true. The condition is evaluated lazily during mixin loading.
      */
-    public MixinBuilder addExcludedModIf(@Nonnull ITargetMod mod, boolean condition) {
-        if (condition) return (MixinBuilder) super.addExcludedMod(mod);
-        return this;
+    @Override
+    public MixinBuilder addExcludedModIf(@Nonnull ITargetMod mod, @Nonnull BooleanSupplier condition) {
+        return (MixinBuilder) super.addExcludedModIf(mod, condition);
     }
 
     /**

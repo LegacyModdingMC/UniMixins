@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
 public class TransformerBuilder extends AbstractBuilder {
@@ -59,18 +60,27 @@ public class TransformerBuilder extends AbstractBuilder {
     }
 
     /**
+     * Specify mods that are required to be present for this transformer to load and the condition is true. The condition is evaluated lazily during transformer loading.
+     */
+    @Override
+    public TransformerBuilder addRequiredModIf(@Nonnull ITargetMod mod, @Nonnull BooleanSupplier condition) {
+        return (TransformerBuilder) super.addExcludedModIf(mod, condition);
+    }
+
+    /**
      * Specify mods that will disable this transformer if they are present
      */
     public TransformerBuilder addExcludedMod(@Nonnull ITargetMod mod) {
         return (TransformerBuilder) super.addExcludedMod(mod);
     }
 
+
     /**
-     * Specify mods that will disable this transformer if they are present and the condition is true.
+     * Specify mods that will disable this transformer if they are present and the condition is true. The condition is evaluated lazily during transformer loading.
      */
-    public TransformerBuilder addExcludedModIf(@Nonnull ITargetMod mod, boolean condition) {
-        if (condition) return (TransformerBuilder) super.addExcludedMod(mod);
-        return this;
+    @Override
+    public TransformerBuilder addExcludedModIf(@Nonnull ITargetMod mod, @Nonnull BooleanSupplier condition) {
+        return (TransformerBuilder) super.addExcludedModIf(mod, condition);
     }
 
     protected static <E extends Enum<E> & ITransformers> void loadTransformers(Class<E> transformerEnum, List<String> toLoad, List<String> toNotLoad) {
