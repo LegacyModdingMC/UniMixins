@@ -25,7 +25,7 @@ public abstract class AbstractBuilder {
     protected @Nullable List<ITargetMod> requiredMods;
     protected @Nullable List<ITargetMod> excludedMods;
     protected @Nullable Phase phase;
-    protected @Nonnull Supplier<Boolean> applyIf = () -> true;
+    protected @Nullable Supplier<Boolean> applyIf;
 
     protected AbstractBuilder addCommonClasses(@Nonnull String... classes) {
         Objects.requireNonNull(classes);
