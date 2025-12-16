@@ -3,7 +3,7 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 archivesBaseName = archivesBaseName.replace("-1.7.10", "-all-1.7.10")
 
 // The order of these determines the order embedded core plugins get initialized in
-ext.moduleNames = ["module-mixin", "module-compat", "module-mixingasm", "module-spongemixins", "module-mixinbooterlegacy", "module-gasstation", "module-gtnhmixins", "module-mixinextras"]
+ext.moduleNames = ["module-mixin", "module-compat", "module-mixingasm", "module-spongemixins", "module-mixinbooterlegacy", "module-gtnhmixins", "module-mixinextras"]
 
 def getJarTaskName(name, classifier) {
 	if(name == "module-mixin") {
@@ -147,7 +147,7 @@ tasks.withType(ShadowJar) {
 				'FMLCorePluginContainsFMLMod': true,
 				'ForceLoadAsMod': true,
 				'FMLCorePlugin': 'io.github.legacymoddingmc.unimixins.all.AllCore',
-				'MixinConfigs': 'mixins.gtnhmixins.json,mixins.gasstation.json,mixins.gtnhmixins.json,mixingasm.mixin.json',
+				'MixinConfigs': 'mixins.gtnhmixins.json,mixingasm.mixin.json',
 				'Premain-Class': 'org.spongepowered.tools.agent.MixinAgent',
 				'Agent-Class': 'org.spongepowered.tools.agent.MixinAgent',
 				'Can-Redefine-Classes': true,

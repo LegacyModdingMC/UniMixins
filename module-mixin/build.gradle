@@ -23,13 +23,13 @@ dependencies {
 
 apply plugin: "com.github.johnrengelman.shadow"
 
-def flavors = (!project.hasProperty("enableAltMixin") ? [] : ["spongepowered", "fabric", "gasmix", "gtnh"]) + ["unimix"]
+def flavors = (!project.hasProperty("enableAltMixin") ? [] : ["spongepowered", "fabric", "gtnh"]) + ["unimix"]
 
 flavors.each {
 	def mixinFlavor = it
 	def _flavor = it.capitalize()
 	def mixinFlavorClassifier = "UNKNOWN"
-	def mixinFlavorCapitalized = [spongepowered: "SpongePowered", fabric: "Fabric", gasmix: "GasMix", gtnh: "GTNH", unimix: "UniMix"][mixinFlavor]
+	def mixinFlavorCapitalized = [spongepowered: "SpongePowered", fabric: "Fabric", gtnh: "GTNH", unimix: "UniMix"][mixinFlavor]
 	def mixinVersion = "UNKNOWN"
 
 	configurations.create("shadow$_flavor")
@@ -199,34 +199,9 @@ flavors.each {
 		}
 
 		jar.dependsOn("shadowJar$_flavor")
-	} else if (mixinFlavor == "gasmix") {
-		// GasMix
-
-		mixinVersion = gasmixMixinVersion
-		
-		mixinFlavorClassifier = "gasmix.$mixinVersion"
-		
-		dependencies {
-			add("shadow$_flavor", "org.spongepowered:mixin:$mixinVersion")
-			add("shadowSources$_flavor", "org.spongepowered:mixin:$mixinVersion:sources")
-		}
-
-		task("shadowJar$_flavor", type: ShadowJar) {
-			from(sourceSets.main.output) {
-				exclude "mcmod.info"
-			}
-
-			version = versionBase + "+" + mixinFlavorClassifier
-			classifier = ''
-			configurations = [project.configurations."shadow$_flavor"]
-
-			relocate 'io.github.legacymoddingmc.unimixins.common', 'io.github.legacymoddingmc.unimixins.mixin.repackage.common'
-		}
-
-		jar.dependsOn("shadowJar$_flavor")
 	}
 
-	// Common
+    // Common
 
 	task("createMcmodInfo$_flavor", type: Copy) {
 		outputs.upToDateWhen { false }

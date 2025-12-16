@@ -15,11 +15,6 @@ LICENSE: LGPLv3
 Directory: module-mixinbooterlegacy
 LICENSE: LGPLv2.1
 
-## GasStation
-
-Directory: module-gasstation
-LICENSE: LGPLv3+SNEED
-
 ## GTNHMixins
 
 Directory: module-gtnhmixins

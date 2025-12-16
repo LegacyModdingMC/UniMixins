@@ -24,7 +24,6 @@ dependencies {
     implementation("com.github.LegacyModdingMC.UniMixins:unimixins-compat-1.7.10:$unimixinsVersion:dev")
     implementation("com.github.LegacyModdingMC.UniMixins:unimixins-spongemixins-1.7.10:$unimixinsVersion:dev")
     implementation("com.github.LegacyModdingMC.UniMixins:unimixins-mixinbooterlegacy-1.7.10:$unimixinsVersion:dev")
-    implementation("com.github.LegacyModdingMC.UniMixins:unimixins-gasstation-1.7.10:$unimixinsVersion:dev")
     implementation("com.github.LegacyModdingMC.UniMixins:unimixins-mixinextras-1.7.10:$unimixinsVersion:dev")
     implementation("com.github.LegacyModdingMC.UniMixins:unimixins-gtnhmixins-1.7.10:$unimixinsVersion:dev")
     implementation("com.github.LegacyModdingMC.UniMixins:unimixins-mixingasm-1.7.10:$unimixinsVersion:dev")
