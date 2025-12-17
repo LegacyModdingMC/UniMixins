@@ -39,7 +39,6 @@ And here's how you depend on the Very Optional modules (not published on Jitpack
 ```gradle
     //implementation("io.github.legacymoddingmc.unimixins:unimixins-mixin-1.7.10-spongepowered:$unimixinsVersion")
     //implementation("io.github.legacymoddingmc.unimixins:unimixins-mixin-1.7.10-fabric:$unimixinsVersion")
-    //implementation("io.github.legacymoddingmc.unimixins:unimixins-mixin-1.7.10-gasmix:$unimixinsVersion")
     //implementation("io.github.legacymoddingmc.unimixins:unimixins-mixin-1.7.10-gtnh:$unimixinsVersion")
 ```
 

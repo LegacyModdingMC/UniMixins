@@ -112,10 +112,6 @@ compareVersion("Mixin (GTNH)",
     stripBuildIdentifiers(property(localFile("module-mixin/gradle.properties"), "gtnhMixinVersion")),
     lastVersionTag("GTNewHorizons/SpongePoweredMixin")) # GTNH doesn't have a master branch
 
-compareVersion("Mixin (GasMix)",
-    stripBuildIdentifiers(property(localFile("module-mixin/gradle.properties"), "gasmixMixinVersion")),
-    property(githubFile("FalsePattern/GasMix", "master", "gradle.properties"), "buildVersion"))
-
 compareVersions("GTNHMixins",
     creditsSources("module-gtnhmixins"))
 
