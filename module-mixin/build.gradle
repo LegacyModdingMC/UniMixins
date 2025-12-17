@@ -52,11 +52,6 @@ flavors.each {
 				mixinVersion += "-local"
 			}
 
-			// jitpack differences:
-			// - domain is com instead of io (for some strange reason)
-			// - we have to use _ instead of + in version string because the latter is not supported (for some strange reason)
-			// - artifact id is UniMix, not sponge-mixin (this one makes sense at least)
-
 			def mixinGroup = mixinFlavor == "fabric" ? "net.fabricmc" : "io.github.legacymoddingmc"
 			def mixinArtifactId = "sponge-mixin"
 			def mixinDepVersion = mixinVersion
