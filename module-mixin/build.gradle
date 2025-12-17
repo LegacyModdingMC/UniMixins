@@ -47,9 +47,7 @@ flavors.each {
 		
 		if (mixinFlavor == "fabric" || mixinFlavor == "unimix") {
 			def uniLocal = mixinFlavor == "unimix" && project.hasProperty("local")
-			def uniJitpack = mixinFlavor == "unimix" && !uniLocal
-
-			mixinVersion = mixinFlavor == "fabric" ? fabricMixinVersion : unimixMixinVersion
+            mixinVersion = mixinFlavor == "fabric" ? fabricMixinVersion : unimixMixinVersion
 			if (uniLocal) {
 				mixinVersion += "-local"
 			}
@@ -59,9 +57,9 @@ flavors.each {
 			// - we have to use _ instead of + in version string because the latter is not supported (for some strange reason)
 			// - artifact id is UniMix, not sponge-mixin (this one makes sense at least)
 
-			def mixinGroup = mixinFlavor == "fabric" ? "net.fabricmc" : "${uniJitpack ? 'com' : 'io'}.github.legacymoddingmc"
-			def mixinArtifactId = uniJitpack ? "UniMix" : "sponge-mixin"
-			def mixinDepVersion = uniJitpack ? mixinVersion.replace('+', '_') : mixinVersion
+			def mixinGroup = mixinFlavor == "fabric" ? "net.fabricmc" : "io.github.legacymoddingmc"
+			def mixinArtifactId = "sponge-mixin"
+			def mixinDepVersion = mixinVersion
 			def mixinDep = "$mixinGroup:$mixinArtifactId:$mixinDepVersion"
 
 			mixinFlavorClassifier = "$mixinFlavor.${mixinVersion.replace('+', '-')}"
