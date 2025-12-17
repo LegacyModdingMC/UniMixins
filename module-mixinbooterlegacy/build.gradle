@@ -24,6 +24,7 @@ shadowJar {
 	configurations = [project.configurations.shadow]
 
 	relocate 'io.github.legacymoddingmc.unimixins.common', 'io.github.legacymoddingmc.unimixins.mixinbooterlegacy.repackage.common'
+    relocate "org.objectweb.asm", "org.spongepowered.asm.lib"
 
 	manifest {
 		attributes (
