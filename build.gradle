@@ -43,10 +43,14 @@ allprojects {
 		maven {
 			url = "https://mvn.falsepattern.com/releases"
 		}
-		maven {
-			name = "GTNH Maven"
-			url = "https://nexus.gtnewhorizons.com/"
-		}
+        maven {
+            name = "GTNH Maven"
+            url = "https://nexus.gtnewhorizons.com/"
+        }
+        maven {
+            name = "GTNH Maven (Third-Party)"
+            url = "https://nexus.gtnewhorizons.com/repository/thirdparty"
+        }
 	}
 	
 	apply from: "${project.rootDir}/buildscript/forge-1.7.gradle"
