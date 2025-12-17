@@ -9,7 +9,7 @@ repositories {
 }
 
 dependencies {
-	compileOnly('io.github.legacymoddingmc:sponge-mixin:0.15.3+mixin.0.8.7')
+	compileOnly('io.github.legacymoddingmc:sponge-mixin:0.15.5+mixin.0.8.7')
 	shadow(project(":module-common")) {
 		transitive = false
 	}
