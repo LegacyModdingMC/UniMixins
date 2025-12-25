@@ -23,16 +23,6 @@ All test cases assume default configs for mods.
     * ❔ MixinExtras (MixinBooterLegacy package name)
         * No mods are known to use this.
 
-* [x] GasStation
-    * [x] Mod annotation
-        * [x] [RightProperGUIScale 2.1.0](https://github.com/basdxz/RightProperGUIScale/releases/download/2.1.0/RightProperGUIScale-mc1.7.10-2.1.0.jar) + [FalsePatternLib 0.11.4](https://github.com/FalsePattern/FalsePatternLib/releases/download/0.11.4/falsepatternlib-mc1.7.10-0.11.4.jar)
-            * [x] GUI Scale slider can be set to fractional values.
-                * The mod hard depends on GasStation in [its mod annotation](https://github.com/basdxz/RightProperGUIScale/blob/a14814a00f7f360491f72367c40fcb31341abf7e/src/main/java/com/github/basdxz/rightproperguiscale/Tags.java#L17).
-    * ❔ Early loader
-        * No mods are known to use this.
-    * ❔ Late loader
-        * No mods are known to use this.
-
 * [x] MixinExtras
     * ❔ MixinExtras (upstream package name)
         * No mods are known to use this.

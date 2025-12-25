@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
  * were compiled against.</p>
  * <p>The following packages are remapped:</p>
  * <li><code>org.spongepowered.libraries.org.objectweb.asm</code> (MixinBooterLegacy, GTNHMixins) in all classes</li>
- * <li><code>org.spongepowered.asm.lib</code> (Mixin 0.7, GasStation, UniMixins) in all classes</li>
+ * <li><code>org.spongepowered.asm.lib</code> (Mixin 0.7, UniMixins) in all classes</li>
  * <li><code>org.objectweb.asm</code> (Mixin 0.8) in classes implementing {@link org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin} or annotated with {@link io.github.legacymoddingmc.unimixins.compat.api.RemapASMForMixin}</li>
  */
 

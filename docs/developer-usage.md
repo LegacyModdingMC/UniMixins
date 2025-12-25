@@ -24,7 +24,6 @@ dependencies {
     implementation("com.github.LegacyModdingMC.UniMixins:unimixins-compat-1.7.10:$unimixinsVersion:dev")
     implementation("com.github.LegacyModdingMC.UniMixins:unimixins-spongemixins-1.7.10:$unimixinsVersion:dev")
     implementation("com.github.LegacyModdingMC.UniMixins:unimixins-mixinbooterlegacy-1.7.10:$unimixinsVersion:dev")
-    implementation("com.github.LegacyModdingMC.UniMixins:unimixins-gasstation-1.7.10:$unimixinsVersion:dev")
     implementation("com.github.LegacyModdingMC.UniMixins:unimixins-mixinextras-1.7.10:$unimixinsVersion:dev")
     implementation("com.github.LegacyModdingMC.UniMixins:unimixins-gtnhmixins-1.7.10:$unimixinsVersion:dev")
     implementation("com.github.LegacyModdingMC.UniMixins:unimixins-mixingasm-1.7.10:$unimixinsVersion:dev")
@@ -40,7 +39,6 @@ And here's how you depend on the Very Optional modules (not published on Jitpack
 ```gradle
     //implementation("io.github.legacymoddingmc.unimixins:unimixins-mixin-1.7.10-spongepowered:$unimixinsVersion")
     //implementation("io.github.legacymoddingmc.unimixins:unimixins-mixin-1.7.10-fabric:$unimixinsVersion")
-    //implementation("io.github.legacymoddingmc.unimixins:unimixins-mixin-1.7.10-gasmix:$unimixinsVersion")
     //implementation("io.github.legacymoddingmc.unimixins:unimixins-mixin-1.7.10-gtnh:$unimixinsVersion")
 ```
 

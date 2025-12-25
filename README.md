@@ -61,10 +61,7 @@ All modules depend on the Mixin module. Note that the dependents don't necessari
 * **SpongeMixins** <sup>[1.7.10 only]</sup>: Provides an emulation of [SpongeMixins](https://github.com/GTNewHorizons/SpongeMixins)'s extras.
 * **MixinBooterLegacy** <sup>[1.7.10 only]</sup>: Provides an emulation of [MixinBooterLegacy](https://github.com/tox1cozZ/mixin-booter-legacy)'s extras, and a relocated MixinExtras.
 * **MixinExtras**: Provides [MixinExtras](https://github.com/LlamaLad7/MixinExtras).
-* **GasStation** <sup>[1.7.10 only]</sup>: Provides an emulation of [GasStation](https://github.com/FalsePattern/GasStation)'s extras.
-    * Depends on SpongeMixins.
-    * Depends on MixinBooterLegacy.
-    * Depends on MixinExtras
+* ~~**GasStation**~~ <sup>[1.7.10 only]</sup>: Deprecated in 0.1.23; removed in 0.2.0.
 * **GTNHMixins** <sup>[1.7.10 only]</sup>: Provides an emulation of [GTNHMixins](https://github.com/GTNewHorizons/GTNHMixins)'s extras, and a relocated MixinExtras.
     * Depends on SpongeMixins.
 * **Compat**: Various compatibility tweaks:
@@ -82,7 +79,6 @@ These are not included in releases, they mainly exist for testing purposes. (Not
 
 * **Mixin (SpongePowered)**: Provides [the upstream fork](https://github.com/SpongePowered/Mixin) of Mixin.
 * **Mixin (Fabric)**: Provides [the Fabric fork](https://github.com/FabricMC/Mixin) of Mixin.
-* **Mixin (GasMix)**: Provides [the GasStation fork](https://github.com/FalsePattern/GasMix) of Mixin.
 * **Mixin (GTNH)**: Provides [the GTNH fork](https://github.com/GTNewHorizons/SpongePoweredMixin) of Mixin.
 
 ## FAQ
@@ -99,8 +95,8 @@ The Fabric fork of Mixin is more actively maintained than the upstream fork, and
 
 ### What do the "extras" do anyway?
 
-* SpongeMixins, Grimoire, MixinBooterLegacy, GasStation and GTNHMixins offer various ways to let you mix into the classes of non-coremods. (This is something Mixin does not natively support, since all of its phases occur before Forge discovers non-coremods and puts them on the classpath.)
-    - **MixinBooterLegacy**, **GasStation** and **GTNHMixins** add a "late" mixin phase that is fired right before the first mod construction event is dispatched. At this point all mods have been discovered.
+* SpongeMixins, Grimoire, MixinBooterLegacy, and GTNHMixins offer various ways to let you mix into the classes of non-coremods. (This is something Mixin does not natively support, since all of its phases occur before Forge discovers non-coremods and puts them on the classpath.)
+    - **MixinBooterLegacy** and **GTNHMixins** add a "late" mixin phase that is fired right before the first mod construction event is dispatched. At this point all mods have been discovered.
     - **SpongeMixins** lets you manually add mods to the classpath early using their file names. An old, hacky solution.
     - We recommend new mods to use **GTNHMixins** as it's the most actively used and maintained option.
 * **Mixingasm** fixes [a Mixin issue](https://github.com/SpongePowered/Mixin/issues/309) that breaks some ASM transformers due to Mixin altering how they are called.

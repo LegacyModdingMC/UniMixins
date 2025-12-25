@@ -9,7 +9,7 @@ repositories {
 }
 
 dependencies {
-	compileOnly('org.spongepowered:mixin:0.8.5-gasstation_7')
+	compileOnly('io.github.legacymoddingmc:sponge-mixin:0.15.5+mixin.0.8.7')
 	shadow(project(":module-common")) {
 		transitive = false
 	}
@@ -24,6 +24,7 @@ shadowJar {
 	configurations = [project.configurations.shadow]
 
 	relocate 'io.github.legacymoddingmc.unimixins.common', 'io.github.legacymoddingmc.unimixins.mixinbooterlegacy.repackage.common'
+    relocate "org.objectweb.asm", "org.spongepowered.asm.lib"
 
 	manifest {
 		attributes (

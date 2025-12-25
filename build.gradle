@@ -43,14 +43,14 @@ allprojects {
 		maven {
 			url = "https://mvn.falsepattern.com/releases"
 		}
-		maven {
-			name = "GTNH Maven"
-			url = "http://jenkins.usrv.eu:8081/nexus/content/groups/public/"
-			allowInsecureProtocol = true
-		}
-		maven {
-			url 'https://jitpack.io'
-		}
+        maven {
+            name = "GTNH Maven"
+            url = "https://nexus.gtnewhorizons.com/"
+        }
+        maven {
+            name = "GTNH Maven (Third-Party)"
+            url = "https://nexus.gtnewhorizons.com/repository/thirdparty"
+        }
 	}
 	
 	apply from: "${project.rootDir}/buildscript/forge-1.7.gradle"
@@ -124,7 +124,6 @@ allprojects {
 			if (System.getenv("MAVEN_USER") != null) {
 				maven {
 					url = System.getenv("MAVEN_URL")
-					allowInsecureProtocol = System.getenv("MAVEN_URL").startsWith("http://") // Mostly for the GTNH maven
 					credentials {
 						username = System.getenv("MAVEN_USER") ?: "NONE"
 						password = System.getenv("MAVEN_PASSWORD") ?: "NONE"

@@ -1,10 +1,10 @@
 package io.github.tox1cozz.mixinextras.injector;
 
 import io.github.tox1cozz.mixinextras.utils.CompatibilityHelper;
-import org.spongepowered.asm.lib.Opcodes;
-import org.spongepowered.asm.lib.tree.InsnList;
-import org.spongepowered.asm.lib.tree.InsnNode;
-import org.spongepowered.asm.lib.tree.VarInsnNode;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.tree.InsnList;
+import org.objectweb.asm.tree.InsnNode;
+import org.objectweb.asm.tree.VarInsnNode;
 import org.spongepowered.asm.mixin.injection.code.Injector;
 import org.spongepowered.asm.mixin.injection.struct.InjectionInfo;
 import org.spongepowered.asm.mixin.injection.struct.InjectionNodes.InjectionNode;

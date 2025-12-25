@@ -1,6 +1,6 @@
 package io.github.tox1cozz.mixinextras.utils;
 
-import org.spongepowered.asm.lib.Opcodes;
+import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.injection.struct.InjectionNodes;
 
 public class InjectorUtils {
