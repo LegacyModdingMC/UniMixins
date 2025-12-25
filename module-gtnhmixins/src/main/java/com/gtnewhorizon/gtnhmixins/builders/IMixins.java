@@ -9,7 +9,8 @@ import java.util.Set;
 
 /**
  * The IMixins interface provides a flexible way of declaring and registering mixins during runtime.
- * Registration is done based on conditions such as user defined logic, looking configs, loading side (CLIENT, COMMON, SERVER)
+ *
+ * <p>Registration is done based on conditions such as user defined logic, looking configs, loading side (CLIENT, COMMON, SERVER)
  * or looking at the presence or absence of mods declared using the {@link com.gtnewhorizon.gtnhmixins.builders.ITargetMod} interface.
  * This interface must be implemented on an enum.
  * <pre>
@@ -39,8 +40,8 @@ import java.util.Set;
  * }
  * }
  * </pre>
- * <p>
- * If you do not need very complex logic in your enum, you can instantiate
+ *
+ * <p>If you do not need very complex logic in your enum, you can instantiate
  * the MixinBuilder in the enum constructor and declare simplistic enum entries.
  *
  * <pre>
@@ -64,6 +65,10 @@ import java.util.Set;
  * }
  * }
  * </pre>
+ *
+ * <p>To then loads your mixins you need to call one of the static methods
+ * from this class in the appropriate location depending on your mixins setup.
+ * See {@link IMixins#getMixins}, {@link IMixins#getEarlyMixins}, {@link IMixins#getLateMixins}
  */
 @SuppressWarnings("unused")
 public interface IMixins extends IBaseTransformer {
