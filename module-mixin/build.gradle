@@ -92,6 +92,10 @@ flavors.each {
         }
     }
 
+    // We want to *not* relocate ASM in the bridge classes. So we use a multi-step
+    // build procedure:
+
+    // 1. Create relocated Mixin jar, without the bridge classes
     task("mixinJar$_flavor", type: ShadowJar) {
         destinationDirectory = file("build/tmp")
         classifier = "tmpMixin$_flavor"
@@ -120,6 +124,8 @@ flavors.each {
 
         exclude 'META-INF/MANIFEST.MF', 'META-INF/maven/**', 'META-INF/*.RSA', 'META-INF/*.SF'
     }
+
+    // 2. Create Mixin jar without relocation, with *only* the bridge classes
     task("bridgeJar$_flavor", type: ShadowJar) {
         destinationDirectory = file("build/tmp")
         classifier = "tmpBridge$_flavor"
@@ -128,6 +134,8 @@ flavors.each {
         include '*.jar'
         include 'org/spongepowered/asm/bridge/*'
     }
+
+    // 3. Combine the two jars
     task("shadowJar$_flavor", type: ShadowJar) {
         version = versionBase + "+" + mixinFlavorClassifier
         from(sourceSets.main.output) {
@@ -156,6 +164,7 @@ flavors.each {
             delete tasks."bridgeJar$_flavor".archiveFile
         }
     }
+    
     jar.dependsOn("shadowJar$_flavor")
 
 	task("createMcmodInfo$_flavor", type: Copy) {
