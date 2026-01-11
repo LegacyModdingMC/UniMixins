@@ -108,10 +108,6 @@ compareVersion("Mixin (UniMix)",
     stripBuildIdentifiers(property(localFile("module-mixin/gradle.properties"), "unimixMixinVersion")),
     property(githubFile("LegacyModdingMC", "UniMix/main", "gradle.properties"), "buildVersion"))
 
-compareVersion("Mixin (GTNH)",
-    stripBuildIdentifiers(property(localFile("module-mixin/gradle.properties"), "gtnhMixinVersion")),
-    lastVersionTag("GTNewHorizons/SpongePoweredMixin")) # GTNH doesn't have a master branch
-
 compareVersions("GTNHMixins",
     creditsSources("module-gtnhmixins"))
 
