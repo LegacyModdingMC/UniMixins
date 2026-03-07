@@ -24,8 +24,6 @@ public class HackClasspathModDiscoveryTransformer implements IClassTransformer {
         if(basicClass == null) {
             return null;
         }
-        if(transformedName.startsWith("org.objectweb.asm.")) return basicClass;
-
         if(transformedName.equals("cpw.mods.fml.common.discovery.ModDiscoverer")) {
             basicClass = doTransformModDiscoverer(basicClass);
         }
@@ -41,22 +39,20 @@ public class HackClasspathModDiscoveryTransformer implements IClassTransformer {
             classReader.accept(classNode, 0);
             for(MethodNode m : classNode.methods) {
                 if(m.name.equals("findClasspathMods")) {
-                    Iterator<AbstractInsnNode> it = m.instructions.iterator();
-
-                    while(it.hasNext()) {
-                        AbstractInsnNode i = it.next();
+                    for (AbstractInsnNode i = m.instructions.getFirst(); i != null; i = i.getNext()) {
                         if(i.getOpcode() == INVOKESTATIC) {
                             MethodInsnNode mi = (MethodInsnNode)i;
                             if(mi.owner.equals("cpw/mods/fml/relauncher/CoreModManager") && mi.name.equals("getReparseableCoremods") && mi.desc.equals("()Ljava/util/List;")) {
-                                m.instructions.insertBefore(mi, new MethodInsnNode(INVOKESTATIC, "io/github/legacymoddingmc/unimixins/compat/asm/HackClasspathModDiscoveryTransformer$Hooks", "redirectGetReparseableCoremods", mi.desc));
-                                it.remove();
+                                m.instructions.insertBefore(mi, new MethodInsnNode(INVOKESTATIC, "io/github/legacymoddingmc/unimixins/compat/asm/HackClasspathModDiscoveryTransformer$Hooks", "redirectGetReparseableCoremods", mi.desc, false));
+                                m.instructions.remove(mi);
                                 break;
                             }
                         }
                     }
+                    break;
                 }
             }
-            ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES);
+            ClassWriter writer = new ClassWriter(0);
             classNode.accept(writer);
             return writer.toByteArray();
         } catch(Exception e) {
