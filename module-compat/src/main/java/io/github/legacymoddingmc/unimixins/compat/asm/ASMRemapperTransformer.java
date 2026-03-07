@@ -2,7 +2,6 @@ package io.github.legacymoddingmc.unimixins.compat.asm;
 
 import static io.github.legacymoddingmc.unimixins.compat.CompatCore.LOGGER;
 
-import com.google.common.primitives.Bytes;
 import net.minecraft.launchwrapper.IClassTransformer;
 import net.minecraft.launchwrapper.Launch;
 import org.apache.commons.lang3.StringUtils;
@@ -14,9 +13,8 @@ import org.objectweb.asm.tree.AnnotationNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodNode;
 
-import java.nio.charset.StandardCharsets;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * <p>The ASM package name used by Mixin differs between mixin loaders. This transformer remaps references to ASM to use the
@@ -28,7 +26,6 @@ import java.util.stream.Collectors;
  * <li><code>org.objectweb.asm</code> (Mixin 0.8) in classes implementing {@link org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin} or annotated with {@link io.github.legacymoddingmc.unimixins.compat.api.RemapASMForMixin}</li>
  */
 
-// TODO Measure the performance impact of this and switch to doing it selectively if it would improve things.
 public class ASMRemapperTransformer implements IClassTransformer {
 
     private static final String ASM_PACKAGE_UNSHADED = "org/objectweb/asm/";
@@ -41,14 +38,20 @@ public class ASMRemapperTransformer implements IClassTransformer {
             ASM_PACKAGE_MBL
     );
 
-    private static final List<byte[]> SHADED_ASM_PACKAGE_PREFIXES_RAW = Arrays.asList(
-            ASM_PACKAGE_LEGACY.getBytes(StandardCharsets.UTF_8),
-            ASM_PACKAGE_MBL.getBytes(StandardCharsets.UTF_8)
-    );
-
     private static String realASMPackagePrefix;
-    private static List<byte[]> wrongASMPackagePrefixesRaw;
-    private static List<String> wrongASMPackagePrefixes;
+    private final ClassConstantPoolParser wrongAsmParser;
+    private final ClassConstantPoolParser shadedAsmParser;
+
+    public ASMRemapperTransformer() {
+        final String[] wrongAsmPackagePrefixes = ASM_PACKAGE_PREFIXES.stream()
+                .filter(x -> !x.equals(getRealASMPackagePrefix()))
+                .toArray(String[]::new);
+
+        final String[] shadedAsmPackagePrefixes = new String[] { ASM_PACKAGE_LEGACY, ASM_PACKAGE_MBL };
+
+        this.wrongAsmParser = new ClassConstantPoolParser(wrongAsmPackagePrefixes);
+        this.shadedAsmParser = new ClassConstantPoolParser(shadedAsmPackagePrefixes);
+    }
 
     @Override
     public byte[] transform(String name, String transformedName, byte[] basicClass) {
@@ -61,12 +64,10 @@ public class ASMRemapperTransformer implements IClassTransformer {
             || transformedName.startsWith("org.objectweb.asm.")
         ) return basicClass;
 
-        boolean foundWrongAsm = containsAnyPattern(basicClass, getWrongASMPackagePrefixesRaw());
-
+        boolean foundWrongAsm = wrongAsmParser.find(basicClass, true);
         if(!foundWrongAsm) return basicClass;
 
-        boolean foundShadedAsm = containsAnyPattern(basicClass, SHADED_ASM_PACKAGE_PREFIXES_RAW);
-
+        boolean foundShadedAsm = shadedAsmParser.find(basicClass, true);
         boolean doRemap = foundShadedAsm;
 
         if(!doRemap) {
@@ -82,13 +83,11 @@ public class ASMRemapperTransformer implements IClassTransformer {
                     }
                 }
             }
-            if(!doRemap) {
-                if(classNode.visibleAnnotations != null) {
-                    for (AnnotationNode ann : classNode.visibleAnnotations) {
-                        if (ann.desc.equals("Lio/github/legacymoddingmc/unimixins/compat/api/RemapASMForMixin;")) {
-                            doRemap = true;
-                            break;
-                        }
+            if(!doRemap && classNode.visibleAnnotations != null) {
+                for (AnnotationNode ann : classNode.visibleAnnotations) {
+                    if (ann.desc.equals("Lio/github/legacymoddingmc/unimixins/compat/api/RemapASMForMixin;")) {
+                        doRemap = true;
+                        break;
                     }
                 }
             }
@@ -96,25 +95,13 @@ public class ASMRemapperTransformer implements IClassTransformer {
 
         if(doRemap) {
             ClassReader classReader = new ClassReader(basicClass);
-            LOGGER.info("Transforming class " + transformedName + " to fit current mixin environment.");
-            ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_MAXS);
+            LOGGER.info("Transforming class {} to fit current mixin environment.", transformedName);
+            ClassWriter classWriter = new ClassWriter(0);
             RemappingClassAdapter remapAdapter = new SpongepoweredASMRemappingAdapter(classWriter);
-            classReader.accept(remapAdapter, ClassReader.EXPAND_FRAMES);
+            classReader.accept(remapAdapter, 0);
             basicClass = classWriter.toByteArray();
         }
         return basicClass;
-    }
-
-    private static boolean containsAnyPattern(byte[] array, List<byte[]> patterns) {
-        if(array == null) {
-            return false;
-        }
-        for(byte[] pattern : patterns) {
-            if(Bytes.indexOf(array, pattern) != -1) {
-                return true;
-            }
-        }
-        return false;
     }
 
     private static String getRealASMPackagePrefix() {
@@ -145,20 +132,6 @@ public class ASMRemapperTransformer implements IClassTransformer {
             }
         }
         return realASMPackagePrefix;
-    }
-
-    private static List<String> getWrongASMPackagePrefixes() {
-        if(wrongASMPackagePrefixes == null) {
-            wrongASMPackagePrefixes = ASM_PACKAGE_PREFIXES.stream().filter(x -> !x.equals(getRealASMPackagePrefix())).collect(Collectors.toList());
-        }
-        return wrongASMPackagePrefixes;
-     }
-
-    private static List<byte[]> getWrongASMPackagePrefixesRaw() {
-        if(wrongASMPackagePrefixesRaw == null) {
-            wrongASMPackagePrefixesRaw = getWrongASMPackagePrefixes().stream().map(x -> x.getBytes(StandardCharsets.UTF_8)).collect(Collectors.toList());
-        }
-        return wrongASMPackagePrefixesRaw;
     }
     
     private static class SpongepoweredASMRemappingAdapter extends RemappingClassAdapter {

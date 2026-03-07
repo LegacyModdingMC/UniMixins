@@ -74,11 +74,12 @@ public class IgnoreDuplicateJarsTransformer implements IClassTransformer {
                 if(m.name.equals("identifyMods")) {
                     InsnList patch = new InsnList();
                     patch.add(new VarInsnNode(ALOAD, 0));
-                    patch.add(new MethodInsnNode(INVOKESTATIC, "io/github/legacymoddingmc/unimixins/compat/asm/IgnoreDuplicateJarsTransformer$Hooks", "preIdentifyMods", "(Lcpw/mods/fml/common/discovery/ModDiscoverer;)V"));
+                    patch.add(new MethodInsnNode(INVOKESTATIC, "io/github/legacymoddingmc/unimixins/compat/asm/IgnoreDuplicateJarsTransformer$Hooks", "preIdentifyMods", "(Lcpw/mods/fml/common/discovery/ModDiscoverer;)V", false));
                     m.instructions.insert(patch);
+                    break;
                 }
             }
-            ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES);
+            ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);
             classNode.accept(writer);
             return writer.toByteArray();
         } catch(Exception e) {
