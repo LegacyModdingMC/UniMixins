@@ -1,5 +1,9 @@
 # Developer usage
 
+To publish a release, you must publish a **draft release** (not pre-release) on GitHub. Make sure to create a tag (or pick the latest one if you screwed up the release), autogenerate (or manually write, I suppose) the description, and set it as the latest release. 
+
+If that doesn't get the GH action to build the mod, attach it to the release, and mark it un-draft, please figure out what broke and correct this section.
+
 An example mod showcasing the mod's various features is available in the `example-*` branches of the repo:
 - [`example-fg-g4`](https://github.com/LegacyModdingMC/UniMixins/tree/example-fg-g4) - ForgeGradle-based build script with Gradle 4
 - [`example-fg-g6`](https://github.com/LegacyModdingMC/UniMixins/tree/example-fg-g6) - ForgeGradle-based build script with Gradle 6
