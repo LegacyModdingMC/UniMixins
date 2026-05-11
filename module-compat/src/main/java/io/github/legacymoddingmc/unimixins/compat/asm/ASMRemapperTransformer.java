@@ -9,7 +9,6 @@ import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.commons.Remapper;
 import org.objectweb.asm.commons.RemappingClassAdapter;
-import org.objectweb.asm.tree.AnnotationNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodNode;
 
@@ -31,6 +30,7 @@ public class ASMRemapperTransformer implements IClassTransformer {
     private static final String ASM_PACKAGE_UNSHADED = "org/objectweb/asm/";
     private static final String ASM_PACKAGE_LEGACY = "org/spongepowered/asm/lib/";
     private static final String ASM_PACKAGE_MBL = "org/spongepowered/libraries/org/objectweb/asm/";
+    private static final String REMAP_ANNOTATION = "Lio/github/legacymoddingmc/unimixins/compat/api/RemapASMForMixin;";
 
     private static final List<String> ASM_PACKAGE_PREFIXES = Arrays.asList(
             ASM_PACKAGE_UNSHADED,
@@ -39,8 +39,9 @@ public class ASMRemapperTransformer implements IClassTransformer {
     );
 
     private static String realASMPackagePrefix;
-    private final ClassConstantPoolParser wrongAsmParser;
-    private final ClassConstantPoolParser shadedAsmParser;
+    private final BytePatternMatcher wrongAsmMatcher;
+    private final BytePatternMatcher shadedAsmMatcher;
+    private final BytePatternMatcher remapAnnotationMatcher;
 
     public ASMRemapperTransformer() {
         final String[] wrongAsmPackagePrefixes = ASM_PACKAGE_PREFIXES.stream()
@@ -49,59 +50,84 @@ public class ASMRemapperTransformer implements IClassTransformer {
 
         final String[] shadedAsmPackagePrefixes = new String[] { ASM_PACKAGE_LEGACY, ASM_PACKAGE_MBL };
 
-        this.wrongAsmParser = new ClassConstantPoolParser(wrongAsmPackagePrefixes);
-        this.shadedAsmParser = new ClassConstantPoolParser(shadedAsmPackagePrefixes);
+        this.wrongAsmMatcher = new BytePatternMatcher(wrongAsmPackagePrefixes, BytePatternMatcher.Mode.Contains);
+        this.shadedAsmMatcher = new BytePatternMatcher(shadedAsmPackagePrefixes, BytePatternMatcher.Mode.Contains);
+        this.remapAnnotationMatcher = new BytePatternMatcher(REMAP_ANNOTATION, BytePatternMatcher.Mode.Equals);
     }
 
     @Override
     public byte[] transform(String name, String transformedName, byte[] basicClass) {
-        if(basicClass == null) {
+        if (basicClass == null) {
             return null;
         }
-        if(transformedName.startsWith("io.github.legacymoddingmc.unimixins.compat.asm.")
+        if (transformedName.startsWith("io.github.legacymoddingmc.unimixins.compat.asm.")
             || transformedName.startsWith("com.google.")
             || transformedName.startsWith("org.apache.")
             || transformedName.startsWith("org.objectweb.asm.")
-        ) return basicClass;
+        ) {
+            return basicClass;
+        }
 
-        boolean foundWrongAsm = wrongAsmParser.find(basicClass, true);
-        if(!foundWrongAsm) return basicClass;
+        ClassReader classReader = new ClassReader(basicClass);
 
-        boolean foundShadedAsm = shadedAsmParser.find(basicClass, true);
-        boolean doRemap = foundShadedAsm;
+        boolean foundWrongAsm = matchUtf8Constant(classReader, basicClass, wrongAsmMatcher);
+        if (!foundWrongAsm) return basicClass;
 
-        if(!doRemap) {
-            ClassNode classNode = new ClassNode();
-            ClassReader classReaderForNode = new ClassReader(basicClass);
-            classReaderForNode.accept(classNode, 0);
+        boolean doRemap = matchUtf8Constant(classReader, basicClass, shadedAsmMatcher);
 
-            if(classNode.interfaces != null) {
-                for (String itf : classNode.interfaces) {
-                    if (itf.equals("org/spongepowered/asm/mixin/extensibility/IMixinConfigPlugin")) {
-                        doRemap = true;
-                        break;
-                    }
-                }
-            }
-            if(!doRemap && classNode.visibleAnnotations != null) {
-                for (AnnotationNode ann : classNode.visibleAnnotations) {
-                    if (ann.desc.equals("Lio/github/legacymoddingmc/unimixins/compat/api/RemapASMForMixin;")) {
-                        doRemap = true;
-                        break;
-                    }
+        if (!doRemap) {
+            for (String itf : classReader.getInterfaces()) {
+                if (itf.equals("org/spongepowered/asm/mixin/extensibility/IMixinConfigPlugin")) {
+                    doRemap = true;
+                    break;
                 }
             }
         }
 
-        if(doRemap) {
-            ClassReader classReader = new ClassReader(basicClass);
-            LOGGER.info("Transforming class {} to fit current mixin environment.", transformedName);
-            ClassWriter classWriter = new ClassWriter(0);
-            RemappingClassAdapter remapAdapter = new SpongepoweredASMRemappingAdapter(classWriter);
-            classReader.accept(remapAdapter, 0);
-            basicClass = classWriter.toByteArray();
+        if (!doRemap) {
+            doRemap = matchUtf8Constant(classReader, basicClass, remapAnnotationMatcher);
         }
-        return basicClass;
+
+        if (!doRemap) {
+            return basicClass;
+        }
+
+        LOGGER.info("Transforming class {} to fit current mixin environment.", transformedName);
+        ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_MAXS);
+        RemappingClassAdapter remapAdapter = new SpongepoweredASMRemappingAdapter(classWriter);
+        classReader.accept(remapAdapter, ClassReader.EXPAND_FRAMES);
+        return classWriter.toByteArray();
+    }
+
+    private static boolean matchUtf8Constant(ClassReader classReader, byte[] basicClass, BytePatternMatcher matcher) {
+        final int itemCount = classReader.getItemCount();
+
+        // Constant pool entries start from index 1
+        for (int i = 1; i < itemCount; i++) {
+            final int itemOffset = classReader.getItem(i);
+
+            // Long and double take two CP slots, the second slot has no item
+            if (itemOffset == 0) {
+                continue;
+            }
+
+            // Only match the UTF8 constant (which tag is 1).
+            // getItem(i) points after the tag byte, i.e. at the first length byte.
+            // [tag][u2 length][bytes...]
+            if (basicClass[itemOffset - 1] != 1) {
+                continue;
+            }
+
+            // Length takes 2 bytes, so we read them and skip these 2 bytes
+            final int utfLen = classReader.readUnsignedShort(itemOffset);
+            final int utfStart = itemOffset + 2;
+
+            if (matcher.matches(basicClass, utfStart, utfLen)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private static String getRealASMPackagePrefix() {
