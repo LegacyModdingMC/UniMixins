@@ -60,7 +60,7 @@ targetCompatibility = 1.8
 repositories {
 	maven {
 		name = "chickenbones"
-		url = "http://chickenbones.net/maven/"
+		url = "https://chickenbones.net/maven/"
 	}
 }
 
