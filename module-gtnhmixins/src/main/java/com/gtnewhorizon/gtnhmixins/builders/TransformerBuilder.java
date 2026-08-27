@@ -77,7 +77,7 @@ public class TransformerBuilder extends AbstractBuilder {
         for (E transformer : constants) {
             TransformerBuilder builder = transformer.getBuilder();
             validateBuilder(builder, transformer);
-            if (builder.applyIf.get()) {
+            if (builder.applyIf == null || builder.applyIf.get()) {
                 list.add(builder);
             } else {
                 builder.addAllClassesTo(toNotLoad);

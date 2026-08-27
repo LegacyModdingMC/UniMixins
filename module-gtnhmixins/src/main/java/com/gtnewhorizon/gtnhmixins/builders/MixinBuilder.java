@@ -109,7 +109,7 @@ public class MixinBuilder extends AbstractBuilder {
             MixinBuilder builder = mixin.getBuilder();
             validateBuilder(builder, mixin, loadingPhase != null);
             if (builder.phase != loadingPhase) continue;
-            if (builder.applyIf.get()) {
+            if (builder.applyIf == null || builder.applyIf.get()) {
                 list.add(builder);
             } else {
                 builder.addAllClassesTo(toNotLoad);
