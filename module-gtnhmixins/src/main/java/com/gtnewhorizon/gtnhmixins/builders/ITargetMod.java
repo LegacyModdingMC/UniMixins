@@ -27,7 +27,7 @@ import java.util.function.Predicate;
  *     }
  *
  *     @Override
- *     public getBuidler() {
+ *     public TargetModBuilder getBuilder() {
  *         return builder;
  *     }
  * }
