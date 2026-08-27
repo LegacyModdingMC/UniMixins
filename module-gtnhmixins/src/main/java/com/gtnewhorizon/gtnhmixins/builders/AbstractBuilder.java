@@ -14,16 +14,20 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
 @SuppressWarnings("ForLoopReplaceableByForEach")
 public abstract class AbstractBuilder {
+    private static final BooleanSupplier TRUE = () -> true;
 
     protected @Nullable List<String> commonClasses;
     protected @Nullable List<String> clientClasses;
     protected @Nullable List<String> serverClasses;
     protected @Nullable List<ITargetMod> requiredMods;
+    protected @Nullable List<BooleanSupplier> requiredModsCond;
     protected @Nullable List<ITargetMod> excludedMods;
+    protected @Nullable List<BooleanSupplier> excludedModsCond;
     protected @Nullable Phase phase;
     protected @Nonnull Supplier<Boolean> applyIf = () -> true;
 
@@ -69,16 +73,30 @@ public abstract class AbstractBuilder {
     }
 
     protected AbstractBuilder addRequiredMod(@Nonnull ITargetMod mod) {
+        return addRequiredModIf(mod, TRUE);
+    }
+
+    protected AbstractBuilder addRequiredModIf(@Nonnull ITargetMod mod, @Nonnull BooleanSupplier condition) {
         Objects.requireNonNull(mod);
+        Objects.requireNonNull(condition);
         if (requiredMods == null) requiredMods = new ArrayList<>(2);
+        if (requiredModsCond == null) requiredModsCond = new ArrayList<>(2);
         requiredMods.add(mod);
+        requiredModsCond.add(condition);
         return this;
     }
 
     protected AbstractBuilder addExcludedMod(@Nonnull ITargetMod mod) {
+        return addExcludedModIf(mod, TRUE);
+    }
+
+    protected AbstractBuilder addExcludedModIf(@Nonnull ITargetMod mod, @Nonnull BooleanSupplier condition) {
         Objects.requireNonNull(mod);
+        Objects.requireNonNull(condition);
         if (excludedMods == null) excludedMods = new ArrayList<>(2);
+        if (excludedModsCond == null) excludedModsCond = new ArrayList<>(2);
         excludedMods.add(mod);
+        excludedModsCond.add(condition);
         return this;
     }
 
@@ -102,8 +120,12 @@ public abstract class AbstractBuilder {
     }
 
     protected void addAllTargetsTo(Set<ITargetMod> set) {
-        if (requiredMods != null) set.addAll(requiredMods);
-        if (excludedMods != null) set.addAll(excludedMods);
+        if (requiredMods != null) {
+            set.addAll(requiredMods);
+        }
+        if (excludedMods != null) {
+            set.addAll(excludedMods);
+        }
     }
 
     protected boolean shouldLoad(Set<ITargetMod> loadedTargets) {
@@ -112,7 +134,10 @@ public abstract class AbstractBuilder {
 
     protected boolean allRequiredModsPresent(Set<ITargetMod> loadedTargets) {
         if (requiredMods == null) return true;
+        boolean hasCond = requiredModsCond != null;
         for (int i = 0; i < requiredMods.size(); i++) {
+            if (hasCond && !requiredModsCond.get(i).getAsBoolean())
+                continue;
             if (!loadedTargets.contains(requiredMods.get(i))) return false;
         }
         return true;
@@ -120,7 +145,10 @@ public abstract class AbstractBuilder {
 
     protected boolean noExcludedModsPresent(Set<ITargetMod> loadedTargets) {
         if (excludedMods == null) return true;
+        boolean hasCond = excludedModsCond != null;
         for (int i = 0; i < excludedMods.size(); i++) {
+            if (hasCond && !excludedModsCond.get(i).getAsBoolean())
+                continue;
             if (loadedTargets.contains(excludedMods.get(i))) return false;
         }
         return true;
