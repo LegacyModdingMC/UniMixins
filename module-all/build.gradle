@@ -147,7 +147,7 @@ tasks.withType(ShadowJar) {
 				'FMLCorePluginContainsFMLMod': true,
 				'ForceLoadAsMod': true,
 				'FMLCorePlugin': 'io.github.legacymoddingmc.unimixins.all.AllCore',
-				'MixinConfigs': 'mixins.gtnhmixins.json,mixingasm.mixin.json',
+				'MixinConfigs': 'mixins.gtnhmixins.json,mixingasm.init.mixin.json,mixingasm.mixin.json',
 				'Premain-Class': 'org.spongepowered.tools.agent.MixinAgent',
 				'Agent-Class': 'org.spongepowered.tools.agent.MixinAgent',
 				'Can-Redefine-Classes': true,

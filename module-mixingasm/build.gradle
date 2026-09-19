@@ -21,7 +21,7 @@ shadowJar {
 			'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
 			'FMLCorePluginContainsFMLMod': true,
 			'ForceLoadAsMod': true,
-			'MixinConfigs': 'mixingasm.mixin.json',
+			'MixinConfigs': 'mixingasm.init.mixin.json,mixingasm.mixin.json',
 			'TweakOrder': 0,
 		)
 	}

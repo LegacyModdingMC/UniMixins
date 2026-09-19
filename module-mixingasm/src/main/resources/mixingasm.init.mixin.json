@@ -1,0 +1,9 @@
+{
+  "required": true,
+  "minVersion": "0.6",
+  "target": "@env(INIT)",
+  "package": "makamys.mixingasm.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [],
+  "plugin": "makamys.mixingasm.MixinConfigPlugin"
+}
