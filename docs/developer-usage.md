@@ -1,6 +1,6 @@
 # Developer usage
 
-To publish a release, you must publish a **draft release** (not pre-release) on GitHub. Make sure to create a tag (or pick the latest one if you screwed up the release), autogenerate (or manually write, I suppose) the description, and set it as the latest release. 
+To publish a release, you must publish a **draft release** (not pre-release) on GitHub. Make sure to create a tag (or pick the latest one if you screwed up the release), autogenerate (or manually write, I suppose) the description, and set it as the latest release. Hit "save draft", then push the tag to GitHub from your machine (it doesn't auto-create tags for drafts).
 
 If that doesn't get the GH action to build the mod, attach it to the release, and mark it un-draft, please figure out what broke and correct this section.
 
